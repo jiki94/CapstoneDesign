@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+// 저장된 음식 정보 보여주는 프래그먼트
 public class ViewFragment extends Fragment {
     public ViewFragment() {
         // Required empty public constructor

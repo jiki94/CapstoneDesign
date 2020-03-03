@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+// 커뮤니티 프래그먼트
 public class ForumFragment extends Fragment {
 
 

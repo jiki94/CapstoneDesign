@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+// 푸드뱅크 정보 보여주는 프래그먼트
 public class FoodBankFragment extends Fragment {
 
 

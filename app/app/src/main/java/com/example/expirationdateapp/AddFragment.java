@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
+// 식품 정보 입려하는 프레그먼트
 public class AddFragment extends Fragment {
 
 
