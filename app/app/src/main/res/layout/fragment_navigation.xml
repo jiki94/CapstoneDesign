@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".NavigationFragment">
+
+    <Button
+        android:id="@+id/navigationFrag_button_add"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_add"
+        app:layout_constraintEnd_toStartOf="@+id/navigationFrag_button_view"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/navigationFrag_button_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_view"
+        app:layout_constraintBaseline_toBaselineOf="@+id/navigationFrag_button_add"
+        app:layout_constraintEnd_toStartOf="@+id/navigationFrag_button_recipe"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/navigationFrag_button_add" />
+
+    <Button
+        android:id="@+id/navigationFrag_button_recipe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_recipe"
+        app:layout_constraintBaseline_toBaselineOf="@+id/navigationFrag_button_add"
+        app:layout_constraintEnd_toStartOf="@+id/navigationFrag_button_forum"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/navigationFrag_button_view" />
+
+    <Button
+        android:id="@+id/navigationFrag_button_forum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_forum"
+        app:layout_constraintBaseline_toBaselineOf="@+id/navigationFrag_button_add"
+        app:layout_constraintEnd_toStartOf="@+id/navigationFrag_button_food_bank"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/navigationFrag_button_recipe" />
+
+    <Button
+        android:id="@+id/navigationFrag_button_food_bank"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_food_bank"
+        app:layout_constraintBaseline_toBaselineOf="@+id/navigationFrag_button_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/navigationFrag_button_forum" />
+</androidx.constraintlayout.widget.ConstraintLayout>
