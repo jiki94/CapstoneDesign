@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ExpirationDateApp</string>
+    <string name="button_add">입력</string>
+    <string name="button_view">보기</string>
+    <string name="button_recipe">레시피</string>
+    <string name="button_forum">커뮤니티</string>
+    <string name="button_food_bank">푸드뱅크</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
