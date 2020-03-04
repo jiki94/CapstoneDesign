@@ -17,4 +17,5 @@
     <string name="text_product_name">제품 이름</string>
     <string name="text_expiry_date">유통기한</string>
     <string name="button_cancel">취소</string>
+    <string name="action_add_to_favorite">즐겨찾기 추가</string>
 </resources>
