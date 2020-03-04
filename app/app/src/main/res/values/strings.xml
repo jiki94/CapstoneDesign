@@ -1,13 +1,10 @@
 <resources>
     <string name="app_name">ExpirationDateApp</string>
-    <string name="button_add">입력</string>
+    <string name="button_add">추가</string>
     <string name="button_view">보기</string>
     <string name="button_recipe">레시피</string>
     <string name="button_forum">커뮤니티</string>
     <string name="button_food_bank">푸드뱅크</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_add_new">새로 추가</string>
     <string name="button_ocr">OCR</string>
     <string name="button_stt">STT</string>
@@ -17,4 +14,7 @@
     <string name="radio_cold">냉장</string>
     <string name="radio_else">그 외</string>
     <string name="button_favorite_del" translatable="false">X</string>
+    <string name="text_product_name">제품 이름</string>
+    <string name="text_expiry_date">유통기한</string>
+    <string name="button_cancel">취소</string>
 </resources>
