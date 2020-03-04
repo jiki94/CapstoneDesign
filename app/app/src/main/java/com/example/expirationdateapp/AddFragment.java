@@ -3,6 +3,8 @@ package com.example.expirationdateapp;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -34,6 +36,9 @@ public class AddFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+        Toolbar toolbar = view.findViewById(R.id.addFrag_toolbar_top);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
         RecyclerView recyclerView = view.findViewById(R.id.addFrag_recyclerview_favorite);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);

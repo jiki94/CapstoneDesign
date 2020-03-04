@@ -3,6 +3,10 @@ package com.example.expirationdateapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -26,4 +30,10 @@ public class ForumFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_forum, container, false);
     }
 
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Toolbar toolbar = view.findViewById(R.id.forumFrag_toobar_top);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+    }
 }

@@ -15,7 +15,7 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_toolbar_top" />
 
     <Button
         android:id="@+id/addFrag_button_ocr"
@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toStartOf="@+id/addFrag_button_manual"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/addFrag_button_ocr"
-        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_divider_between_new_buttons" />
 
     <Button
         android:id="@+id/addFrag_button_manual"
@@ -58,7 +58,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_divider_between_buttons_favorite" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/addFrag_recyclerview_favorite"
@@ -67,10 +67,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+        app:layout_constraintTop_toBottomOf="@+id/addFrag_divider_between_favorite_recyclerview" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/addFrag_divider_between_buttons_favorite"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="8dp"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@+id/addFrag_button_stt" />
 
     <View
-        android:id="@+id/divider2"
+        android:id="@+id/addFrag_divider_between_favorite_recyclerview"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="8dp"
@@ -90,7 +90,7 @@
         app:layout_constraintTop_toBottomOf="@+id/addFrag_text_favorite" />
 
     <View
-        android:id="@+id/divider3"
+        android:id="@+id/addFrag_divider_between_new_buttons"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="8dp"
@@ -98,5 +98,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addFrag_text_add_new" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/addFrag_toolbar_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/app_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
