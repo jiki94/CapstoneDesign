@@ -20,4 +20,5 @@
     <string name="action_add_to_favorite">즐겨찾기 추가</string>
     <string name="snackbar_empty_name">상품 이름을 입력하세요.</string>
     <string name="snackbar_empty_stored">저장할 위치를 고르세요.</string>
+    <string name="snackbar_empty_expiry_date">유통기한을 입력해 주세요.</string>
 </resources>

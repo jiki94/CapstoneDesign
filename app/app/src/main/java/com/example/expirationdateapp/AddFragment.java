@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 
 // 식품 정보 입려하는 프레그먼트
-public class AddFragment extends Fragment implements AddFavoriteDialogFragment.NoticeDialogListener {
+public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener {
     public AddFragment() {
         // Required empty public constructor
     }
@@ -52,7 +52,7 @@ public class AddFragment extends Fragment implements AddFavoriteDialogFragment.N
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add_to_favorite){
             Toast.makeText(getContext(), "Add to favorite", Toast.LENGTH_SHORT).show();
-            AddFavoriteDialogFragment dialog = new AddFavoriteDialogFragment();
+            NESDialogFragment dialog = new NESDialogFragment.Builder().setUsingExpiryDate(false).build();
             dialog.setTargetFragment(this, 0);
             dialog.show(getFragmentManager(), "AddFavoriteDialog");
 
@@ -90,8 +90,10 @@ public class AddFragment extends Fragment implements AddFavoriteDialogFragment.N
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     }
 
+    // 즐겨 찾기 추가 버튼 누르면 나오는 다이얼로그 결과
     @Override
-    public void onDialogPositiveClick(FavoriteData newData) {
+    public void onDialogPositiveClick(String name, String expiryDate, StoredType storedType) {
+        FavoriteData newData = new FavoriteData(name, storedType);
         Toast.makeText(getContext(), "Add favorite return " + newData, Toast.LENGTH_SHORT).show();
     }
 
