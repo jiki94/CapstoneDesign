@@ -24,9 +24,7 @@ import java.util.Arrays;
 
 
 // 식품 정보 입려하는 프레그먼트
-public class AddFragment extends Fragment {
-
-
+public class AddFragment extends Fragment implements AddFavoriteDialogFragment.NoticeDialogListener {
     public AddFragment() {
         // Required empty public constructor
     }
@@ -54,6 +52,10 @@ public class AddFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add_to_favorite){
             Toast.makeText(getContext(), "Add to favorite", Toast.LENGTH_SHORT).show();
+            AddFavoriteDialogFragment dialog = new AddFavoriteDialogFragment();
+            dialog.setTargetFragment(this, 0);
+            dialog.show(getFragmentManager(), "AddFavoriteDialog");
+
             return true;
         }else
             return super.onOptionsItemSelected(item);
@@ -69,8 +71,8 @@ public class AddFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        // 현재 테스트용 임시 데이터 사
-        //ArrayList<FavoriteData> data = new ArrayList<>();용
+        // 현재 테스트용 임시 데이터 사용
+        //ArrayList<FavoriteData> data = new ArrayList<>();
         ArrayList<FavoriteData> data = new ArrayList<>(Arrays.asList(
                 new FavoriteData("우유", StoredType.FROZEN),
                 new FavoriteData("피자", StoredType.COLD),
@@ -86,5 +88,15 @@ public class AddFragment extends Fragment {
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+    }
+
+    @Override
+    public void onDialogPositiveClick(FavoriteData newData) {
+        Toast.makeText(getContext(), "Add favorite return " + newData, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogNegativeClick() {
+        Toast.makeText(getContext(), "Add favorite return no", Toast.LENGTH_SHORT).show();
     }
 }
