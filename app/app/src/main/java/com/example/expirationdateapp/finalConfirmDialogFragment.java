@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class FinalConfirmDialogFrament extends DialogFragment {
+public class finalConfirmDialogFragment extends DialogFragment {
     private View body = null;
 
     @NonNull
