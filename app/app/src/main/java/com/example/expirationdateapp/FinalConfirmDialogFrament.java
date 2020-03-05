@@ -21,7 +21,7 @@ public class FinalConfirmDialogFrament extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         LayoutInflater inflater = getLayoutInflater();
-        body = inflater.inflate(R.layout.dialog_final_confirm, null);
+        body = inflater.inflate(R.layout.dialog_with_nes, null);
         builder.setView(body);
         builder.setPositiveButton(R.string.button_add, new DialogInterface.OnClickListener() {
             @Override

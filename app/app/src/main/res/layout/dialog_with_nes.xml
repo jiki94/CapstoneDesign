@@ -5,28 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- nes = name, expiry date, stored place 뜻함 -->
     <TextView
-        android:id="@+id/finalConfirmDialog_text_product_name"
+        android:id="@+id/nesDialog_text_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/text_product_name"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/finalConfirmDialog_edittext_product_name"
+        app:layout_constraintBaseline_toBaselineOf="@+id/nesDialog_edittext_product_name"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/finalConfirmDialog_text_expiry_date"
+        android:id="@+id/nesDialog_text_expiry_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/text_expiry_date"
         android:textSize="18sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/finalConfirmDialog_edittext_expiry_date"
+        app:layout_constraintBaseline_toBaselineOf="@+id/nesDialog_edittext_expiry_date"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/finalConfirmDialog_edittext_product_name"
+        android:id="@+id/nesDialog_edittext_product_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -35,11 +36,11 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/finalConfirmDialog_text_product_name"
+        app:layout_constraintStart_toEndOf="@+id/nesDialog_text_product_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/finalConfirmDialog_edittext_expiry_date"
+        android:id="@+id/nesDialog_edittext_expiry_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -48,51 +49,51 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/finalConfirmDialog_text_expiry_date"
-        app:layout_constraintTop_toTopOf="@+id/finalConfirmDialog_barrier_product_name" />
+        app:layout_constraintStart_toEndOf="@+id/nesDialog_text_expiry_date"
+        app:layout_constraintTop_toTopOf="@+id/nesDialog_barrier_product_name" />
 
     <RadioGroup
-        android:id="@+id/finalConfirmDialog_radio_group_stored"
+        android:id="@+id/nesDialog_radio_group_stored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/finalConfirmDialog_barrier_expiry_date">
+        app:layout_constraintTop_toBottomOf="@+id/nesDialog_barrier_expiry_date">
 
         <RadioButton
-            android:id="@+id/finalConfirmDialog_radio_button_cold"
+            android:id="@+id/nesDialog_radio_button_cold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radio_cold" />
 
         <RadioButton
-            android:id="@+id/finalConfirmDialog_radio_button_frozen"
+            android:id="@+id/nesDialog_radio_button_frozen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radio_frozen" />
 
         <RadioButton
-            android:id="@+id/finalConfirmDialog_radio_button_else"
+            android:id="@+id/nesDialog_radio_button_else"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radio_else" />
     </RadioGroup>
 
     <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/finalConfirmDialog_barrier_product_name"
+        android:id="@+id/nesDialog_barrier_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="finalConfirmDialog_text_product_name,finalConfirmDialog_edittext_product_name"
+        app:constraint_referenced_ids="nesDialog_text_product_name,nesDialog_edittext_product_name"
         tools:layout_editor_absoluteY="731dp" />
 
     <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/finalConfirmDialog_barrier_expiry_date"
+        android:id="@+id/nesDialog_barrier_expiry_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="finalConfirmDialog_text_expiry_date,finalConfirmDialog_edittext_expiry_date"
+        app:constraint_referenced_ids="nesDialog_text_expiry_date,nesDialog_edittext_expiry_date"
         tools:layout_editor_absoluteY="731dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
