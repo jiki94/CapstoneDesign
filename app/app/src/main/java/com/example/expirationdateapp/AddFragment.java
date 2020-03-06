@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,8 @@ import java.util.Arrays;
 
 // 식품 정보 입려하는 프레그먼트
 public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener {
+    private AddViewModel addViewModel;
+
     public AddFragment() {
         // Required empty public constructor
     }
@@ -33,6 +36,10 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     public void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        AppContainer appContainer = MyApplication.getInstance().appContainer;
+        ViewModelProvider.Factory factory = new AppContainerViewModelFactory(appContainer);
+        addViewModel = new ViewModelProvider(this, factory).get(AddViewModel.class);
     }
 
     @Override

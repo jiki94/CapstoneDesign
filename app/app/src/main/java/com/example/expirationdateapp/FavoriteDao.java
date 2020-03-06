@@ -1,5 +1,6 @@
 package com.example.expirationdateapp;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,7 @@ public interface FavoriteDao{
     void insertFavorite(Favorite newRecord);
 
     @Query("SELECT * FROM Favorite")
-    List<Favorite> getFavorites();
+    LiveData<List<Favorite>> getFavorites();
 
     @Query("DELETE FROM Favorite WHERE name = :name")
     void deleteByName(String name);
