@@ -72,15 +72,15 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         recyclerView.setLayoutManager(layoutManager);
 
         // 현재 테스트용 임시 데이터 사용
-        //ArrayList<FavoriteData> data = new ArrayList<>();
-        ArrayList<FavoriteData> data = new ArrayList<>(Arrays.asList(
-                new FavoriteData("우유", StoredType.FROZEN),
-                new FavoriteData("피자", StoredType.COLD),
-                new FavoriteData("물", StoredType.ELSE),
-                new FavoriteData("치킨", StoredType.COLD),
-                new FavoriteData("배추", StoredType.COLD),
-                new FavoriteData("물", StoredType.ELSE),
-                new FavoriteData("치킨", StoredType.COLD)
+        //ArrayList<Favorite> data = new ArrayList<>();
+        ArrayList<Favorite> data = new ArrayList<>(Arrays.asList(
+                new Favorite("우유", StoredType.FROZEN),
+                new Favorite("피자", StoredType.COLD),
+                new Favorite("물", StoredType.ELSE),
+                new Favorite("치킨", StoredType.COLD),
+                new Favorite("배추", StoredType.COLD),
+                new Favorite("물", StoredType.ELSE),
+                new Favorite("치킨", StoredType.COLD)
                 )
         );
         FavoriteRecyclerViewAdapter adapter = new FavoriteRecyclerViewAdapter(getContext(), data);
@@ -93,7 +93,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     // 즐겨 찾기 추가 버튼 누르면 나오는 다이얼로그 결과
     @Override
     public void onDialogPositiveClick(String name, String expiryDate, StoredType storedType) {
-        FavoriteData newData = new FavoriteData(name, storedType);
+        Favorite newData = new Favorite(name, storedType);
         Toast.makeText(getContext(), "Add favorite return " + newData, Toast.LENGTH_SHORT).show();
     }
 

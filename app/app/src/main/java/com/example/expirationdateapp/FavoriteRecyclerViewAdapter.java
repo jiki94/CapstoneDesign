@@ -1,7 +1,6 @@
 package com.example.expirationdateapp;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavoriteViewHolder> {
     private Context context;
-    private ArrayList<FavoriteData> data;
+    private ArrayList<Favorite> data;
 
     public class FavoriteViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
@@ -39,7 +38,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         }
     }
 
-    public FavoriteRecyclerViewAdapter(Context context, ArrayList<FavoriteData> data){
+    public FavoriteRecyclerViewAdapter(Context context, ArrayList<Favorite> data){
         this.context = context;
         this.data = data;
     }
@@ -54,7 +53,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
 
     @Override
     public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, final int position) {
-        final FavoriteData datum = data.get(position);
+        final Favorite datum = data.get(position);
 
         holder.name.setText(datum.name);
 
