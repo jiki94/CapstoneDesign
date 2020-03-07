@@ -1,6 +1,7 @@
 package com.example.expirationdateapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavoriteViewHolder> {
     @NonNull private Context context;
@@ -39,6 +42,10 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         }
     }
 
+    enum Payload{
+        STORED_CHANGED
+    }
+
     FavoriteRecyclerViewAdapter(@NonNull Context context, @NonNull ArrayList<Favorite> data,
                                 @NonNull DBRelatedListener listener){
         this.context = context;
@@ -55,24 +62,34 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     }
 
     @Override
+    public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, final int position,
+                                 @NonNull List<Object> payloads) {
+        Log.v("BIND_VIEWHOLDER", "With payloads");
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position);
+            return;
+        }
+
+        final Favorite datum = data.get(position);
+
+        for (Object obj : payloads) {
+            Payload payload = (Payload) obj;
+            if (payload == Payload.STORED_CHANGED){
+                updateHolderStoredType(holder, datum.stored);
+            }else{
+                throw new IllegalArgumentException(FavoriteRecyclerViewAdapter.class.getName() + " does not support " + payload.toString());
+            }
+        }
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, final int position) {
+        Log.v("BIND_VIEWHOLDER", "No payloads");
         final Favorite datum = data.get(position);
 
         holder.name.setText(datum.name);
 
-        switch (datum.stored){
-            case COLD:
-                holder.stored.check(R.id.favoriteItem_radio_button_cold);
-                break;
-            case FROZEN:
-                holder.stored.check(R.id.favoriteItem_radio_button_frozen);
-                break;
-            case ELSE:
-                holder.stored.check(R.id.favoriteItem_radio_button_else);
-                break;
-            default:
-                throw new RuntimeException(StoredType.class.getName() + " does not support " + datum.stored.toString());
-        }
+        updateHolderStoredType(holder, datum.stored);
 
         holder.del.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,14 +137,33 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         });
     }
 
+    private static void updateHolderStoredType(@NonNull FavoriteViewHolder holder, @NonNull StoredType stored){
+        switch (stored){
+            case COLD:
+                holder.stored.check(R.id.favoriteItem_radio_button_cold);
+                break;
+            case FROZEN:
+                holder.stored.check(R.id.favoriteItem_radio_button_frozen);
+                break;
+            case ELSE:
+                holder.stored.check(R.id.favoriteItem_radio_button_else);
+                break;
+            default:
+                throw new RuntimeException(StoredType.class.getName() + " does not support " + stored.toString());
+        }
+    }
+
     @Override
     public int getItemCount() {
         return data.size();
     }
 
     void changeData(@NonNull ArrayList<Favorite> newData){
+        FavoriteDiffUtilCallBack callBack = new FavoriteDiffUtilCallBack(data, newData);
+
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);
         data = newData;
-        notifyDataSetChanged();
+        result.dispatchUpdatesTo(this);
     }
 
     void addFavorite(@NonNull Favorite newFavorite){
