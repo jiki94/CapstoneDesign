@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,12 +22,22 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 // 식품 정보 입려하는 프레그먼트
-public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener {
+public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener, FavoriteRecyclerViewAdapter.DBRelatedListener {
+    private FavoriteRecyclerViewAdapter recyclerViewAdapter;
     private AddViewModel addViewModel;
+    private Observer loadingDataObserver = new Observer<ArrayList<Favorite>>() {
+        @Override
+        public void onChanged(ArrayList<Favorite> newData) {
+            if (newData != null) {
+                recyclerViewAdapter.changeData(newData);
+            }else{
+                throw new IllegalArgumentException("newData should not be null");
+            }
+        }
+    };
 
     public AddFragment() {
         // Required empty public constructor
@@ -78,34 +89,37 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        // 현재 테스트용 임시 데이터 사용
-        //ArrayList<Favorite> data = new ArrayList<>();
-        ArrayList<Favorite> data = new ArrayList<>(Arrays.asList(
-                new Favorite("우유", StoredType.FROZEN),
-                new Favorite("피자", StoredType.COLD),
-                new Favorite("물", StoredType.ELSE),
-                new Favorite("치킨", StoredType.COLD),
-                new Favorite("배추", StoredType.COLD),
-                new Favorite("물", StoredType.ELSE),
-                new Favorite("치킨", StoredType.COLD)
-                )
-        );
-        FavoriteRecyclerViewAdapter adapter = new FavoriteRecyclerViewAdapter(getContext(), data);
-        recyclerView.setAdapter(adapter);
+        ArrayList<Favorite> data = new ArrayList<>();
+
+        recyclerViewAdapter = new FavoriteRecyclerViewAdapter(getContext(), data, this);
+        recyclerView.setAdapter(recyclerViewAdapter);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+
+        addViewModel.getFavorites().observe(this, loadingDataObserver);
     }
 
     // 즐겨 찾기 추가 버튼 누르면 나오는 다이얼로그 결과
     @Override
     public void onDialogPositiveClick(String name, String expiryDate, StoredType storedType) {
         Favorite newData = new Favorite(name, storedType);
+        addViewModel.insertFavorite(newData);
         Toast.makeText(getContext(), "Add favorite return " + newData, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDialogNegativeClick() {
         Toast.makeText(getContext(), "Add favorite return no", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDeletedClicked(Favorite clickedFavorite) {
+        addViewModel.deleteByName(clickedFavorite.name);
+    }
+
+    @Override
+    public void onStoredChanged(Favorite changedFavorite) {
+        addViewModel.updateFavorite(changedFavorite);
     }
 }

@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -19,4 +20,7 @@ public interface FavoriteDao{
 
     @Query("DELETE FROM Favorite WHERE name = :name")
     void deleteByName(String name);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateFavorite(Favorite updated);
 }

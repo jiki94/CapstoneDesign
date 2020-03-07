@@ -9,17 +9,17 @@ public class FavoriteRepository {
     private final FavoriteDao favoriteDao;
     private LiveData<List<Favorite>> favorites;
 
-    public FavoriteRepository(AppRoomDatabase database) {
+    FavoriteRepository(AppRoomDatabase database) {
         this.database = database;
         this.favoriteDao = database.favoriteDao();
         favorites = this.favoriteDao.getFavorites();
     }
 
-    public LiveData<List<Favorite>> getFavorites(){
+    LiveData<List<Favorite>> getFavorites(){
         return favorites;
     }
 
-    public void insertFavorite(final Favorite newRecord){
+    void insertFavorite(final Favorite newRecord){
         database.databaseExecutor.execute(new Runnable() {
             @Override
             public void run() {
@@ -28,11 +28,20 @@ public class FavoriteRepository {
         });
     }
 
-    public void deleteByName(final String name){
+    void deleteByName(final String name){
         database.databaseExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 favoriteDao.deleteByName(name);
+            }
+        });
+    }
+
+    void updateFavorite(final Favorite updated){
+        database.databaseExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                favoriteDao.updateFavorite(updated);
             }
         });
     }

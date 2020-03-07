@@ -7,31 +7,35 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
-public class AddViewModel extends ViewModel {
+class AddViewModel extends ViewModel {
     private final FavoriteRepository favoriteRepository;
     private LiveData<List<Favorite>> favorites;
 
-    public AddViewModel(FavoriteRepository favoriteRepository){
+    AddViewModel(FavoriteRepository favoriteRepository){
         this.favoriteRepository = favoriteRepository;
         favorites = this.favoriteRepository.getFavorites();
     }
 
-    public LiveData<List<Favorite>> getFavorites(){
+    LiveData<List<Favorite>> getFavorites(){
         return favorites;
     }
 
-    public void insertFavorite(Favorite newRecord) {
+    void insertFavorite(Favorite newRecord) {
         favoriteRepository.insertFavorite(newRecord);
     }
 
-    public void deleteByName(String name){
+    void deleteByName(String name){
         favoriteRepository.deleteByName(name);
+    }
+
+    void updateFavorite(Favorite updated){
+        favoriteRepository.updateFavorite(updated);
     }
 }
 
 class AppContainerViewModelFactory implements ViewModelProvider.Factory{
     private AppContainer appContainer;
-    public AppContainerViewModelFactory(AppContainer appContainer){
+    AppContainerViewModelFactory(AppContainer appContainer){
         this.appContainer = appContainer;
     }
 

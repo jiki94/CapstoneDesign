@@ -15,10 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavoriteViewHolder> {
-    private Context context;
-    private ArrayList<Favorite> data;
+    @NonNull private Context context;
+    @NonNull private ArrayList<Favorite> data;
+    @NonNull private DBRelatedListener deletedListener;
 
-    public class FavoriteViewHolder extends RecyclerView.ViewHolder{
+    class FavoriteViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
         private Button del;
         private Button ocr;
@@ -26,7 +27,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         private Button manual;
         private RadioGroup stored;
 
-        public FavoriteViewHolder(View view){
+        FavoriteViewHolder(View view){
             super(view);
 
             name = view.findViewById(R.id.favoriteItem_text_name);
@@ -38,9 +39,11 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         }
     }
 
-    public FavoriteRecyclerViewAdapter(Context context, ArrayList<Favorite> data){
+    FavoriteRecyclerViewAdapter(@NonNull Context context, @NonNull ArrayList<Favorite> data,
+                                @NonNull DBRelatedListener listener){
         this.context = context;
         this.data = data;
+        this.deletedListener = listener;
     }
 
     @NonNull
@@ -74,11 +77,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         holder.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pos = holder.getAdapterPosition();
-                if (pos != RecyclerView.NO_POSITION) {
-                    data.remove(pos);
-                    notifyItemRemoved(pos);
-                }
+                deletedListener.onDeletedClicked(datum);
             }
         });
 
@@ -115,6 +114,8 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
                 }else{
                     throw new RuntimeException("There is no radio button corresponding to id");
                 }
+
+                deletedListener.onStoredChanged(datum);
             }
         });
     }
@@ -122,5 +123,20 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    void changeData(@NonNull ArrayList<Favorite> newData){
+        data = newData;
+        notifyDataSetChanged();
+    }
+
+    void addFavorite(@NonNull Favorite newFavorite){
+        data.add(newFavorite);
+        notifyItemInserted(data.size()-1);
+    }
+
+    public interface DBRelatedListener {
+        void onDeletedClicked(Favorite clickedFavorite);
+        void onStoredChanged(Favorite changedFavorite);
     }
 }
