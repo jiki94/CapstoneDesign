@@ -12,10 +12,10 @@ import java.util.Arrays;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class AppContainer {
-    AppRoomDatabase database;
-    FavoriteDao favoriteDao;
+class AppContainer {
+    private AppRoomDatabase database;
     FavoriteRepository favoriteRepository;
+    BasketItemRepository basketItemRepository;
 
     public AppContainer(Context context){
         database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database_testing")
@@ -43,7 +43,7 @@ public class AppContainer {
                     }
                 }).build();
         //database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database").build();
-        favoriteDao = database.favoriteDao();
         favoriteRepository = new FavoriteRepository(database);
+        basketItemRepository = new BasketItemRepository(database);
     }
 }

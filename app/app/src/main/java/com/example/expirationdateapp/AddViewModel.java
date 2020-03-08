@@ -9,15 +9,15 @@ import java.util.List;
 
 class AddViewModel extends ViewModel {
     private final FavoriteRepository favoriteRepository;
-    private LiveData<List<Favorite>> favorites;
+    private final BasketItemRepository basketItemRepository;
 
-    AddViewModel(FavoriteRepository favoriteRepository){
+    AddViewModel(FavoriteRepository favoriteRepository, BasketItemRepository basketItemRepository){
         this.favoriteRepository = favoriteRepository;
-        favorites = this.favoriteRepository.getFavorites();
+        this.basketItemRepository = basketItemRepository;
     }
 
     LiveData<List<Favorite>> getFavorites(){
-        return favorites;
+        return favoriteRepository.getFavorites();
     }
 
     void insertFavorite(Favorite newRecord) {
@@ -31,6 +31,10 @@ class AddViewModel extends ViewModel {
     void updateFavorite(Favorite updated){
         favoriteRepository.updateFavorite(updated);
     }
+
+    void insertBasketItem(BasketItem newItem){
+        basketItemRepository.insertBasketItem(newItem);
+    }
 }
 
 class AppContainerViewModelFactory implements ViewModelProvider.Factory{
@@ -43,7 +47,7 @@ class AppContainerViewModelFactory implements ViewModelProvider.Factory{
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(AddViewModel.class))
-            return (T) new AddViewModel(appContainer.favoriteRepository);
+            return (T) new AddViewModel(appContainer.favoriteRepository, appContainer.basketItemRepository);
 
         throw new IllegalArgumentException("There is factory does not support " + modelClass.getName());
     }

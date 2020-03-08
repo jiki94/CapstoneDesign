@@ -126,6 +126,8 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
                 break;
             case AddFragmentDialogManager.BASKET_REQUEST:
                 Toast.makeText(getContext(), "Got " + name + " " + expiryDate + " " + storedType, Toast.LENGTH_SHORT).show();
+                BasketItem newBasketItem = new BasketItem(name, expiryDate, storedType);
+                addViewModel.insertBasketItem(newBasketItem);
                 break;
             default:
                 throw new IllegalArgumentException("Not supported requestCode: " + requestCode);
