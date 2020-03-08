@@ -153,7 +153,8 @@ public class NESDialogFragment extends DialogFragment {
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                listener.onDialogNegativeClick();
+                int requestCode = getTargetRequestCode();
+                listener.onDialogNegativeClick(requestCode);
             }
         });
 
@@ -201,15 +202,16 @@ public class NESDialogFragment extends DialogFragment {
                     }
                 }
 
-                listener.onDialogPositiveClick(name, expiryDate, stored);
+                int requestCode = getTargetRequestCode();
+                listener.onDialogPositiveClick(requestCode, name, expiryDate, stored);
                 dismiss();
             }
         });
     }
 
     public interface NoticeDialogListener{
-        void onDialogPositiveClick(String name, String expiryDate, StoredType storedType);
-        void onDialogNegativeClick();
+        void onDialogPositiveClick(int requestCode, String name, String expiryDate, StoredType storedType);
+        void onDialogNegativeClick(int requestCode);
     }
 
     private StoredType getStoredTypeFromId(int id){

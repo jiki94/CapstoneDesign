@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     @NonNull private Context context;
     @NonNull private ArrayList<Favorite> data;
     @NonNull private DBRelatedListener deletedListener;
+    @NonNull private AddFragmentDialogManager dialogManager;
 
     class FavoriteViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
@@ -47,10 +49,11 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     }
 
     FavoriteRecyclerViewAdapter(@NonNull Context context, @NonNull ArrayList<Favorite> data,
-                                @NonNull DBRelatedListener listener){
+                                @NonNull DBRelatedListener listener, @NonNull AddFragmentDialogManager dialogManager){
         this.context = context;
         this.data = data;
         this.deletedListener = listener;
+        this.dialogManager = dialogManager;
     }
 
     @NonNull
@@ -116,6 +119,8 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Manual: " + datum.toString(), Toast.LENGTH_SHORT).show();
+                DialogFragment dialog = dialogManager.getAddManualDialogFragment(datum.name, null, datum.stored);
+                dialog.show(dialogManager.getFragmentManager(), "Recyclcer_item_add_manual");
             }
         });
 
