@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 
@@ -113,6 +115,9 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
 
         Button manualButton = view.findViewById(R.id.addFrag_button_manual);
         manualButton.setOnClickListener(this);
+
+        FloatingActionButton fab = view.findViewById(R.id.addFrag_floatActionBar_basket);
+        fab.setOnClickListener(this);
     }
 
     // 즐겨 찾기 추가 버튼 누르면 나오는 다이얼로그 결과
@@ -155,10 +160,12 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
             Toast.makeText(getContext(), "Add new OCR", Toast.LENGTH_SHORT).show();
         }else if (v.getId() == R.id.addFrag_button_stt){
             Toast.makeText(getContext(), "Add new STT", Toast.LENGTH_SHORT).show();
-        }else if (v.getId() == R.id.addFrag_button_manual){
+        }else if (v.getId() == R.id.addFrag_button_manual) {
             DialogFragment dialog = dialogManager.getAddManualDialogFragment();
             dialog.show(dialogManager.getFragmentManager(), "ManualInputDialog");
             Toast.makeText(getContext(), "Add new Manual", Toast.LENGTH_SHORT).show();
+        }else if (v.getId() == R.id.addFrag_floatActionBar_basket){
+            Toast.makeText(getContext(), "Float Action Bar Basket", Toast.LENGTH_SHORT).show();
         }else{
             throw new IllegalArgumentException("There is no view matching supported id");
         }
