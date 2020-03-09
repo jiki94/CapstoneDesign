@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/basketItem_text_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/basketItem_text_expiry_date"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="아이스크림" />
+
+    <TextView
+        android:id="@+id/basketItem_text_expiry_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/basketItem_text_name"
+        app:layout_constraintEnd_toStartOf="@+id/basketItem_text_stored"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/basketItem_text_name"
+        tools:text="2020/10/21" />
+
+    <TextView
+        android:id="@+id/basketItem_text_stored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/basketItem_text_name"
+        app:layout_constraintEnd_toStartOf="@+id/basketItem_button_del"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/basketItem_text_expiry_date"
+        tools:text="냉장" />
+
+    <Button
+        android:id="@+id/basketItem_button_del"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/button_del"
+        app:layout_constraintBaseline_toBaselineOf="@+id/basketItem_text_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/basketItem_text_stored" />
+</androidx.constraintlayout.widget.ConstraintLayout>

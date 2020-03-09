@@ -20,7 +20,7 @@ import java.util.List;
 
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavoriteViewHolder> {
     @NonNull private Context context;
-    @NonNull private ArrayList<Favorite> data;
+    @NonNull private List<Favorite> data;
     @NonNull private DBRelatedListener deletedListener;
     @NonNull private AddFragmentDialogManager dialogManager;
 
@@ -163,7 +163,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         return data.size();
     }
 
-    void changeData(@NonNull ArrayList<Favorite> newData){
+    void changeData(@NonNull List<Favorite> newData){
         FavoriteDiffUtilCallBack callBack = new FavoriteDiffUtilCallBack(data, newData);
 
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);

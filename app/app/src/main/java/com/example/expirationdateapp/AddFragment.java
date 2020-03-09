@@ -1,9 +1,12 @@
 package com.example.expirationdateapp;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 // 식품 정보 입려하는 프레그먼트
@@ -34,16 +38,6 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
 
     private FavoriteRecyclerViewAdapter recyclerViewAdapter;
     private AddViewModel addViewModel;
-    private Observer loadingDataObserver = new Observer<ArrayList<Favorite>>() {
-        @Override
-        public void onChanged(ArrayList<Favorite> newData) {
-            if (newData != null) {
-                recyclerViewAdapter.changeData(newData);
-            }else{
-                throw new IllegalArgumentException("newData should not be null");
-            }
-        }
-    };
 
     private AddFragmentDialogManager dialogManager;
 
@@ -105,7 +99,16 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
 
-        addViewModel.getFavorites().observe(this, loadingDataObserver);
+        addViewModel.getFavorites().observe(this, new Observer<List<Favorite>>() {
+            @Override
+            public void onChanged(List<Favorite> favorites) {
+                if (favorites != null) {
+                    recyclerViewAdapter.changeData(favorites);
+                }else{
+                    throw new IllegalArgumentException("newData should not be null");
+                }
+            }
+        });
 
         Button ocrButton = view.findViewById(R.id.addFrag_button_ocr);
         ocrButton.setOnClickListener(this);
@@ -131,7 +134,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
                 break;
             case AddFragmentDialogManager.BASKET_REQUEST:
                 Toast.makeText(getContext(), "Got " + name + " " + expiryDate + " " + storedType, Toast.LENGTH_SHORT).show();
-                BasketItem newBasketItem = new BasketItem(name, expiryDate, storedType);
+                BasketItem newBasketItem = new BasketItem(0, name, expiryDate, storedType);
                 addViewModel.insertBasketItem(newBasketItem);
                 break;
             default:
@@ -166,9 +169,11 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
             Toast.makeText(getContext(), "Add new Manual", Toast.LENGTH_SHORT).show();
         }else if (v.getId() == R.id.addFrag_floatActionBar_basket){
             Toast.makeText(getContext(), "Float Action Bar Basket", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getContext(), BasketActivity.class);
+            startActivity(intent);
         }else{
             throw new IllegalArgumentException("There is no view matching supported id");
         }
-
     }
 }

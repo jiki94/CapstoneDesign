@@ -37,18 +37,3 @@ class AddViewModel extends ViewModel {
     }
 }
 
-class AppContainerViewModelFactory implements ViewModelProvider.Factory{
-    private AppContainer appContainer;
-    AppContainerViewModelFactory(AppContainer appContainer){
-        this.appContainer = appContainer;
-    }
-
-    @NonNull
-    @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.equals(AddViewModel.class))
-            return (T) new AddViewModel(appContainer.favoriteRepository, appContainer.basketItemRepository);
-
-        throw new IllegalArgumentException("There is factory does not support " + modelClass.getName());
-    }
-}
