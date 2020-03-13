@@ -4,11 +4,12 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
+// 보기 Fragment 에서 사용
 public class ViewRecyclerDiffUtilCallBack extends DiffUtil.Callback {
     private List<Product> oldData;
     private List<Product> newData;
 
-    public ViewRecyclerDiffUtilCallBack(List<Product> oldData, List<Product> newData) {
+    ViewRecyclerDiffUtilCallBack(List<Product> oldData, List<Product> newData) {
         this.oldData = oldData;
         this.newData = newData;
     }

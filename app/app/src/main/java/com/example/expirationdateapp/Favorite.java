@@ -8,6 +8,7 @@ import androidx.room.TypeConverters;
 
 import java.util.Objects;
 
+// 즐겨찾기를 나타내는 클래스
 @Entity
 public class Favorite {
     @PrimaryKey

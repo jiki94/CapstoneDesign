@@ -12,5 +12,7 @@ public abstract class AppRoomDatabase extends RoomDatabase{
     public abstract ProductDao productDao();
 
     private static final int NUMBER_OF_THREADS = 4;
+
+    // db에 사용할 때 사용하는 thread pool
     final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 }

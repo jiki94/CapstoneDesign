@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+// 상품 클래스
+// 장바구니나 입력된 상품은 inBasket 변수로 구분
 @Entity
 public class Product {
     @PrimaryKey(autoGenerate = true)
@@ -34,7 +36,8 @@ public class Product {
         this.inBasket = inBasket;
     }
 
-    public static Product getBasketItem(String name, String expiryDate, StoredType stored){
+    // 장바구니 상품 리턴
+    static Product getBasketItem(String name, String expiryDate, StoredType stored){
         return new Product(0, name, expiryDate, stored, true);
     }
 

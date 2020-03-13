@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-public class FilteredByStoredTypeViewModel extends ViewModel {
+// FilteredByStoredTypeFragment 와 연결된 ViewModel
+class FilteredByStoredTypeViewModel extends ViewModel {
     private ProductRepository productRepository;
 
-    public FilteredByStoredTypeViewModel(ProductRepository productRepository) {
+    FilteredByStoredTypeViewModel(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        Log.v("MAKING_VIEWMODEL", "made new viewmodel");
     }
 
     LiveData<List<Product>> getItemsByStoredType(StoredType storedType){

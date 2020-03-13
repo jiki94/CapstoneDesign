@@ -11,12 +11,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
 
+// Singleton 이야 하는 것들 저장하는 클래스
+// Activity 상속하는 클래스에 들어가서 앱에서 한개의 인스턴스만 존재함
 class AppContainer {
     private AppRoomDatabase database;
-    FavoriteRepository favoriteRepository;
-    ProductRepository productRepository;
+    private FavoriteRepository favoriteRepository;
+    private ProductRepository productRepository;
 
-    public AppContainer(Context context){
+    AppContainer(Context context){
+        // 현재 db에 즐겨찾기 더미 데이터 있
         database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database_testing")
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
@@ -44,5 +47,13 @@ class AppContainer {
         //database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database").build();
         favoriteRepository = new FavoriteRepository(database);
         productRepository = new ProductRepository(database);
+    }
+
+    FavoriteRepository getFavoriteRepository() {
+        return favoriteRepository;
+    }
+
+    ProductRepository getProductRepository() {
+        return productRepository;
     }
 }

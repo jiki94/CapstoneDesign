@@ -16,11 +16,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
+// 이름, 유통기한, 저장공간 정보를 입력할 수 있는 다이얼로그
 public class NESDialogFragment extends DialogFragment {
     private String defaultName;
     private String defaultExpiryDate;
     private StoredType defaultStoredType;
 
+    // 이름, 유통기한, 저장공간을 사용할 지
     private boolean usingName;
     private boolean usingExpiryDate;
     private boolean usingStoredPlace;
@@ -28,6 +30,7 @@ public class NESDialogFragment extends DialogFragment {
     private View body;
     private NoticeDialogListener listener;
 
+    // 다이얼로그 생성 더 쉽
     static class Builder{
         private String defaultName;
         private String defaultExpiryDate;
@@ -37,7 +40,7 @@ public class NESDialogFragment extends DialogFragment {
         private boolean usingExpiryDate;
         private boolean usingStoredPlace;
 
-        public Builder(){
+        Builder(){
             defaultName = null;
             defaultExpiryDate = null;
             defaultStoredType = null;
@@ -47,26 +50,26 @@ public class NESDialogFragment extends DialogFragment {
             usingStoredPlace = true;
         }
 
-        public NESDialogFragment build(){
+        NESDialogFragment build(){
             return new NESDialogFragment(defaultName, defaultExpiryDate, defaultStoredType, usingName, usingExpiryDate, usingStoredPlace);
         }
 
-        public Builder setDefaultName(String defaultName){
+        Builder setDefaultName(String defaultName){
             this.defaultName = defaultName;
             return this;
         }
 
-        public Builder setDefaultExpiryDate(String defaultExpiryDate){
+        Builder setDefaultExpiryDate(String defaultExpiryDate){
             this.defaultExpiryDate = defaultExpiryDate;
             return this;
         }
 
-        public Builder setDefaultStoredType(StoredType defaultStoredType){
+        Builder setDefaultStoredType(StoredType defaultStoredType){
             this.defaultStoredType = defaultStoredType;
             return this;
         }
 
-        public Builder setUsingName(boolean usingName){
+        Builder setUsingName(boolean usingName){
             this.usingName = usingName;
             if (!this.usingName)
                 this.defaultName = null;
@@ -74,7 +77,7 @@ public class NESDialogFragment extends DialogFragment {
             return this;
         }
 
-        public Builder setUsingExpiryDate(boolean usingExpiryDate){
+        Builder setUsingExpiryDate(boolean usingExpiryDate){
             this.usingExpiryDate = usingExpiryDate;
             if (!this.usingExpiryDate)
                 this.defaultExpiryDate = null;
@@ -115,6 +118,7 @@ public class NESDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        // 다이얼로그 모양이랑 기본 값 설정
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         body = inflater.inflate(R.layout.dialog_with_nes, null);
         if (!usingName) {
@@ -164,6 +168,8 @@ public class NESDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        // 다이얼로그 추가 버튼 설정
         AlertDialog alertDialog = (AlertDialog) getDialog();
         alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +215,7 @@ public class NESDialogFragment extends DialogFragment {
         });
     }
 
+    // 호출한 Fragment 에서 다이얼로그 결과 받는 인터페이스
     public interface NoticeDialogListener{
         void onDialogPositiveClick(int requestCode, String name, String expiryDate, StoredType storedType);
         void onDialogNegativeClick(int requestCode);

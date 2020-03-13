@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasketActivity extends AppCompatActivity implements BasketRecyclerViewAdapter.DBRelatedListener {
-    private AppContainer container;
+// 장바구니 보여주는 화면
+public class BasketActivity extends AppCompatActivity implements BasketRecyclerViewAdapter.DBRelatedListener, View.OnClickListener {
     private BasketRecyclerViewAdapter adapter;
     private BasketViewModel basketViewModel;
 
@@ -25,10 +25,12 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket);
 
-        container = ((MyApplication) getApplication()).appContainer;
+        // ViewModel 세팅
+        AppContainer container = ((MyApplication) getApplication()).appContainer;
         ViewModelProvider.Factory factory = new AppContainerViewModelFactory(container);
         basketViewModel = new ViewModelProvider(this, factory).get(BasketViewModel.class);
 
+        // RecyclerView 세팅
         RecyclerView recyclerView = findViewById(R.id.basketAct_recyclerview_basket_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -44,28 +46,29 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
             }
         });
 
-
+        // 버튼들 세팅
         Button delAll = findViewById(R.id.basketAct_button_delete_all);
-        delAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                basketViewModel.deleteAllItems();
-            }
-        });
+        delAll.setOnClickListener(this);
 
         Button add = findViewById(R.id.basketAct_button_add);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Product> data = adapter.getData();
-                basketViewModel.moveBasketToProducts();
-                finish();
-            }
-        });
+        add.setOnClickListener(this);
     }
 
+    // RecyclerView 에 각각 아이템에서 클릭시 일어나는 이벤트
+    // BasketRecyclerViewAdapter.DBRelatedListener 인터페이스 구현
     @Override
     public void onDeletedClicked(Product clicked) {
         basketViewModel.deleteBasketItem(clicked);
+    }
+
+    // View.OnClickListener 인터페이스 구현
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.basketAct_button_delete_all)
+            basketViewModel.deleteAllItems();
+        else if (v.getId() == R.id.basketAct_button_add){
+            basketViewModel.moveBasketToProducts();
+            finish();
+        }
     }
 }

@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+// 위에는 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 Fragment 보여주고
+// 밑에는 저거 5개 네비게이션 지원
 public class MainActivity extends AppCompatActivity implements NavigationFragment.NavigationChangedListener {
 
     @Override
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
                 .replace(R.id.mainAct_layout_fragment_placeholder, startFragment).commit();
     }
 
+    // NavigationFragment.NavigationChangedListener 인터페이스 구현
+    // 밑에 선택한 메뉴로 이동
     @Override
     public void onNavigationChanged(NavigationType newNav) {
         Fragment fragment = getAssociatedFragment(newNav);

@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+// ViewFragment 에서 ViewPager2 에 사용될 Fragment
+// 해당 StoredType 에 맞는 등록된 Product 를 보여준다.
 public class FilteredByStoredTypeFragment extends Fragment implements ViewRecyclerViewAdapter.DBRelatedListener {
-    public static final String SHOW_KEY = "SHOW_KEY";
+    private static final String SHOW_KEY = "SHOW_KEY";
     private StoredType show;
     private FilteredByStoredTypeViewModel viewModel;
     private ViewRecyclerViewAdapter adapter;
@@ -27,7 +29,7 @@ public class FilteredByStoredTypeFragment extends Fragment implements ViewRecycl
         // constructor must be empty
     }
 
-    public static FilteredByStoredTypeFragment newInstance(StoredType show) {
+    static FilteredByStoredTypeFragment newInstance(StoredType show) {
         Bundle args = new Bundle();
         args.putSerializable(SHOW_KEY, show);
         FilteredByStoredTypeFragment fragment = new FilteredByStoredTypeFragment();
@@ -72,6 +74,7 @@ public class FilteredByStoredTypeFragment extends Fragment implements ViewRecycl
         });
     }
 
+    // ViewRecyclerViewAdapter.DBRelatedListener 인터페이스 구현
     @Override
     public void onDeletedClicked(Product clicked) {
         viewModel.deleteProduct(clicked);

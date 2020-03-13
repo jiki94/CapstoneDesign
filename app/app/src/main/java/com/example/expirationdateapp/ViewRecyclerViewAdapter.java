@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+// 보기 Fragment 에서 사용
 public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerViewAdapter.CustomViewHolder> {
     private Context context;
     private List<Product> data;
@@ -23,7 +24,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
         private TextView expiryDate;
         private Button delete;
 
-        public CustomViewHolder(@NonNull View itemView) {
+        CustomViewHolder(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.viewItem_text_name);
@@ -32,7 +33,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
         }
     }
 
-    public ViewRecyclerViewAdapter(Context context, List<Product> data, DBRelatedListener listener) {
+    ViewRecyclerViewAdapter(Context context, List<Product> data, DBRelatedListener listener) {
         this.context = context;
         this.data = data;
         this.listener = listener;
@@ -50,7 +51,6 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         final Product datum = data.get(position);
 
-        // bind
         holder.name.setText(datum.name);
         holder.expiryDate.setText(datum.expiryDate);
 
@@ -67,7 +67,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
         return data.size();
     }
 
-    public void changeData(List<Product> newData){
+    void changeData(List<Product> newData){
         ViewRecyclerDiffUtilCallBack diffUtilCallBack = new ViewRecyclerDiffUtilCallBack(data, newData);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffUtilCallBack, true);
 

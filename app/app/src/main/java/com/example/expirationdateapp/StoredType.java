@@ -19,6 +19,7 @@ enum StoredType {
     }
 }
 
+// DB 에서 enum 을 int 로 변환시 필요
 class StoredTypeConverter{
     @TypeConverter
     public static StoredType intToStoredType(int value){

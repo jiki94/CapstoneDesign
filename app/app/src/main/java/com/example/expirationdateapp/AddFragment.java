@@ -29,14 +29,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-
-// 식품 정보 입려하는 프레그먼트
+// 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 관련 중
+// 입력 하는 프레그먼트
 public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener,
         FavoriteRecyclerViewAdapter.DBRelatedListener, View.OnClickListener {
 
     private FavoriteRecyclerViewAdapter recyclerViewAdapter;
     private AddViewModel addViewModel;
-
     private AddFragmentDialogManager dialogManager;
 
     public AddFragment() {
@@ -51,7 +50,6 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         AppContainer appContainer = MyApplication.getInstance().appContainer;
         ViewModelProvider.Factory factory = new AppContainerViewModelFactory(appContainer);
         addViewModel = new ViewModelProvider(this, factory).get(AddViewModel.class);
-
         dialogManager = new AddFragmentDialogManager(this);
     }
 
@@ -70,10 +68,11 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add_to_favorite){
-            Toast.makeText(getContext(), "Add to favorite", Toast.LENGTH_SHORT).show();
+            // getFragmentManager() deprecated 인데 사용됨, 이거 알아봐야 할 듯
             DialogFragment dialog = dialogManager.getAddFavoriteDialogFragment();
             dialog.show(getFragmentManager(), "AddFavoriteDialog");
 
+            // 클릭 이벤트 처리됬으니까
             return true;
         }else
             return super.onOptionsItemSelected(item);
@@ -81,16 +80,16 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
+        // Toolbar 세팅
         Toolbar toolbar = view.findViewById(R.id.addFrag_toolbar_top);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+        // RecyclerView 세팅
         RecyclerView recyclerView = view.findViewById(R.id.addFrag_recyclerview_favorite);
-
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
         ArrayList<Favorite> data = new ArrayList<>();
-
         recyclerViewAdapter = new FavoriteRecyclerViewAdapter(getContext(), data, this, dialogManager);
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -108,6 +107,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
             }
         });
 
+        // 버튼들 세팅
         Button ocrButton = view.findViewById(R.id.addFrag_button_ocr);
         ocrButton.setOnClickListener(this);
 
@@ -121,17 +121,16 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         fab.setOnClickListener(this);
     }
 
-    // 즐겨 찾기 추가 버튼 누르면 나오는 다이얼로그 결과
+    // NESDialogFragment.NoticeDialogListener 인터페이스 구현
+    // 즐겨찾기 추가, 상품 추가 다이얼로그 관련
     @Override
     public void onDialogPositiveClick(int requestCode, String name, String expiryDate, StoredType storedType) {
         switch (requestCode){
             case AddFragmentDialogManager.FAVORITE_REQUEST:
                 Favorite newData = new Favorite(name, storedType);
                 addViewModel.insertFavorite(newData);
-                Toast.makeText(getContext(), "Add favorite return " + newData, Toast.LENGTH_SHORT).show();
                 break;
             case AddFragmentDialogManager.BASKET_REQUEST:
-                Toast.makeText(getContext(), "Got " + name + " " + expiryDate + " " + storedType, Toast.LENGTH_SHORT).show();
                 Product newBasketItem = Product.getBasketItem(name, expiryDate, storedType);
                 addViewModel.insertBasketItem(newBasketItem);
                 break;
@@ -145,6 +144,8 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         Toast.makeText(getContext(), "Add favorite return no with requestCode: " + requestCode, Toast.LENGTH_SHORT).show();
     }
 
+    // FavoriteRecyclerViewAdapter.DBRelatedListener 인터페이스 구현
+    // RecyclerView 에서 각각 아이템 db 관련 처리하는 함수
     @Override
     public void onDeletedClicked(Favorite clickedFavorite) {
         addViewModel.deleteFavoriteByName(clickedFavorite.name);
@@ -155,6 +156,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         addViewModel.updateFavorite(changedFavorite);
     }
 
+    // View.OnClickListener 인터페이스 구현
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.addFrag_button_ocr){

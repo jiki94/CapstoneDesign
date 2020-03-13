@@ -62,6 +62,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         void onNavigationChanged(NavigationType newNav);
     }
 
+    // View.OnClickListener 인터페이스 구현
     @Override
     public void onClick(View v) {
         if (navListener != null)

@@ -4,8 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+// ViewPager2 에서 어떤 Fragment 보여줄지에 사용
 public class ViewTabAdapter extends FragmentStateAdapter {
-    public ViewTabAdapter(@NonNull Fragment fragment) {
+    ViewTabAdapter(@NonNull Fragment fragment) {
         super(fragment);
     }
 

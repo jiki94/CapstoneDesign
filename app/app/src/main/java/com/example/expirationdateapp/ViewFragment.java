@@ -16,7 +16,8 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-// 저장된 음식 정보 보여주는 프래그먼트
+// 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 관련 중
+// 보기, 저장된 음식 정보 보여주는 프래그먼트
 public class ViewFragment extends Fragment {
     public ViewFragment() {
         // Required empty public constructor
@@ -36,9 +37,11 @@ public class ViewFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // Toolbar 세팅
         Toolbar toolbar = view.findViewById(R.id.viewFrag_toolbar_top);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+        // Tablayout, ViewPager2 세팅
         TabLayout tabLayout = view.findViewById(R.id.viewFrag_tabLayout_stored);
         ViewPager2 viewPager = view.findViewById(R.id.viewFrag_viewpager2_showing);
         viewPager.setAdapter(new ViewTabAdapter(this));

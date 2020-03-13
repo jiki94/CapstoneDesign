@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
+// 즐겨찾기 RecyclerView 에서 사용
 public class FavoriteDiffUtilCallBack extends DiffUtil.Callback {
-    @NonNull List<Favorite> oldData;
-    @NonNull List<Favorite> newData;
+    @NonNull private List<Favorite> oldData;
+    @NonNull private List<Favorite> newData;
 
-    public FavoriteDiffUtilCallBack(@NonNull  List<Favorite> oldData, @NonNull List<Favorite> newData){
+    FavoriteDiffUtilCallBack(@NonNull  List<Favorite> oldData, @NonNull List<Favorite> newData){
         this.oldData = oldData;
         this.newData = newData;
     }
@@ -32,6 +33,13 @@ public class FavoriteDiffUtilCallBack extends DiffUtil.Callback {
         return oldOne.name.equals(newOne.name);
     }
 
+    @Override
+    public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+        Favorite oldOne = oldData.get(oldItemPosition);
+        Favorite newOne = newData.get(newItemPosition);
+        return oldOne.equals(newOne);
+    }
+
     @Nullable
     @Override
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
@@ -39,10 +47,5 @@ public class FavoriteDiffUtilCallBack extends DiffUtil.Callback {
         return FavoriteRecyclerViewAdapter.Payload.STORED_CHANGED;
     }
 
-    @Override
-    public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        Favorite oldOne = oldData.get(oldItemPosition);
-        Favorite newOne = newData.get(newItemPosition);
-        return oldOne.equals(newOne);
-    }
+
 }

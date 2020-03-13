@@ -25,7 +25,6 @@ class ProductRepository {
         return basketItems;
     }
 
-    // one function return cold, froze, other by one parameter
     LiveData<List<Product>> getItemsByStoredType(StoredType storedType){
         switch (storedType){
             case COLD:

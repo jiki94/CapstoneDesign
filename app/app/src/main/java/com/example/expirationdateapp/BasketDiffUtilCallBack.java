@@ -5,11 +5,12 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
+// 장바구니 RecyclerView 에서 사용
 public class BasketDiffUtilCallBack extends DiffUtil.Callback{
-    @NonNull List<Product> oldData;
-    @NonNull List<Product> newData;
+    @NonNull private List<Product> oldData;
+    @NonNull private List<Product> newData;
 
-    public BasketDiffUtilCallBack(@NonNull  List<Product> oldData, @NonNull List<Product> newData){
+    BasketDiffUtilCallBack(@NonNull  List<Product> oldData, @NonNull List<Product> newData){
         this.oldData = oldData;
         this.newData = newData;
     }

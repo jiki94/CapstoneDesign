@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class FavoriteRepository {
+class FavoriteRepository {
     private final AppRoomDatabase database;
     private final FavoriteDao favoriteDao;
     private LiveData<List<Favorite>> favorites;

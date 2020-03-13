@@ -12,6 +12,7 @@ import java.util.List;
 
 @Dao
 public interface FavoriteDao{
+    // 일단은 Abort 인게 나중에 입력창에서 중복 방지 추가 예정
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertFavorite(Favorite newRecord);
 

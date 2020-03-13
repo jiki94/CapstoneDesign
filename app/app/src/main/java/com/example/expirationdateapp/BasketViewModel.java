@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-public class BasketViewModel extends ViewModel {
+// BasketActivity 랑 연결된 ViewModel
+class BasketViewModel extends ViewModel {
     private final ProductRepository productRepository;
 
     BasketViewModel(ProductRepository productRepository){

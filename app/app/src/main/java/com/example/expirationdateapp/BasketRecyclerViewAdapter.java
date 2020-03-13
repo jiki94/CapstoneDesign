@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+// 장바구니 RecyclerView 에서 사용
 public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewAdapter.BasketViewHolder> {
     private Context context;
     private List<Product> data;
@@ -59,7 +60,6 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
         holder.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Clicked delete", Toast.LENGTH_SHORT).show();
                 listener.onDeletedClicked(item);
             }
         });

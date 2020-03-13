@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+// 즐겨찾기 RecyclerView 에서 사용
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavoriteViewHolder> {
     @NonNull private Context context;
     @NonNull private List<Favorite> data;
@@ -67,7 +68,6 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     @Override
     public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, final int position,
                                  @NonNull List<Object> payloads) {
-        Log.v("BIND_VIEWHOLDER", "With payloads");
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position);
             return;
@@ -87,7 +87,6 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
 
     @Override
     public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, final int position) {
-        Log.v("BIND_VIEWHOLDER", "No payloads");
         final Favorite datum = data.get(position);
 
         holder.name.setText(datum.name);
@@ -169,11 +168,6 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);
         data = newData;
         result.dispatchUpdatesTo(this);
-    }
-
-    void addFavorite(@NonNull Favorite newFavorite){
-        data.add(newFavorite);
-        notifyItemInserted(data.size()-1);
     }
 
     public interface DBRelatedListener {
