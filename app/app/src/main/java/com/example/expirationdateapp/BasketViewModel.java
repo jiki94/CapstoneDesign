@@ -6,22 +6,26 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 public class BasketViewModel extends ViewModel {
-    private final BasketItemRepository basketItemRepository;
+    private final ProductRepository productRepository;
 
-    BasketViewModel(BasketItemRepository basketItemRepository){
-        this.basketItemRepository = basketItemRepository;
+    BasketViewModel(ProductRepository productRepository){
+        this.productRepository = productRepository;
     }
 
-    LiveData<List<BasketItem>> getBasketItems(){
-        return basketItemRepository.getBasketItems();
+    LiveData<List<Product>> getBasketItems(){
+        return productRepository.getBasketItems();
     }
 
-    void deleteBasketItem(BasketItem deleted){
-        basketItemRepository.deleteBasketItem(deleted);
+    void deleteBasketItem(Product deleted){
+        productRepository.deleteItem(deleted);
     }
 
     void deleteAllItems(){
-        basketItemRepository.deleteAllBasketItems();
+        productRepository.deleteAllBasketItems();
+    }
+
+    void moveBasketToProducts(){
+        productRepository.moveBasketToProducts();
     }
 }
 

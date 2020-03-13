@@ -3,7 +3,6 @@ package com.example.expirationdateapp;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,12 +32,12 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new BasketRecyclerViewAdapter(this, new ArrayList<BasketItem>(), this);
+        adapter = new BasketRecyclerViewAdapter(this, new ArrayList<Product>(), this);
         recyclerView.setAdapter(adapter);
 
-        basketViewModel.getBasketItems().observe(this, new Observer<List<BasketItem>>() {
+        basketViewModel.getBasketItems().observe(this, new Observer<List<Product>>() {
             @Override
-            public void onChanged(List<BasketItem> newData) {
+            public void onChanged(List<Product> newData) {
                 adapter.setData(newData);
             }
         });
@@ -56,18 +55,15 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<BasketItem> data = adapter.getData();
-                basketViewModel.deleteAllItems();
-
-                // 받은 데이터 가지고 추가하기
-                
+                List<Product> data = adapter.getData();
+                basketViewModel.moveBasketToProducts();
                 finish();
             }
         });
     }
 
     @Override
-    public void onDeletedClicked(BasketItem clicked) {
+    public void onDeletedClicked(Product clicked) {
         basketViewModel.deleteBasketItem(clicked);
     }
 }

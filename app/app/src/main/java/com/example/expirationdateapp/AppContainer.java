@@ -9,13 +9,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 class AppContainer {
     private AppRoomDatabase database;
     FavoriteRepository favoriteRepository;
-    BasketItemRepository basketItemRepository;
+    ProductRepository productRepository;
 
     public AppContainer(Context context){
         database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database_testing")
@@ -44,6 +43,6 @@ class AppContainer {
                 }).build();
         //database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database").build();
         favoriteRepository = new FavoriteRepository(database);
-        basketItemRepository = new BasketItemRepository(database);
+        productRepository = new ProductRepository(database);
     }
 }

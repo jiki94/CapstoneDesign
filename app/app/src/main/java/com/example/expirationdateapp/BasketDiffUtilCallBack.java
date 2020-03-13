@@ -1,16 +1,15 @@
 package com.example.expirationdateapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
 public class BasketDiffUtilCallBack extends DiffUtil.Callback{
-    @NonNull List<BasketItem> oldData;
-    @NonNull List<BasketItem> newData;
+    @NonNull List<Product> oldData;
+    @NonNull List<Product> newData;
 
-    public BasketDiffUtilCallBack(@NonNull  List<BasketItem> oldData, @NonNull List<BasketItem> newData){
+    public BasketDiffUtilCallBack(@NonNull  List<Product> oldData, @NonNull List<Product> newData){
         this.oldData = oldData;
         this.newData = newData;
     }
@@ -27,15 +26,15 @@ public class BasketDiffUtilCallBack extends DiffUtil.Callback{
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        BasketItem oldItem = oldData.get(oldItemPosition);
-        BasketItem newItem = newData.get(newItemPosition);
+        Product oldItem = oldData.get(oldItemPosition);
+        Product newItem = newData.get(newItemPosition);
         return oldItem.equals(newItem);
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        BasketItem oldItem = oldData.get(oldItemPosition);
-        BasketItem newItem = newData.get(newItemPosition);
+        Product oldItem = oldData.get(oldItemPosition);
+        Product newItem = newData.get(newItemPosition);
         return oldItem.equals(newItem);
     }
 }

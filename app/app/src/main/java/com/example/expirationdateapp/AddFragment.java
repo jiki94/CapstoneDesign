@@ -1,12 +1,10 @@
 package com.example.expirationdateapp;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -134,7 +132,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
                 break;
             case AddFragmentDialogManager.BASKET_REQUEST:
                 Toast.makeText(getContext(), "Got " + name + " " + expiryDate + " " + storedType, Toast.LENGTH_SHORT).show();
-                BasketItem newBasketItem = new BasketItem(0, name, expiryDate, storedType);
+                Product newBasketItem = Product.getBasketItem(name, expiryDate, storedType);
                 addViewModel.insertBasketItem(newBasketItem);
                 break;
             default:
@@ -149,7 +147,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
 
     @Override
     public void onDeletedClicked(Favorite clickedFavorite) {
-        addViewModel.deleteByName(clickedFavorite.name);
+        addViewModel.deleteFavoriteByName(clickedFavorite.name);
     }
 
     @Override

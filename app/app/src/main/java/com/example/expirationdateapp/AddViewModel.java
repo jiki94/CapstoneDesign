@@ -1,19 +1,17 @@
 package com.example.expirationdateapp;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
 
 class AddViewModel extends ViewModel {
     private final FavoriteRepository favoriteRepository;
-    private final BasketItemRepository basketItemRepository;
+    private final ProductRepository productRepository;
 
-    AddViewModel(FavoriteRepository favoriteRepository, BasketItemRepository basketItemRepository){
+    AddViewModel(FavoriteRepository favoriteRepository, ProductRepository productRepository){
         this.favoriteRepository = favoriteRepository;
-        this.basketItemRepository = basketItemRepository;
+        this.productRepository = productRepository;
     }
 
     LiveData<List<Favorite>> getFavorites(){
@@ -24,7 +22,7 @@ class AddViewModel extends ViewModel {
         favoriteRepository.insertFavorite(newRecord);
     }
 
-    void deleteByName(String name){
+    void deleteFavoriteByName(String name){
         favoriteRepository.deleteByName(name);
     }
 
@@ -32,8 +30,8 @@ class AddViewModel extends ViewModel {
         favoriteRepository.updateFavorite(updated);
     }
 
-    void insertBasketItem(BasketItem newItem){
-        basketItemRepository.insertBasketItem(newItem);
+    void insertBasketItem(Product newBasketItem){
+        productRepository.insertItem(newBasketItem);
     }
 }
 

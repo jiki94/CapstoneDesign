@@ -14,9 +14,11 @@ class AppContainerViewModelFactory implements ViewModelProvider.Factory{
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(AddViewModel.class))
-            return (T) new AddViewModel(appContainer.favoriteRepository, appContainer.basketItemRepository);
+            return (T) new AddViewModel(appContainer.favoriteRepository, appContainer.productRepository);
         else if (modelClass.equals(BasketViewModel.class))
-            return (T) new BasketViewModel(appContainer.basketItemRepository);
+            return (T) new BasketViewModel(appContainer.productRepository);
+        else if (modelClass.equals(FilteredByStoredTypeViewModel.class))
+            return (T) new FilteredByStoredTypeViewModel(appContainer.productRepository);
 
         throw new IllegalArgumentException("There is factory does not support " + modelClass.getName());
     }

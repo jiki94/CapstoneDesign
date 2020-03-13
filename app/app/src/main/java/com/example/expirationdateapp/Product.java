@@ -3,12 +3,11 @@ package com.example.expirationdateapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 @Entity
-public class BasketItem {
+public class Product {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     public int id;
@@ -23,13 +22,20 @@ public class BasketItem {
     @TypeConverters(StoredTypeConverter.class)
     public StoredType stored;
 
+    public boolean inBasket;
+
     // id 는 언제나 0으로 사용해야됨
     // autoGenerate 되서
-    public BasketItem(int id, String name, String expiryDate, StoredType stored){
+    public Product(int id, String name, String expiryDate, StoredType stored, boolean inBasket){
         this.id = id;
         this.name = name;
         this.expiryDate = expiryDate;
         this.stored = stored;
+        this.inBasket = inBasket;
+    }
+
+    public static Product getBasketItem(String name, String expiryDate, StoredType stored){
+        return new Product(0, name, expiryDate, stored, true);
     }
 
     @Override
@@ -38,7 +44,7 @@ public class BasketItem {
             return false;
 
         // id가 같은데 다른 content 가질 가능성 없을듯;
-        BasketItem other = (BasketItem) obj;
+        Product other = (Product) obj;
         return id == other.id;
     }
 }

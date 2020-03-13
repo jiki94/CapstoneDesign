@@ -7,12 +7,11 @@
     tools:context=".ViewFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView3"
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/viewFrag_tabLayout_stored"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/button_view"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewFrag_toolbar_top" />
@@ -28,5 +27,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewFrag_viewpager2_showing"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewFrag_tabLayout_stored" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

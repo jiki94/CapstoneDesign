@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecyclerViewAdapter.BasketViewHolder> {
     private Context context;
-    private List<BasketItem> data;
+    private List<Product> data;
     private DBRelatedListener listener;
 
     class BasketViewHolder extends RecyclerView.ViewHolder{
@@ -35,7 +35,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
         }
     }
 
-    BasketRecyclerViewAdapter(Context context, List<BasketItem> data, DBRelatedListener listener){
+    BasketRecyclerViewAdapter(Context context, List<Product> data, DBRelatedListener listener){
         this.context = context;
         this.data = data;
         this.listener = listener;
@@ -51,7 +51,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
 
     @Override
     public void onBindViewHolder(@NonNull BasketViewHolder holder, int position) {
-        final BasketItem item = data.get(position);
+        final Product item = data.get(position);
         holder.name.setText(item.name);
         holder.expiryDate.setText(item.expiryDate);
         holder.stored.setText(item.stored.getStringId());
@@ -71,14 +71,14 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
     }
 
     public interface DBRelatedListener {
-        void onDeletedClicked(BasketItem clicked);
+        void onDeletedClicked(Product clicked);
     }
 
-    List<BasketItem> getData(){
+    List<Product> getData(){
         return data;
     }
 
-    void setData(List<BasketItem> newData){
+    void setData(List<Product> newData){
         BasketDiffUtilCallBack callBack = new BasketDiffUtilCallBack(data, newData);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);
 
