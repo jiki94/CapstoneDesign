@@ -7,18 +7,24 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.expirationdateapp.db.AppRoomDatabase;
+import com.example.expirationdateapp.db.Favorite;
+import com.example.expirationdateapp.db.FavoriteRepository;
+import com.example.expirationdateapp.db.ProductRepository;
+import com.example.expirationdateapp.db.StoredType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.Executors;
 
 // Singleton 이야 하는 것들 저장하는 클래스
 // Activity 상속하는 클래스에 들어가서 앱에서 한개의 인스턴스만 존재함
-class AppContainer {
+public class AppContainer {
     private AppRoomDatabase database;
     private FavoriteRepository favoriteRepository;
     private ProductRepository productRepository;
 
-    AppContainer(Context context){
+    public AppContainer(Context context){
         // 현재 db에 즐겨찾기 더미 데이터 있
         database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database_testing")
                 .addCallback(new RoomDatabase.Callback() {
@@ -49,11 +55,11 @@ class AppContainer {
         productRepository = new ProductRepository(database);
     }
 
-    FavoriteRepository getFavoriteRepository() {
+    public FavoriteRepository getFavoriteRepository() {
         return favoriteRepository;
     }
 
-    ProductRepository getProductRepository() {
+    public ProductRepository getProductRepository() {
         return productRepository;
     }
 }
