@@ -1,4 +1,4 @@
-package com.example.expirationdateapp;
+package com.example.expirationdateapp.ui;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.example.expirationdateapp.R;
 
 // 화면 밑에 네비게이션 담당
 // 5개 버튼이 있는데 해당 버튼들을 누르면 메인 엑티비티에서 해당하는 프레그멘트를 보여줌
@@ -62,6 +64,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         void onNavigationChanged(NavigationType newNav);
     }
 
+    // View.OnClickListener 인터페이스 구현
     @Override
     public void onClick(View v) {
         if (navListener != null)

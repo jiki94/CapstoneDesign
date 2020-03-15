@@ -1,6 +1,8 @@
-package com.example.expirationdateapp;
+package com.example.expirationdateapp.ui;
 
-enum NavigationType{
+import com.example.expirationdateapp.R;
+
+public enum NavigationType{
     ADD, VIEW, RECIPE, FORUM, FOOD_BANK;
 
     public static NavigationType getFromButtonId(int id){

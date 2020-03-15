@@ -1,11 +1,26 @@
 <resources>
     <string name="app_name">ExpirationDateApp</string>
-    <string name="button_add">입력</string>
+    <string name="button_add">추가</string>
     <string name="button_view">보기</string>
     <string name="button_recipe">레시피</string>
     <string name="button_forum">커뮤니티</string>
     <string name="button_food_bank">푸드뱅크</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_add_new">새로 추가</string>
+    <string name="button_ocr">OCR</string>
+    <string name="button_stt">STT</string>
+    <string name="button_manual">수동</string>
+    <string name="text_favorite">즐겨찾기</string>
+    <string name="stored_frozen">냉동</string>
+    <string name="stored_cold">냉장</string>
+    <string name="stored_else">그 외</string>
+    <string name="button_del" translatable="false">X</string>
+    <string name="text_product_name">제품 이름</string>
+    <string name="text_expiry_date">유통기한</string>
+    <string name="button_cancel">취소</string>
+    <string name="action_add_to_favorite">즐겨찾기 추가</string>
+    <string name="snackbar_empty_name">상품 이름을 입력하세요.</string>
+    <string name="snackbar_empty_stored">저장할 위치를 고르세요.</string>
+    <string name="snackbar_empty_expiry_date">유통기한을 입력해 주세요.</string>
+    <string name="text_basket_title">장바구니</string>
+    <string name="button_delete_all">모두 지우기</string>
 </resources>
