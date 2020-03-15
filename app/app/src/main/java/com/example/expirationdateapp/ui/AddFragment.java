@@ -35,6 +35,8 @@ import com.example.expirationdateapp.ui.viewmodel.AddViewModel;
 import com.example.expirationdateapp.ui.viewmodel.AppContainerViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +135,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     // NESDialogFragment.NoticeDialogListener 인터페이스 구현
     // 즐겨찾기 추가, 상품 추가 다이얼로그 관련
     @Override
-    public void onDialogPositiveClick(int requestCode, String name, String expiryDate, StoredType storedType) {
+    public void onDialogPositiveClick(int requestCode, String name, LocalDate expiryDate, StoredType storedType) {
         switch (requestCode){
             case AddFragmentDialogManager.FAVORITE_REQUEST:
                 Favorite newData = new Favorite(name, storedType);

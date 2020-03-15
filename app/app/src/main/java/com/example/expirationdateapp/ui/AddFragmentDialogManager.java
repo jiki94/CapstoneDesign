@@ -6,7 +6,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.expirationdateapp.db.StoredType;
 
+import org.threeten.bp.LocalDate;
+
 // AddFragment 에서 사용되는 다이얼로그 관련 클래스
+// 결과가 AddFragment 로 돌아오는 경우에만 사용
 public class AddFragmentDialogManager {
     // callingFragment 는 다이얼로그 생성하고 결과 리터한는 Fragment
     private Fragment callingFragment;
@@ -23,7 +26,7 @@ public class AddFragmentDialogManager {
     }
 
     // 기본 값 있는 수동 입력 다이얼로그 리턴한다.
-    public DialogFragment getAddManualDialogFragment(String givenName, String givenExpiryDate, StoredType givenStoredType){
+    public DialogFragment getAddManualDialogFragment(String givenName, LocalDate givenExpiryDate, StoredType givenStoredType){
         NESDialogFragment dialog = new NESDialogFragment.Builder()
                 .setDefaultName(givenName)
                 .setDefaultExpiryDate(givenExpiryDate)

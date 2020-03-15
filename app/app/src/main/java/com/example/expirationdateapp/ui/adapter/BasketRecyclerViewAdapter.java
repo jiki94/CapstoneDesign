@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.expirationdateapp.db.LocalDateConverter;
 import com.example.expirationdateapp.db.Product;
 import com.example.expirationdateapp.R;
 
@@ -56,7 +57,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
     public void onBindViewHolder(@NonNull BasketViewHolder holder, int position) {
         final Product item = data.get(position);
         holder.name.setText(item.name);
-        holder.expiryDate.setText(item.expiryDate);
+        holder.expiryDate.setText(LocalDateConverter.localDateToString(item.expiryDate));
         holder.stored.setText(item.stored.getStringId());
 
         holder.del.setOnClickListener(new View.OnClickListener() {

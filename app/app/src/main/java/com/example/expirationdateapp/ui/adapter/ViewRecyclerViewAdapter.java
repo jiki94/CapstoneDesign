@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expirationdateapp.R;
+import com.example.expirationdateapp.db.LocalDateConverter;
 import com.example.expirationdateapp.db.Product;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
         final Product datum = data.get(position);
 
         holder.name.setText(datum.name);
-        holder.expiryDate.setText(datum.expiryDate);
+        holder.expiryDate.setText(LocalDateConverter.localDateToString(datum.expiryDate));
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
