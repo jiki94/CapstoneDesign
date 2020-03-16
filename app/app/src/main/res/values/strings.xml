@@ -23,4 +23,5 @@
     <string name="snackbar_empty_expiry_date">유통기한을 입력해 주세요.</string>
     <string name="text_basket_title">장바구니</string>
     <string name="button_delete_all">모두 지우기</string>
+    <string name="kakao_rest_api_key">" 4114eba032f1b6d7a5ae47491151b399"</string>
 </resources>
