@@ -1,10 +1,12 @@
 package com.example.expirationdateapp.ui;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -44,6 +46,7 @@ import java.util.List;
 // 입력 하는 프레그먼트
 public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener,
         FavoriteRecyclerViewAdapter.DBRelatedListener, View.OnClickListener {
+    public static int REQUEST_CODE_OCR_ACT = 1;
 
     private FavoriteRecyclerViewAdapter recyclerViewAdapter;
     private AddViewModel addViewModel;
@@ -101,7 +104,7 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         recyclerView.setLayoutManager(layoutManager);
 
         ArrayList<Favorite> data = new ArrayList<>();
-        recyclerViewAdapter = new FavoriteRecyclerViewAdapter(getContext(), data, this, dialogManager);
+        recyclerViewAdapter = new FavoriteRecyclerViewAdapter(getContext(), data, this, dialogManager, this);
         recyclerView.setAdapter(recyclerViewAdapter);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL));
@@ -172,6 +175,9 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     public void onClick(View v) {
         if (v.getId() == R.id.addFrag_button_ocr){
             Toast.makeText(getContext(), "Add new OCR", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), OcrActivity.class);
+            intent.putExtra(getString(R.string.key_get_type), GetType.NAME);
+            startActivityForResult(intent, REQUEST_CODE_OCR_ACT);
         }else if (v.getId() == R.id.addFrag_button_stt){
             Toast.makeText(getContext(), "Add new STT", Toast.LENGTH_SHORT).show();
         }else if (v.getId() == R.id.addFrag_button_manual) {
@@ -185,6 +191,25 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
             startActivity(intent);
         }else{
             throw new IllegalArgumentException("There is no view matching supported id");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE_OCR_ACT && resultCode == Activity.RESULT_OK){
+            String name = data.getStringExtra(getString(R.string.key_name_data));
+            String stringExpiryDate = data.getStringExtra(getString(R.string.key_expiry_data));
+            StoredType storedType = (StoredType) data.getSerializableExtra(getString(R.string.key_stored_type));
+
+            Toast.makeText(getContext(),
+                    String.format("name: %s  expirydate: %s  storedType: %s", name, stringExpiryDate, storedType),
+                    Toast.LENGTH_SHORT).show();
+
+            // 임시로 얻은 string 을 localdate 로 변환하는거 하기
+            // 아니면 여기로 오기 전에 localdate로 바꾸는게 나을
+            LocalDate expiryDate = LocalDate.now();
+            DialogFragment dialog = dialogManager.getAddManualDialogFragment(name, expiryDate, storedType);
+            dialog.show(dialogManager.getFragmentManager(), "AutoInputDialog");
         }
     }
 }

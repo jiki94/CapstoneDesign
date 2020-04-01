@@ -24,4 +24,20 @@
     <string name="text_basket_title">장바구니</string>
     <string name="button_delete_all">모두 지우기</string>
     <string name="kakao_rest_api_key">4114eba032f1b6d7a5ae47491151b399</string>
+    <string name="button_get_camera">카메라</string>
+    <string name="button_get_gallery">갤러리</string>
+    <string name="text_add_name_title">상표 입력</string>
+    <string name="text_add_expiry_date_title">유통기한 입력</string>
+    <string name="text_add_name_crop_desc">상표를 선택하세요.</string>
+    <string name="text_add_expiry_date_crop_desc">유통기한을 선택하세요.</string>
+    <string name="button_crop">선택</string>
+    <string name="text_result">결과</string>
+    <string name="text_ask_name_pic">상표 사진을 어떻게 가져올까요?</string>
+    <string name="text_ask_expiry_date_pic">유통기한 사진을 어떻게 가져올까요?</string>
+    <string name="key_get_type">GET_TYPE_KEY</string>
+    <string name="key_name_data">KEY_NAME_DATA</string>
+    <string name="key_expiry_data">KEY_EXPIRY_DATA</string>
+    <string name="key_stored_type">KEY_STORED_TYPE</string>
+    <string name="action_rotate">회전</string>
+    <string name="action_reset">초기화</string>
 </resources>

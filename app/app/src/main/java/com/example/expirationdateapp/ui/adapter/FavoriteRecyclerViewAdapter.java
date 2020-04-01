@@ -1,6 +1,7 @@
 package com.example.expirationdateapp.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,9 +20,13 @@ import com.example.expirationdateapp.db.Favorite;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.StoredType;
 import com.example.expirationdateapp.ui.AddFragmentDialogManager;
+import com.example.expirationdateapp.ui.GetType;
+import com.example.expirationdateapp.ui.OcrActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.expirationdateapp.ui.AddFragment.REQUEST_CODE_OCR_ACT;
 
 // 즐겨찾기 RecyclerView 에서 사용
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavoriteViewHolder> {
@@ -28,6 +34,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     @NonNull private List<Favorite> data;
     @NonNull private DBRelatedListener deletedListener;
     @NonNull private AddFragmentDialogManager dialogManager;
+    @NonNull private Fragment fragment;
 
     class FavoriteViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
@@ -54,11 +61,13 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     }
 
     public FavoriteRecyclerViewAdapter(@NonNull Context context, @NonNull ArrayList<Favorite> data,
-                                @NonNull DBRelatedListener listener, @NonNull AddFragmentDialogManager dialogManager){
+                                       @NonNull DBRelatedListener listener, @NonNull AddFragmentDialogManager dialogManager,
+                                       @NonNull Fragment fragment){
         this.context = context;
         this.data = data;
         this.deletedListener = listener;
         this.dialogManager = dialogManager;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -108,6 +117,11 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "OCR: " + datum.toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, OcrActivity.class);
+                intent.putExtra(context.getString(R.string.key_get_type), GetType.EXPIRY_DATE);
+                intent.putExtra(context.getString(R.string.key_name_data), datum.name);
+                intent.putExtra(context.getString(R.string.key_stored_type), datum.stored);
+                fragment.startActivityForResult(intent, REQUEST_CODE_OCR_ACT);
             }
         });
 
