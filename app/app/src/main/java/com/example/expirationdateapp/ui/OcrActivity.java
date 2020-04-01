@@ -174,53 +174,6 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         dialogFragment.show(getSupportFragmentManager(), "camera gallery pick");
     }
 
-    // 권한 체크 관련
-    // 권한 안쓰면 필요 없을듯
-    private boolean checkPermissions(String [] permissions){
-        if (permissions == null)
-            return true;
-
-        for (String permission : permissions)
-            if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED)
-                return false;
-
-        return true;
-    }
-
-    // 권한 체크 관련
-    // 권한 안쓰면 필요 없을듯
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == PERMISSION_REQUEST_CODE){
-            boolean allGood = true;
-            if (permissions.length == 0){
-                Toast.makeText(this, "request interaction interrupted", Toast.LENGTH_SHORT).show();
-                allGood = false;
-            }else{
-                for (int i = 0; i < permissions.length; i++){
-                    if (grantResults[i] == PackageManager.PERMISSION_DENIED){
-                        allGood = false;
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])){
-                            Toast.makeText(this, "need read/write permission to get picture", Toast.LENGTH_SHORT).show();
-                        }else{
-                            // TODO: snackbar로  (아마도 액션으로 세팅 퍼미션 쪽으로 가게)
-                            Toast.makeText(this, "cannot use ocr without access to file permission", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            }
-
-
-            if (allGood){
-                startChoosingDialog();
-            }else{
-                finish();
-            }
-
-            return;
-        }
-    }
-
     @NonNull
     private File getAppCacheFile(String fileName) throws IOException {
         File tmpFilePath = new File(getExternalCacheDir(), "tmp_files");
@@ -369,12 +322,6 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
 
         cropImageView.setImageBitmap(null);
 
-        // 권한 체크
-        String [] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE };
-        if (checkPermissions(null)){
-            startChoosingDialog();
-        }else{
-            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
-        }
+        startChoosingDialog();
     }
 }
