@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.StoredType;
 import com.example.expirationdateapp.retrofit.KakaoOcrService;
+import com.example.expirationdateapp.retrofit.OcrRetrofitHandler;
 import com.example.expirationdateapp.retrofit.TextExtractionResponse;
 import com.example.expirationdateapp.retrofit.TextRecognizeResponse;
 import com.google.gson.Gson;
@@ -52,10 +53,9 @@ import static java.lang.Math.min;
 
 // Ocr 입력 담당하는 액티비티
 // 여기서 카카오 vision api 호출함
-public class OcrActivity extends AppCompatActivity implements View.OnClickListener {
+public class OcrActivity extends AppCompatActivity implements View.OnClickListener, OcrRetrofitHandler.OcrResponseHandler {
     public static final int CAMERA_REQUEST_CODE = 0;
     public static final int GALLERY_REQUEST_CODE = 1;
-    private static final int PERMISSION_REQUEST_CODE = 2;
 
     private String keyGetType;
     private GetType getType;
@@ -65,6 +65,8 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     private TextView title;
     private TextView cropDesc;
     private CropImageView cropImageView;
+
+    private OcrRetrofitHandler ocrRetrofitHandler;
 
     private String name = null;
     private String expiryDate = null;
@@ -80,6 +82,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        // 어떤 입력 받는지 확인
         keyGetType = getString(R.string.key_get_type);
         Bundle bundle = getIntent().getExtras();
         if (bundle == null){
@@ -91,9 +94,11 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
             throw new IllegalArgumentException("getType cannot be null");
         }
 
+        // 기본으로 세팅된 정보 얻기
         name = bundle.getString(getString(R.string.key_name_data));
         storedType = (StoredType) bundle.getSerializable(getString(R.string.key_stored_type));
 
+        // View들 찾고 초기 설정
         resultEditText = findViewById(R.id.ocrAct_edittext_adding);
         addButton = findViewById(R.id.ocrAct_button_add);
         cropButton = findViewById(R.id.ocrAct_button_crop_select);
@@ -102,6 +107,10 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         cropImageView = findViewById(R.id.cropImageView);
 
         addButton.setOnClickListener(this);
+        cropButton.setOnClickListener(this);
+
+        // 나머지 잡다한거
+        ocrRetrofitHandler = new OcrRetrofitHandler(this, this);
 
         reset(inputGetType);
     }
@@ -132,13 +141,6 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
 
         if (resultCode == RESULT_OK){
             cropButton.setEnabled(true);
-            cropButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bitmap cropped = cropImageView.getCroppedImage();
-                    ocrQuery(cropped);
-                }
-            });
 
             switch (requestCode){
                 case CAMERA_REQUEST_CODE:
@@ -165,6 +167,31 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    private void reset(GetType getType){
+        this.getType = getType;
+        cropButton.setEnabled(false);
+        addButton.setEnabled(false);
+        resultEditText.setText("");
+
+        // 액티비티 뷰 초기화
+        switch (getType){
+            case NAME:
+                title.setText(R.string.text_add_name_title);
+                cropDesc.setText(R.string.text_add_name_crop_desc);
+                break;
+            case EXPIRY_DATE:
+                title.setText(R.string.text_add_expiry_date_title);
+                cropDesc.setText(R.string.text_add_expiry_date_crop_desc);
+                break;
+            default:
+                throw new IllegalArgumentException("Not Allowed Enum value");
+        }
+
+        cropImageView.setImageBitmap(null);
+
+        startChoosingDialog();
+    }
+
     private void startChoosingDialog(){
         Bundle bundle = new Bundle();
         bundle.putSerializable(keyGetType, getType);
@@ -174,6 +201,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         dialogFragment.show(getSupportFragmentManager(), "camera gallery pick");
     }
 
+    // 임시 파일 얻기
     @NonNull
     private File getAppCacheFile(String fileName) throws IOException {
         File tmpFilePath = new File(getExternalCacheDir(), "tmp_files");
@@ -224,54 +252,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         }while(outputStream.size() > MAX_FILE_SIZE);
 
         byte[] byteArray = outputStream.toByteArray();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://kapi.kakao.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        MultipartBody.Part imgPart = MultipartBody.Part.createFormData("file", "img.jpg",
-                RequestBody.create(MediaType.parse("multipart/form-data"), byteArray));
-
-        final AppCompatActivity activity = this;
-
-        final KakaoOcrService service = retrofit.create(KakaoOcrService.class);
-        Call<TextExtractionResponse> call = service.getRects(imgPart, "KakaoAK " + getString(R.string.kakao_rest_api_key));
-        call.enqueue(new Callback<TextExtractionResponse>() {
-            @Override
-            public void onResponse(Call<TextExtractionResponse> call, Response<TextExtractionResponse> response) {
-                // 현재 여기서 박스 못찾으면 밑에서 터짐(왜냐면 인풋에 박스가 없어 이거 어떻게 할까?
-                // 아마도 여기서 막기 새로 찍기 아니면 다이얼로그 보여주기
-                if (response.body().result.boxes.isEmpty()){
-                    Toast.makeText(activity, "텍스트 없음, 새로운 사진 사용하세요", Toast.LENGTH_SHORT).show();
-                    // TODO: 스낵바로, 액션은 다이얼로그 다시 띄우기
-                    return;
-                }
-                Gson gson = new Gson();
-                String jsonString = gson.toJson(response.body().result.boxes);
-                Call<TextRecognizeResponse> rcall =
-                        service.recognize(imgPart, "KakaoAK " + getString(R.string.kakao_rest_api_key), jsonString);
-                rcall.enqueue(new Callback<TextRecognizeResponse>() {
-                    @Override
-                    public void onResponse(Call<TextRecognizeResponse> call, Response<TextRecognizeResponse> response) {
-                        String ret = response.body().result.recognition_words.toString();
-                        resultEditText.setText(ret);
-                        addButton.setEnabled(true);
-                    }
-
-                    @Override
-                    public void onFailure(Call<TextRecognizeResponse> call, Throwable t) {
-                        Toast.makeText(activity, "Call Recognize Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<TextExtractionResponse> call, Throwable t) {
-                Toast.makeText(activity, "First Call Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        ocrRetrofitHandler.send(byteArray);
     }
 
     @Override
@@ -297,31 +278,37 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
                 default:
                     throw new IllegalArgumentException();
             }
+        }else if (v.getId() == R.id.ocrAct_button_crop_select){
+            Bitmap cropped = cropImageView.getCroppedImage();
+            ocrQuery(cropped);
         }
     }
 
-    private void reset(GetType getType){
-        this.getType = getType;
-        cropButton.setEnabled(false);
-        addButton.setEnabled(false);
-        resultEditText.setText("");
-
-        // 액티비티 뷰 초기화
-        switch (getType){
-            case NAME:
-                title.setText(R.string.text_add_name_title);
-                cropDesc.setText(R.string.text_add_name_crop_desc);
-                break;
-            case EXPIRY_DATE:
-                title.setText(R.string.text_add_expiry_date_title);
-                cropDesc.setText(R.string.text_add_expiry_date_crop_desc);
-                break;
-            default:
-                throw new IllegalArgumentException("Not Allowed Enum value");
+    // OcrRetrofitHandler.OcrResponseHandler 인터페이스 관련
+    @Override
+    public void onExtractTextAreaSuccess(Call<TextExtractionResponse> call, Response<TextExtractionResponse> response) {
+        // 현재 여기서 박스 못찾으면 밑에서 터짐(왜냐면 인풋에 박스가 없어 이거 어떻게 할까?
+        // 아마도 여기서 막기 새로 찍기 아니면 다이얼로그 보여주기
+        if (response.body().result.boxes.isEmpty()) {
+            Toast.makeText(this, "텍스트 없음, 새로운 사진 사용하세요", Toast.LENGTH_SHORT).show();
+            // TODO: 스낵바로, 액션은 다이얼로그 다시 띄우기
         }
+    }
 
-        cropImageView.setImageBitmap(null);
+    @Override
+    public void onExtractTextAreaFailure(Call<TextExtractionResponse> call, Throwable t) {
+        Toast.makeText(this, "Failed to extract text area", Toast.LENGTH_SHORT).show();
+    }
 
-        startChoosingDialog();
+    @Override
+    public void onRecognizeTextSuccess(Call<TextRecognizeResponse> call, Response<TextRecognizeResponse> response){
+        String ret = response.body().result.recognition_words.toString();
+        resultEditText.setText(ret);
+        addButton.setEnabled(true);
+    }
+
+    @Override
+    public void onRecognizeTextFailure(Call<TextRecognizeResponse> call, Throwable t) {
+        Toast.makeText(this, "Failed to recognize text", Toast.LENGTH_SHORT).show();
     }
 }
