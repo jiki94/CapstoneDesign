@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.expirationdateapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 필요 없나?
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    -->
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -17,8 +23,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.BasketActivity" />
+        <activity android:name=".ui.OcrActivity"/>
         
-        <activity android:name=".ui.BasketActivity"/>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.expirationdateapp.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_rest_api_key" />
+
     </application>
 
 </manifest>

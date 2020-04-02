@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_rotate"
+        android:icon="@drawable/crop_image_menu_rotate_right"
+        android:title="@string/action_rotate"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_reset"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="@string/action_reset"
+        app:showAsAction="always" />
+</menu>
