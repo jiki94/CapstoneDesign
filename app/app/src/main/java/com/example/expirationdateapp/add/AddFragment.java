@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.add.basket.BasketActivity;
 import com.example.expirationdateapp.add.ocr.OcrActivity;
+import com.example.expirationdateapp.add.stt.SttActivity;
 import com.example.expirationdateapp.db.Favorite;
 import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.db.Product;
@@ -180,6 +181,8 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
             startActivityForResult(intent, REQUEST_CODE_OCR_ACT);
         }else if (v.getId() == R.id.addFrag_button_stt){
             Toast.makeText(getContext(), "Add new STT", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), SttActivity.class);
+            startActivity(intent);
         }else if (v.getId() == R.id.addFrag_button_manual) {
             DialogFragment dialog = dialogManager.getAddManualDialogFragment();
             dialog.show(dialogManager.getFragmentManager(), "ManualInputDialog");
