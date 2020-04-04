@@ -40,4 +40,11 @@
     <string name="key_stored_type">KEY_STORED_TYPE</string>
     <string name="action_rotate">회전</string>
     <string name="action_reset">초기화</string>
+    <string name="text_listening">듣는중</string>
+    <string name="text_waitiing">대기중</string>
+    <string name="text_listened">들음</string>
+    <string name="button_retry">다시</string>
+    <string name="text_stt_name_input_desc">등록할려는 상품을 말하세요.</string>
+    <string name="text_stt_expiry_date_input_desc">등록할려는 유통기한을 말해세요.</string>
+    <string name="text_stt_select_result">이걸 말했나요?</string>
 </resources>
