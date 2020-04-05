@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".MainActivity">
 
     <View
         android:id="@+id/mainAct_divider_between_nav_frag"
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/mainAct_fragment_navigation"
-        android:name="com.example.expirationdateapp.ui.NavigationFragment"
+        android:name="com.example.expirationdateapp.NavigationFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

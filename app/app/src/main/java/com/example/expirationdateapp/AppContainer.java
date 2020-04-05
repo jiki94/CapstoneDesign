@@ -24,7 +24,7 @@ public class AppContainer {
     private FavoriteRepository favoriteRepository;
     private ProductRepository productRepository;
 
-    public AppContainer(Context context){
+    AppContainer(Context context){
         // 현재 db에 즐겨찾기 더미 데이터 있
         database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database_testing")
                 .addCallback(new RoomDatabase.Callback() {
