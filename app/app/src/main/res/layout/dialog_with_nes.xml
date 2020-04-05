@@ -24,6 +24,8 @@
         android:text="@string/text_expiry_date"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/nesDialog_text_expiry_date_show"
+        app:layout_constraintEnd_toStartOf="@+id/nesDialog_text_expiry_date_show"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -44,12 +46,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
         android:ems="10"
+        app:layout_constraintBaseline_toBaselineOf="@+id/nesDialog_edittext_day_after"
         app:layout_constraintEnd_toStartOf="@+id/nesDialog_imgButton_calandar"
-        app:layout_constraintStart_toEndOf="@+id/nesDialog_text_expiry_date"
-        app:layout_constraintTop_toTopOf="@+id/nesDialog_barrier_product_name" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/nesDialog_text_expiry_date" />
 
     <RadioGroup
         android:id="@+id/nesDialog_radio_group_stored"
@@ -94,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="nesDialog_text_expiry_date,nesDialog_text_expiry_date_show"
+        app:constraint_referenced_ids="nesDialog_text_expiry_date,nesDialog_text_expiry_date_show,nesDialog_imgButton_calandar,nesDialog_edittext_day_after,nesDialog_text_day_after"
         tools:layout_editor_absoluteY="731dp" />
 
     <androidx.constraintlayout.widget.Group
@@ -108,7 +109,7 @@
         android:id="@+id/nesDialog_group_expiry_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="nesDialog_text_expiry_date,nesDialog_text_expiry_date_show,nesDialog_barrier_expiry_date"
+        app:constraint_referenced_ids="nesDialog_text_expiry_date,nesDialog_text_expiry_date_show,nesDialog_imgButton_calandar"
         tools:visibility="visible" />
 
     <ImageButton
@@ -119,7 +120,35 @@
         android:layout_marginBottom="8dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/nesDialog_barrier_expiry_date"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nesDialog_edittext_day_after"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/nesDialog_text_expiry_date_show"
         app:layout_constraintTop_toBottomOf="@+id/nesDialog_edittext_product_name"
+        app:layout_constraintVertical_bias="0.4"
         app:srcCompat="@drawable/calendar" />
+
+    <TextView
+        android:id="@+id/nesDialog_text_day_after"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/text_day_after"
+        app:layout_constraintBaseline_toBaselineOf="@+id/nesDialog_edittext_day_after"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/nesDialog_edittext_day_after" />
+
+    <EditText
+        android:id="@+id/nesDialog_edittext_day_after"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/nesDialog_text_day_after"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/nesDialog_imgButton_calandar"
+        app:layout_constraintTop_toBottomOf="@+id/nesDialog_barrier_product_name"
+        tools:text="32" />
 </androidx.constraintlayout.widget.ConstraintLayout>

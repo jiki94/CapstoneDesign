@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favoriteItem_text_expiry_desc"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -75,7 +76,7 @@
         app:layout_constraintEnd_toStartOf="@+id/favoriteItem_button_manual"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/favoriteItem_button_ocr"
-        app:layout_constraintTop_toBottomOf="@+id/favoriteItem_radioGroup_stored" />
+        app:layout_constraintTop_toBottomOf="@+id/favoriteItem_edit_expiry_date" />
 
     <Button
         android:id="@+id/favoriteItem_button_manual"
@@ -86,5 +87,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/favoriteItem_button_stt" />
+
+    <TextView
+        android:id="@+id/favoriteItem_text_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/text_day"
+        app:layout_constraintBaseline_toBaselineOf="@+id/favoriteItem_edit_expiry_date"
+        app:layout_constraintEnd_toStartOf="@+id/favoriteItem_button_expiry_date_none" />
+
+    <TextView
+        android:id="@+id/favoriteItem_text_default_expiry_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/text_default_expiry_date"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/favoriteItem_edit_expiry_date"
+        app:layout_constraintEnd_toStartOf="@+id/favoriteItem_edit_expiry_date"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/favoriteItem_edit_expiry_date"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/favoriteItem_text_day"
+        app:layout_constraintTop_toBottomOf="@+id/favoriteItem_radioGroup_stored"
+        tools:text="23" />
+
+    <Button
+        android:id="@+id/favoriteItem_button_expiry_date_none"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/button_empty"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBaseline_toBaselineOf="@+id/favoriteItem_edit_expiry_date"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

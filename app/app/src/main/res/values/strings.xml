@@ -47,4 +47,8 @@
     <string name="text_stt_name_input_desc">등록할려는 상품을 말하세요.</string>
     <string name="text_stt_expiry_date_input_desc">등록할려는 유통기한을 말해세요.</string>
     <string name="text_stt_select_result">이걸 말했나요?</string>
+    <string name="button_empty">없음</string>
+    <string name="text_default_expiry_date">기본유통기한</string>
+    <string name="text_day">일</string>
+    <string name="text_day_after">몇일후</string>
 </resources>
