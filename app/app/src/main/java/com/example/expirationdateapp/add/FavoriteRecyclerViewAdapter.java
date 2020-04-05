@@ -58,7 +58,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         STORED_CHANGED
     }
 
-    public FavoriteRecyclerViewAdapter(@NonNull Context context, @NonNull ArrayList<Favorite> data,
+    FavoriteRecyclerViewAdapter(@NonNull Context context, @NonNull ArrayList<Favorite> data,
                                        @NonNull DBRelatedListener listener, @NonNull AddFragmentDialogManager dialogManager,
                                        @NonNull Fragment fragment){
         this.context = context;
@@ -178,7 +178,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         return data.size();
     }
 
-    public void changeData(@NonNull List<Favorite> newData){
+    void changeData(@NonNull List<Favorite> newData){
         FavoriteDiffUtilCallBack callBack = new FavoriteDiffUtilCallBack(data, newData);
 
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);

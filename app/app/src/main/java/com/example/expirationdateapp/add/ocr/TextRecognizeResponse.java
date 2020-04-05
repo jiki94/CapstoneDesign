@@ -1,5 +1,11 @@
 package com.example.expirationdateapp.add.ocr;
 
-public class TextRecognizeResponse {
-    public TextRecognizeResult result;
+import java.util.List;
+
+class TextRecognizeResponse {
+    TextRecognizeResult result;
+}
+
+class TextRecognizeResult {
+    List<String> recognition_words;
 }

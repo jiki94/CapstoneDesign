@@ -16,19 +16,19 @@ public class BasketViewModel extends ViewModel {
         this.productRepository = productRepository;
     }
 
-    public LiveData<List<Product>> getBasketItems(){
+    LiveData<List<Product>> getBasketItems(){
         return productRepository.getBasketItems();
     }
 
-    public void deleteBasketItem(Product deleted){
+    void deleteBasketItem(Product deleted){
         productRepository.deleteItem(deleted);
     }
 
-    public void deleteAllItems(){
+    void deleteAllItems(){
         productRepository.deleteAllBasketItems();
     }
 
-    public void moveBasketToProducts(){
+    void moveBasketToProducts(){
         productRepository.moveBasketToProducts();
     }
 }

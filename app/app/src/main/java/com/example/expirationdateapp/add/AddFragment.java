@@ -46,7 +46,7 @@ import java.util.List;
 // 입력 하는 프레그먼트
 public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener,
         FavoriteRecyclerViewAdapter.DBRelatedListener, View.OnClickListener {
-    public static int REQUEST_CODE_OCR_ACT = 1;
+    static int REQUEST_CODE_OCR_ACT = 1;
 
     private FavoriteRecyclerViewAdapter recyclerViewAdapter;
     private AddViewModel addViewModel;

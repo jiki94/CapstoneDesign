@@ -16,12 +16,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OcrRetrofitHandler {
+class OcrRetrofitHandler {
     private KakaoOcrService service;
     @NonNull private OcrResponseHandler ocrResponseHandler;
     final String authKey;
 
-    public OcrRetrofitHandler(@NonNull Context context, @NonNull OcrResponseHandler ocrResponseHandler){
+    OcrRetrofitHandler(@NonNull Context context, @NonNull OcrResponseHandler ocrResponseHandler){
         this.ocrResponseHandler = ocrResponseHandler;
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -34,7 +34,7 @@ public class OcrRetrofitHandler {
         authKey = "KakaoAK " + context.getString(R.string.kakao_rest_api_key);
     }
 
-    public void send(byte[] byteArray){
+    void send(byte[] byteArray){
         MultipartBody.Part imgPart = MultipartBody.Part.createFormData("file", "img.jpg",
                 RequestBody.create(MediaType.parse("multipart/form-data"), byteArray));
 

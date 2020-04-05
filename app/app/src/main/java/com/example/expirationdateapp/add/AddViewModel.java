@@ -20,19 +20,19 @@ public class AddViewModel extends ViewModel {
         this.productRepository = productRepository;
     }
 
-    public LiveData<List<Favorite>> getFavorites(){
+    LiveData<List<Favorite>> getFavorites(){
         return favoriteRepository.getFavorites();
     }
-    public void insertFavorite(Favorite newRecord) {
+    void insertFavorite(Favorite newRecord) {
         favoriteRepository.insertFavorite(newRecord);
     }
-    public void deleteFavoriteByName(String name){
+    void deleteFavoriteByName(String name){
         favoriteRepository.deleteByName(name);
     }
-    public void updateFavorite(Favorite updated){
+    void updateFavorite(Favorite updated){
         favoriteRepository.updateFavorite(updated);
     }
-    public void insertBasketItem(Product newBasketItem){
+    void insertBasketItem(Product newBasketItem){
         productRepository.insertItem(newBasketItem);
     }
 }

@@ -39,7 +39,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
         }
     }
 
-    public BasketRecyclerViewAdapter(Context context, List<Product> data, DBRelatedListener listener){
+    BasketRecyclerViewAdapter(Context context, List<Product> data, DBRelatedListener listener){
         this.context = context;
         this.data = data;
         this.listener = listener;
@@ -81,7 +81,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
         return data;
     }
 
-    public void setData(List<Product> newData){
+    void setData(List<Product> newData){
         BasketDiffUtilCallBack callBack = new BasketDiffUtilCallBack(data, newData);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);
 

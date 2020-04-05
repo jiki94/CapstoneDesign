@@ -13,7 +13,7 @@ public class FavoriteDiffUtilCallBack extends DiffUtil.Callback {
     @NonNull private List<Favorite> oldData;
     @NonNull private List<Favorite> newData;
 
-    public FavoriteDiffUtilCallBack(@NonNull  List<Favorite> oldData, @NonNull List<Favorite> newData){
+    FavoriteDiffUtilCallBack(@NonNull  List<Favorite> oldData, @NonNull List<Favorite> newData){
         this.oldData = oldData;
         this.newData = newData;
     }

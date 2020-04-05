@@ -15,7 +15,6 @@ import org.threeten.bp.LocalDate;
 @Entity
 public class Product {
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     public int id;
 
     @NonNull
@@ -33,7 +32,8 @@ public class Product {
 
     // id 는 언제나 0으로 사용해야됨
     // autoGenerate 되서
-    public Product(int id, String name, LocalDate expiryDate, StoredType stored, boolean inBasket){
+    public Product(int id, @NonNull String name, @NonNull LocalDate expiryDate,
+                   @NonNull StoredType stored, boolean inBasket){
         this.id = id;
         this.name = name;
         this.expiryDate = expiryDate;
