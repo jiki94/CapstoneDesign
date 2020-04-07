@@ -3,10 +3,9 @@
     package="com.example.expirationdateapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 필요 없나?
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".MyApplication"
@@ -16,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,10 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".add.basket.BasketActivity" />
         <activity android:name=".add.ocr.OcrActivity"/>
-        
+        <activity android:name=".add.stt.SttActivity"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.expirationdateapp.fileprovider"
@@ -34,13 +33,12 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
+                android:resource="@xml/file_paths" />
         </provider>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_rest_api_key" />
-
+            android:value="a97fb24c68d4d9fab457832e6aa2ceeb" />
     </application>
 
 </manifest>

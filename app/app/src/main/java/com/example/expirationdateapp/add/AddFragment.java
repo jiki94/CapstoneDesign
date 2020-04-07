@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.add.basket.BasketActivity;
 import com.example.expirationdateapp.add.ocr.OcrActivity;
+import com.example.expirationdateapp.add.stt.SttActivity;
 import com.example.expirationdateapp.db.Favorite;
 import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.db.Product;
@@ -47,6 +48,7 @@ import java.util.List;
 public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener,
         FavoriteRecyclerViewAdapter.DBRelatedListener, View.OnClickListener {
     static int REQUEST_CODE_OCR_ACT = 1;
+    static int REQUEST_CODE_STT_ACT = 2;
 
     private FavoriteRecyclerViewAdapter recyclerViewAdapter;
     private AddViewModel addViewModel;
@@ -180,6 +182,9 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
             startActivityForResult(intent, REQUEST_CODE_OCR_ACT);
         }else if (v.getId() == R.id.addFrag_button_stt){
             Toast.makeText(getContext(), "Add new STT", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), SttActivity.class);
+            intent.putExtra(getString(R.string.key_get_type), GetType.NAME);
+            startActivityForResult(intent, REQUEST_CODE_STT_ACT);
         }else if (v.getId() == R.id.addFrag_button_manual) {
             DialogFragment dialog = dialogManager.getAddManualDialogFragment();
             dialog.show(dialogManager.getFragmentManager(), "ManualInputDialog");
@@ -196,7 +201,8 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_OCR_ACT && resultCode == Activity.RESULT_OK){
+        if (requestCode == REQUEST_CODE_OCR_ACT && resultCode == Activity.RESULT_OK ||
+            requestCode == REQUEST_CODE_STT_ACT && resultCode == Activity.RESULT_OK){
             String name = data.getStringExtra(getString(R.string.key_name_data));
             String stringExpiryDate = data.getStringExtra(getString(R.string.key_expiry_data));
             StoredType storedType = (StoredType) data.getSerializableExtra(getString(R.string.key_stored_type));

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".add.stt.SttActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/sttAct_toolbar_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/sttAct_text_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="18dp"
+            tools:text="@string/text_add_name_title" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/sttAct_text_listening_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_toolbar_top"
+        tools:text="@string/text_listened" />
+
+    <EditText
+        android:id="@+id/sttAct_edittext_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/sttAct_button_retry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_text_listening_state"
+        tools:text="치즈케익" />
+
+    <Button
+        android:id="@+id/sttAct_button_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="@string/button_retry"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sttAct_edittext_input"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/sttAct_img_kakao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/kakao"
+        app:layout_constraintBottom_toTopOf="@+id/sttAct_button_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_text_res5" />
+
+    <Button
+        android:id="@+id/sttAct_button_add"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/button_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/sttAct_text_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_edittext_input"
+        tools:text="@string/text_stt_select_result" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/sttAct_group_results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="sttAct_text_res5,sttAct_text_res2,sttAct_text_res3,sttAct_text_res4,sttAct_text_res1" />
+
+    <TextView
+        android:id="@+id/sttAct_text_res1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/sttAct_text_desc"
+        app:layout_constraintStart_toStartOf="@+id/sttAct_text_desc"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_text_desc"
+        tools:text="치즈케익" />
+
+    <TextView
+        android:id="@+id/sttAct_text_res2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/sttAct_text_desc"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/sttAct_text_desc"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_text_res1"
+        tools:text="치즈 케이크" />
+
+    <TextView
+        android:id="@+id/sttAct_text_res3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/sttAct_text_desc"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/sttAct_text_desc"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_text_res2"
+        tools:text="치즈케잌" />
+
+    <TextView
+        android:id="@+id/sttAct_text_res4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/sttAct_text_desc"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/sttAct_text_desc"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_text_res3"
+        tools:text="cheese cake" />
+
+    <TextView
+        android:id="@+id/sttAct_text_res5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/sttAct_text_desc"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/sttAct_text_desc"
+        app:layout_constraintTop_toBottomOf="@+id/sttAct_text_res4"
+        tools:text="마지막 후보(이 경우에는 없음)" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
