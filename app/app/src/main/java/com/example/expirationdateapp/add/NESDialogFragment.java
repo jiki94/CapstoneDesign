@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -24,6 +26,7 @@ import com.example.expirationdateapp.db.StoredType;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.Period;
 
 // 이름, 유통기한, 저장공간 정보를 입력할 수 있는 다이얼로그
 public class NESDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
@@ -39,6 +42,8 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
     private LocalDate localDate;
 
     private View body;
+    private TextView expiryText;
+    private EditText afterDaysEditText;
     private NoticeDialogListener listener;
 
     // 다이얼로그 생성 더 쉽
@@ -132,6 +137,10 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
         // 다이얼로그 모양이랑 기본 값 설정
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         body = inflater.inflate(R.layout.dialog_with_nes, null);
+
+        expiryText = body.findViewById(R.id.nesDialog_text_expiry_date_show);
+        afterDaysEditText = body.findViewById(R.id.nesDialog_edittext_day_after);
+
         if (!usingName) {
             body.findViewById(R.id.nesDialog_group_product_name).setVisibility(View.GONE);
         }else{
@@ -144,11 +153,28 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
         if (!usingExpiryDate) {
             body.findViewById(R.id.nesDialog_group_expiry_date).setVisibility(View.GONE);
         }else{
-            if (defaultExpiryDate != null){
-                TextView expiryEdit = body.findViewById(R.id.nesDialog_text_expiry_date_show);
-                expiryEdit.setText(LocalDateConverter.localDateToString(defaultExpiryDate));
-                localDate = defaultExpiryDate;
-            }
+            afterDaysEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String input = s.toString();
+                    int days = input.isEmpty() ? 0 : Integer.decode(input);
+                    setNewLocalDate(LocalDate.now().plusDays(days), true);
+                }
+            });
+
+            if (defaultExpiryDate == null)
+                defaultExpiryDate = LocalDate.now();
+            setNewLocalDate(defaultExpiryDate, false);
         }
 
         if (!usingStoredPlace) {
@@ -180,8 +206,7 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int requestCode = getTargetRequestCode();
-                listener.onDialogNegativeClick(requestCode);
+                listener.onDialogNegativeClick();
             }
         });
 
@@ -227,8 +252,7 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
                     }
                 }
 
-                int requestCode = getTargetRequestCode();
-                listener.onDialogPositiveClick(requestCode, name, localDate, stored);
+                listener.onDialogPositiveClick(name, localDate, stored);
                 dismiss();
             }
         });
@@ -236,8 +260,8 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
 
     // 호출한 Fragment 에서 다이얼로그 결과 받는 인터페이스
     public interface NoticeDialogListener{
-        void onDialogPositiveClick(int requestCode, String name, LocalDate expiryDate, StoredType storedType);
-        void onDialogNegativeClick(int requestCode);
+        void onDialogPositiveClick(String name, LocalDate expiryDate, StoredType storedType);
+        void onDialogNegativeClick();
     }
 
     private StoredType getStoredTypeFromId(int id){
@@ -266,8 +290,19 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
     // DatePickerDialog.OnDateSetListener 인터페이스 구현
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        localDate = LocalDate.of(year, month, dayOfMonth);
-        TextView expiryEditText = body.findViewById(R.id.nesDialog_text_expiry_date_show);
-        expiryEditText.setText(LocalDateConverter.localDateToString(localDate));
+        setNewLocalDate(LocalDate.of(year, month, dayOfMonth), false);
+    }
+
+    private long calculateDaysAfter(LocalDate givenDate){
+        Period period = Period.between(LocalDate.now(), givenDate);
+        return period.getDays();
+    }
+
+    private void setNewLocalDate(LocalDate newDate, boolean fromEditText){
+        localDate = newDate;
+        expiryText.setText(LocalDateConverter.localDateToString(localDate));
+
+        if (!fromEditText)
+            afterDaysEditText.setText(Long.toString(calculateDaysAfter(localDate)));
     }
 }

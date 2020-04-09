@@ -35,13 +35,13 @@ public class AppContainer {
                             @Override
                             public void run() {
                                 ArrayList<Favorite> data = new ArrayList<>(Arrays.asList(
-                                    new Favorite("우유", StoredType.FROZEN),
-                                    new Favorite("피자", StoredType.COLD),
-                                    new Favorite("물", StoredType.ELSE),
-                                    new Favorite("치킨", StoredType.COLD),
-                                    new Favorite("배추", StoredType.COLD),
-                                    new Favorite("설탕", StoredType.ELSE),
-                                    new Favorite("아이스크림", StoredType.COLD)
+                                    new Favorite("우유", StoredType.FROZEN, 7, false),
+                                    new Favorite("피자", StoredType.COLD, 5, true),
+                                    new Favorite("물", StoredType.ELSE, 8, true),
+                                    new Favorite("치킨", StoredType.COLD, 9, true),
+                                    new Favorite("배추", StoredType.COLD, 7, false),
+                                    new Favorite("설탕", StoredType.ELSE, 10, true),
+                                    new Favorite("아이스크림", StoredType.COLD, 4, true)
                                     ));
 
                                 for (Favorite favorite : data)

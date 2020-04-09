@@ -45,8 +45,16 @@ public class FavoriteDiffUtilCallBack extends DiffUtil.Callback {
     @Nullable
     @Override
     public Object getChangePayload(int oldItemPosition, int newItemPosition) {
+        Favorite oldOne = oldData.get(oldItemPosition);
         Favorite newOne = newData.get(newItemPosition);
-        return FavoriteRecyclerViewAdapter.Payload.STORED_CHANGED;
+
+        FavoriteRecyclerViewAdapter.Payload payload = new FavoriteRecyclerViewAdapter.Payload();
+        if (oldOne.stored != newOne.stored)
+            payload.set(FavoriteRecyclerViewAdapter.PayloadEnum.STORED_CHANGED);
+        if (oldOne.usingDefaultED != newOne.usingDefaultED || oldOne.defaultED != newOne.defaultED)
+            payload.set(FavoriteRecyclerViewAdapter.PayloadEnum.DEFAULT_ED_CHANGED);
+
+        return payload;
     }
 
 

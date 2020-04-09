@@ -46,7 +46,7 @@ import java.util.List;
 // 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 관련 중
 // 입력 하는 프레그먼트
 public class AddFragment extends Fragment implements NESDialogFragment.NoticeDialogListener,
-        FavoriteRecyclerViewAdapter.DBRelatedListener, View.OnClickListener {
+        FavoriteRecyclerViewAdapter.DBRelatedListener, View.OnClickListener, AddFavoriteDialogFragment.AddFavoriteResult {
     static int REQUEST_CODE_OCR_ACT = 1;
     static int REQUEST_CODE_STT_ACT = 2;
 
@@ -140,24 +140,25 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     // NESDialogFragment.NoticeDialogListener 인터페이스 구현
     // 즐겨찾기 추가, 상품 추가 다이얼로그 관련
     @Override
-    public void onDialogPositiveClick(int requestCode, String name, LocalDate expiryDate, StoredType storedType) {
-        switch (requestCode){
-            case AddFragmentDialogManager.FAVORITE_REQUEST:
-                Favorite newData = new Favorite(name, storedType);
-                addViewModel.insertFavorite(newData);
-                break;
-            case AddFragmentDialogManager.BASKET_REQUEST:
-                Product newBasketItem = Product.getBasketItem(name, expiryDate, storedType);
-                addViewModel.insertBasketItem(newBasketItem);
-                break;
-            default:
-                throw new IllegalArgumentException("Not supported requestCode: " + requestCode);
-        }
+    public void onDialogPositiveClick(String name, LocalDate expiryDate, StoredType storedType) {
+        Product newBasketItem = Product.getBasketItem(name, expiryDate, storedType);
+        addViewModel.insertBasketItem(newBasketItem);
     }
 
     @Override
-    public void onDialogNegativeClick(int requestCode) {
-        Toast.makeText(getContext(), "Add favorite return no with requestCode: " + requestCode, Toast.LENGTH_SHORT).show();
+    public void onDialogNegativeClick() {
+        Toast.makeText(getContext(), "Add product return no", Toast.LENGTH_SHORT).show();
+    }
+
+    // AddFavoriteDialogFragment.AddFavoriteResult 인터페이스 구현
+    @Override
+    public void onAddFavoritePositiveClick(Favorite newFavorite) {
+        addViewModel.insertFavorite(newFavorite);
+    }
+
+    @Override
+    public void onAddFavoriteNegativeClick() {
+        Toast.makeText(getContext(), "Add favorite return no", Toast.LENGTH_SHORT).show();
     }
 
     // FavoriteRecyclerViewAdapter.DBRelatedListener 인터페이스 구현
@@ -169,6 +170,11 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
 
     @Override
     public void onStoredChanged(Favorite changedFavorite) {
+        addViewModel.updateFavorite(changedFavorite);
+    }
+
+    @Override
+    public void onDefaultExpiryDateChanged(Favorite changedFavorite) {
         addViewModel.updateFavorite(changedFavorite);
     }
 
