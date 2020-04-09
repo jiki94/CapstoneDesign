@@ -95,7 +95,7 @@
         android:layout_marginEnd="8dp"
         android:text="@string/text_day"
         app:layout_constraintBaseline_toBaselineOf="@+id/favoriteItem_edit_expiry_date"
-        app:layout_constraintEnd_toStartOf="@+id/favoriteItem_button_expiry_date_none" />
+        app:layout_constraintEnd_toStartOf="@+id/favoriteItem_toggle_expiry_date" />
 
     <TextView
         android:id="@+id/favoriteItem_text_default_expiry_desc"
@@ -120,13 +120,15 @@
         app:layout_constraintTop_toBottomOf="@+id/favoriteItem_radioGroup_stored"
         tools:text="23" />
 
-    <Button
-        android:id="@+id/favoriteItem_button_expiry_date_none"
-        android:layout_width="60dp"
+    <ToggleButton
+        android:id="@+id/favoriteItem_toggle_expiry_date"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="@string/button_empty"
         android:textAlignment="viewEnd"
+        android:textOff="@string/button_empty"
+        android:textOn="@string/button_using"
         app:layout_constraintBaseline_toBaselineOf="@+id/favoriteItem_edit_expiry_date"
         app:layout_constraintEnd_toEndOf="parent" />
 

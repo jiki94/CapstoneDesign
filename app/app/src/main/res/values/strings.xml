@@ -51,4 +51,5 @@
     <string name="text_default_expiry_date">기본유통기한</string>
     <string name="text_day">일</string>
     <string name="text_day_after">몇일후</string>
+    <string name="button_using">사용</string>
 </resources>

@@ -37,6 +37,17 @@ class AddFragmentDialogManager {
         return dialog;
     }
 
+    DialogFragment getAddManualDialogFragment(String givenName, int defaultED, boolean usingDefaultED, StoredType givenStoredType){
+        LocalDate date;
+        if (usingDefaultED){
+            date = LocalDate.now().plusDays(defaultED);
+        }else{
+            date = null;
+        }
+
+        return getAddManualDialogFragment(givenName, date, givenStoredType);
+    }
+
     // 기본 값 없는 수동 입력 다이얼로그 리턴한다.
     DialogFragment getAddManualDialogFragment(){
         return getAddManualDialogFragment(null, null, null);
@@ -44,7 +55,7 @@ class AddFragmentDialogManager {
 
     // 즐겨찾기 추가 다이얼로그 리턴한다.
     DialogFragment getAddFavoriteDialogFragment(){
-        NESDialogFragment dialog = new NESDialogFragment.Builder().setUsingExpiryDate(false).build();
+        DialogFragment dialog = new AddFavoriteDialogFragment();
         dialog.setTargetFragment(callingFragment, FAVORITE_REQUEST);
         return dialog;
     }

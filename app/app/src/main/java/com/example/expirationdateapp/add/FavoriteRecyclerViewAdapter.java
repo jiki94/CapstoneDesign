@@ -2,13 +2,18 @@ package com.example.expirationdateapp.add;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -23,6 +28,7 @@ import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.StoredType;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import static com.example.expirationdateapp.add.AddFragment.REQUEST_CODE_OCR_ACT;
@@ -32,7 +38,7 @@ import static com.example.expirationdateapp.add.AddFragment.REQUEST_CODE_STT_ACT
 public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRecyclerViewAdapter.FavoriteViewHolder> {
     @NonNull private Context context;
     @NonNull private List<Favorite> data;
-    @NonNull private DBRelatedListener deletedListener;
+    @NonNull private DBRelatedListener dbRelatedListener;
     @NonNull private AddFragmentDialogManager dialogManager;
     @NonNull private Fragment fragment;
 
@@ -43,6 +49,8 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         private Button stt;
         private Button manual;
         private RadioGroup stored;
+        private ToggleButton useDefaultED;
+        private EditText defaultED;
 
         FavoriteViewHolder(View view){
             super(view);
@@ -53,11 +61,25 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
             stt = view.findViewById(R.id.favoriteItem_button_stt);
             manual = view.findViewById(R.id.favoriteItem_button_manual);
             stored = view.findViewById(R.id.favoriteItem_radioGroup_stored);
+            useDefaultED = view.findViewById(R.id.favoriteItem_toggle_expiry_date);
+            defaultED = view.findViewById(R.id.favoriteItem_edit_expiry_date);
         }
     }
 
-    public enum Payload{
-        STORED_CHANGED
+    enum PayloadEnum{
+        STORED_CHANGED, DEFAULT_ED_CHANGED
+    }
+
+    static class Payload{
+        private EnumSet<PayloadEnum> flags;
+
+        Payload(){
+            flags = EnumSet.noneOf(PayloadEnum.class);
+        }
+
+        void set(PayloadEnum setting){
+            flags.add(setting);
+        }
     }
 
     FavoriteRecyclerViewAdapter(@NonNull Context context, @NonNull ArrayList<Favorite> data,
@@ -65,7 +87,7 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
                                        @NonNull Fragment fragment){
         this.context = context;
         this.data = data;
-        this.deletedListener = listener;
+        this.dbRelatedListener = listener;
         this.dialogManager = dialogManager;
         this.fragment = fragment;
     }
@@ -90,11 +112,10 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
 
         for (Object obj : payloads) {
             Payload payload = (Payload) obj;
-            if (payload == Payload.STORED_CHANGED){
+            if (payload.flags.contains(PayloadEnum.STORED_CHANGED))
                 updateHolderStoredType(holder, datum.stored);
-            }else{
-                throw new IllegalArgumentException(FavoriteRecyclerViewAdapter.class.getName() + " does not support " + payload.toString());
-            }
+            if (payload.flags.contains(PayloadEnum.DEFAULT_ED_CHANGED))
+                updateHolderED(holder, datum.defaultED, datum.usingDefaultED);
         }
     }
 
@@ -102,14 +123,37 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     public void onBindViewHolder(@NonNull final FavoriteViewHolder holder, final int position) {
         final Favorite datum = data.get(position);
 
-        holder.name.setText(datum.name);
+        // 뷰에 리스너들 세팅
+        holder.useDefaultED.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                datum.usingDefaultED = isChecked;
+                dbRelatedListener.onDefaultExpiryDateChanged(datum);
+            }
+        });
 
-        updateHolderStoredType(holder, datum.stored);
+        holder.defaultED.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                datum.defaultED = Integer.decode(s.toString());
+                dbRelatedListener.onDefaultExpiryDateChanged(datum);
+            }
+        });
 
         holder.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deletedListener.onDeletedClicked(datum);
+                dbRelatedListener.onDeletedClicked(datum);
             }
         });
 
@@ -141,7 +185,8 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "Manual: " + datum.toString(), Toast.LENGTH_SHORT).show();
-                DialogFragment dialog = dialogManager.getAddManualDialogFragment(datum.name, null, datum.stored);
+                DialogFragment dialog = dialogManager.getAddManualDialogFragment(datum.name,
+                        datum.defaultED, datum.usingDefaultED, datum.stored);
                 dialog.show(dialogManager.getFragmentManager(), "Recyclcer_item_add_manual");
             }
         });
@@ -159,9 +204,14 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
                     throw new RuntimeException("There is no radio button corresponding to id");
                 }
 
-                deletedListener.onStoredChanged(datum);
+                dbRelatedListener.onStoredChanged(datum);
             }
         });
+
+
+        holder.name.setText(datum.name);
+        updateHolderStoredType(holder, datum.stored);
+        updateHolderED(holder, datum.defaultED, datum.usingDefaultED);
     }
 
     private static void updateHolderStoredType(@NonNull FavoriteViewHolder holder, @NonNull StoredType stored){
@@ -180,6 +230,12 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
         }
     }
 
+    private static void updateHolderED(@NonNull FavoriteViewHolder holder, int defaultED, boolean usingDefaultED){
+        holder.useDefaultED.setChecked(usingDefaultED);
+        holder.defaultED.setEnabled(usingDefaultED);
+        holder.defaultED.setText(String.valueOf(defaultED));
+    }
+
     @Override
     public int getItemCount() {
         return data.size();
@@ -196,5 +252,6 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
     public interface DBRelatedListener {
         void onDeletedClicked(Favorite clickedFavorite);
         void onStoredChanged(Favorite changedFavorite);
+        void onDefaultExpiryDateChanged(Favorite changedFavorite);
     }
 }

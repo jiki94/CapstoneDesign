@@ -11,6 +11,8 @@ import java.util.Objects;
 // 즐겨찾기를 나타내는 클래스
 @Entity
 public class Favorite {
+    public static final int BASIC_DEFAULT_ED = 7;
+
     @PrimaryKey
     @NonNull
     public String name;
@@ -19,9 +21,14 @@ public class Favorite {
     @TypeConverters(StoredTypeConverter.class)
     public StoredType stored;
 
-    public Favorite(String name, StoredType stored){
+    public int defaultED;
+    public boolean usingDefaultED;
+
+    public Favorite(String name, StoredType stored, int defaultED, boolean usingDefaultED){
         this.name = name;
         this.stored = stored;
+        this.defaultED = defaultED;
+        this.usingDefaultED = usingDefaultED;
     }
 
     @Override
@@ -32,7 +39,7 @@ public class Favorite {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, stored);
+        return Objects.hash(name, stored, defaultED, usingDefaultED);
     }
 
     @Override
@@ -41,6 +48,7 @@ public class Favorite {
             return false;
 
         Favorite other = (Favorite) obj;
-        return name.equals(other.name) && stored == other.stored;
+        return name.equals(other.name) && stored == other.stored && defaultED == other.defaultED &&
+                usingDefaultED == other.usingDefaultED;
     }
 }
