@@ -9,16 +9,21 @@ import com.example.expirationdateapp.db.StoredType;
 
 import java.util.List;
 
-// FilteredByStoredTypeFragment 와 연결된 ViewModel
-public class FilteredByStoredTypeViewModel extends ViewModel {
+// ViewTabFragment 와 연결된 ViewModel
+public class ViewTabViewModel extends ViewModel {
     private ProductRepository productRepository;
 
-    public FilteredByStoredTypeViewModel(ProductRepository productRepository) {
+    public ViewTabViewModel(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public LiveData<List<Product>> getItemsByStoredType(StoredType storedType){
-        return productRepository.getItemsByStoredType(storedType);
+    public LiveData<List<Product>> getItemsByCategory(ViewCategory category){
+        StoredType storedType = category.getAssociatedStoredType();
+        if (storedType == null){
+            return productRepository.getOverdueItems();
+        }else{
+            return productRepository.getItemsByStoredType(storedType);
+        }
     }
 
     public void deleteProduct(Product toDel){

@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".viewing.ViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/viewFrag_tabLayout_stored"
         android:layout_width="0dp"
@@ -24,9 +22,18 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name" />
+        app:title="@string/app_name">
+
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="56dp" />
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewFrag_viewpager2_showing"
@@ -35,6 +42,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewFrag_tabLayout_stored" />
+        app:layout_constraintTop_toBottomOf="@+id/viewFrag_tabLayout_stored" >
+
+    </androidx.viewpager2.widget.ViewPager2>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,8 @@ package com.example.expirationdateapp.db;
 
 import androidx.lifecycle.LiveData;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 public class ProductRepository {
@@ -11,6 +13,7 @@ public class ProductRepository {
     private LiveData<List<Product>> coldItems;
     private LiveData<List<Product>> frozenItems;
     private LiveData<List<Product>> otherItems;
+    private LiveData<List<Product>> overdueItems;
 
     public ProductRepository(AppRoomDatabase database){
         this.database = database;
@@ -19,6 +22,7 @@ public class ProductRepository {
         coldItems = productDao.getItems(false, StoredType.COLD);
         frozenItems = productDao.getItems(false, StoredType.FROZEN);
         otherItems = productDao.getItems(false, StoredType.ELSE);
+        overdueItems = productDao.getOverdueItems(false, LocalDate.now());
     }
 
     public LiveData<List<Product>> getBasketItems(){
@@ -37,6 +41,10 @@ public class ProductRepository {
             default:
                 throw new IllegalArgumentException();
         }
+    }
+
+    public LiveData<List<Product>> getOverdueItems(){
+        return overdueItems;
     }
 
     public void insertItem(final Product newItem){
