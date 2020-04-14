@@ -30,6 +30,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -288,7 +289,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onRecognizeTextSuccess(Call<TextRecognizeResponse> call, Response<TextRecognizeResponse> response){
-        String ret = response.body().result.recognition_words.toString();
+        String ret = join(" ", response.body().result.recognition_words);
         resultEditText.setText(ret);
         addButton.setEnabled(true);
     }
@@ -296,5 +297,13 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onRecognizeTextFailure(Call<TextRecognizeResponse> call, Throwable t) {
         Toast.makeText(this, "Failed to recognize text", Toast.LENGTH_SHORT).show();
+    }
+
+    String join(String delimiter, List<String> strings){
+        StringBuilder sb = new StringBuilder(strings.get(0));
+        for (int i = 1; i < strings.size(); i++)
+            sb.append(delimiter).append(strings.get(i));
+
+        return sb.toString();
     }
 }
