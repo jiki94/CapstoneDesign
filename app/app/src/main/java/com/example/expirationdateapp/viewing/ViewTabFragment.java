@@ -78,6 +78,13 @@ public class ViewTabFragment extends Fragment implements ViewRecyclerViewAdapter
                 adapter.changeData(products);
             }
         });
+
+        viewModel.getFilterString().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                adapter.setFilterString(s);
+            }
+        });
     }
 
     // ViewRecyclerViewAdapter.DBRelatedListener 인터페이스 구현

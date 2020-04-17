@@ -1,6 +1,7 @@
 package com.example.expirationdateapp.viewing;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.expirationdateapp.db.Product;
@@ -12,9 +13,11 @@ import java.util.List;
 // ViewTabFragment 와 연결된 ViewModel
 public class ViewTabViewModel extends ViewModel {
     private ProductRepository productRepository;
+    private MutableLiveData<String> filterString;
 
     public ViewTabViewModel(ProductRepository productRepository) {
         this.productRepository = productRepository;
+        filterString = new MutableLiveData<>();
     }
 
     public LiveData<List<Product>> getItemsByCategory(ViewCategory category){
@@ -28,5 +31,13 @@ public class ViewTabViewModel extends ViewModel {
 
     public void deleteProduct(Product toDel){
         productRepository.deleteItem(toDel);
+    }
+
+    public LiveData<String> getFilterString(){
+        return filterString;
+    }
+
+    public void setFilterString(String newFilterString){
+        filterString.postValue(newFilterString);
     }
 }
