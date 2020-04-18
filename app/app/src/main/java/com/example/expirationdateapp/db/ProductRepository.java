@@ -16,13 +16,15 @@ public class ProductRepository {
     private LiveData<List<Product>> overdueItems;
 
     public ProductRepository(AppRoomDatabase database){
+        LocalDate now = LocalDate.now();
+
         this.database = database;
         productDao = this.database.productDao();
         basketItems = productDao.getItems(true);
-        coldItems = productDao.getItems(false, StoredType.COLD);
-        frozenItems = productDao.getItems(false, StoredType.FROZEN);
-        otherItems = productDao.getItems(false, StoredType.ELSE);
-        overdueItems = productDao.getOverdueItems(false, LocalDate.now());
+        coldItems = productDao.getItemsNotOverdue(false, StoredType.COLD, now);
+        frozenItems = productDao.getItemsNotOverdue(false, StoredType.FROZEN, now);
+        otherItems = productDao.getItemsNotOverdue(false, StoredType.ELSE, now);
+        overdueItems = productDao.getOverdueItems(false, now);
     }
 
     public LiveData<List<Product>> getBasketItems(){

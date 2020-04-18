@@ -25,6 +25,9 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType")
     LiveData<List<Product>> getItems(boolean inBasket, StoredType storedType);
 
+    @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType AND expiryDate >= :current")
+    LiveData<List<Product>> getItemsNotOverdue(boolean inBasket, StoredType storedType, LocalDate current);
+
     @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND expiryDate < :current")
     LiveData<List<Product>> getOverdueItems(boolean inBasket, LocalDate current);
 
