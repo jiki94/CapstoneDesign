@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.expirationdateapp.add.AddViewModel;
 import com.example.expirationdateapp.add.basket.BasketViewModel;
-import com.example.expirationdateapp.viewing.FilteredByStoredTypeViewModel;
+import com.example.expirationdateapp.viewing.ViewTabViewModel;
 
 // db 관련이나 AppContainer 가 필요한 ViewModel Factory
 public class AppContainerViewModelFactory implements ViewModelProvider.Factory{
@@ -23,8 +23,8 @@ public class AppContainerViewModelFactory implements ViewModelProvider.Factory{
             return (T) new AddViewModel(appContainer.getFavoriteRepository(), appContainer.getProductRepository());
         else if (modelClass.equals(BasketViewModel.class))
             return (T) new BasketViewModel(appContainer.getProductRepository());
-        else if (modelClass.equals(FilteredByStoredTypeViewModel.class))
-            return (T) new FilteredByStoredTypeViewModel(appContainer.getProductRepository());
+        else if (modelClass.equals(ViewTabViewModel.class))
+            return (T) new ViewTabViewModel(appContainer.getProductRepository());
 
         throw new IllegalArgumentException("There is factory does not support " + modelClass.getName());
     }

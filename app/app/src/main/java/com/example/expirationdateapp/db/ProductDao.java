@@ -5,13 +5,16 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import androidx.room.Update;
+
+import org.threeten.bp.LocalDate;
 
 import java.util.List;
 
 @Dao
-@TypeConverters(StoredTypeConverter.class)
+@TypeConverters({StoredTypeConverter.class, LocalDateConverter.class})
 public interface ProductDao {
     @Insert()
     void addProduct(Product product);
@@ -21,6 +24,12 @@ public interface ProductDao {
 
     @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType")
     LiveData<List<Product>> getItems(boolean inBasket, StoredType storedType);
+
+    @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType AND expiryDate >= :current")
+    LiveData<List<Product>> getItemsNotOverdue(boolean inBasket, StoredType storedType, LocalDate current);
+
+    @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND expiryDate < :current")
+    LiveData<List<Product>> getOverdueItems(boolean inBasket, LocalDate current);
 
     @Delete
     void deleteItem(Product product);

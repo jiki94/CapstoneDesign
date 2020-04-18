@@ -16,12 +16,12 @@ public class ViewTabAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        StoredType show = StoredTypeConverter.intToStoredType(position);
-        return FilteredByStoredTypeFragment.newInstance(show);
+        ViewCategory category = ViewCategory.getByIndex(position);
+        return ViewTabFragment.newInstance(category);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 }

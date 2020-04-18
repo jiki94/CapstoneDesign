@@ -20,9 +20,11 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Fragment startFragment = getAssociatedFragment(NavigationType.VIEW);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.mainAct_layout_fragment_placeholder, startFragment).commit();
+        if (savedInstanceState == null) {
+            Fragment startFragment = getAssociatedFragment(NavigationType.VIEW);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mainAct_layout_fragment_placeholder, startFragment).commit();
+        }
     }
 
     // NavigationFragment.NavigationChangedListener 인터페이스 구현
