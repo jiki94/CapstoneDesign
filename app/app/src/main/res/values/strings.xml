@@ -56,4 +56,5 @@
     <string name="menu_order_by_name_reverse">이름순으로 정렬(가나다 역순)</string>
     <string name="menu_order_by_expiry_date">유통기한 빠른순으로 정렬</string>
     <string name="menu_order_by_expiry_date_reverse">유통기한 느린순으로 정렬</string>
+    <string name="text_x_days_after">일 지남</string>
 </resources>
