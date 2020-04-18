@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -95,6 +96,11 @@ public class ViewFragment extends Fragment {
                 return true;
             }
         });
+        String query = viewModel.getFilterString().getValue();
+        if (query != null){
+            searchView.setQuery(query, false);
+            searchView.clearFocus();
+        }
 
         // Tablayout, ViewPager2 세팅
         TabLayout tabLayout = view.findViewById(R.id.viewFrag_tabLayout_stored);
@@ -106,8 +112,5 @@ public class ViewFragment extends Fragment {
                 tab.setText(ViewCategory.getByIndex(position).name());
             }
         }).attach();
-
-        // TODO: RecyclerView -> filter sort
-        // TODO: get sort data from viewtabfragment
     }
 }
