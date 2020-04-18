@@ -54,14 +54,19 @@ public class ViewFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_sort_by_name){
-            // sort by name
-            return true;
+            viewModel.setSortFlag(SortingType.SORT_BY_NAME);
+        }else if (item.getItemId() == R.id.action_sort_by_name_reverse){
+            viewModel.setSortFlag(SortingType.SORT_BY_NAME_REVERSE);
         }else if (item.getItemId() == R.id.action_sort_by_expiry_date){
-            // sort by expiry date
-            return true;
+            viewModel.setSortFlag(SortingType.SORT_BY_EXPIRY_DATE);
+        }else if (item.getItemId() == R.id.action_sort_by_expiry_date_reverse){
+            viewModel.setSortFlag(SortingType.SORT_BY_EXPIRY_DATE_REVERSE);
+        }else{
+            // 다른 경우에는 내가 처리 안함
+            return super.onOptionsItemSelected(item);
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override
@@ -101,5 +106,8 @@ public class ViewFragment extends Fragment {
                 tab.setText(ViewCategory.getByIndex(position).name());
             }
         }).attach();
+
+        // TODO: RecyclerView -> filter sort
+        // TODO: get sort data from viewtabfragment
     }
 }

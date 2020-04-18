@@ -14,13 +14,16 @@ import java.util.List;
 public class ViewTabViewModel extends ViewModel {
     private ProductRepository productRepository;
     private MutableLiveData<String> filterString;
+    private MutableLiveData<SortingType> sortFlag;
 
     public ViewTabViewModel(ProductRepository productRepository) {
         this.productRepository = productRepository;
         filterString = new MutableLiveData<>();
+        sortFlag = new MutableLiveData<>();
+        sortFlag.setValue(SortingType.getDefaultSortFlag());
     }
 
-    public LiveData<List<Product>> getItemsByCategory(ViewCategory category){
+    LiveData<List<Product>> getItemsByCategory(ViewCategory category){
         StoredType storedType = category.getAssociatedStoredType();
         if (storedType == null){
             return productRepository.getOverdueItems();
@@ -29,15 +32,19 @@ public class ViewTabViewModel extends ViewModel {
         }
     }
 
-    public void deleteProduct(Product toDel){
+    void deleteProduct(Product toDel){
         productRepository.deleteItem(toDel);
     }
 
-    public LiveData<String> getFilterString(){
+    LiveData<String> getFilterString(){
         return filterString;
     }
-
-    public void setFilterString(String newFilterString){
+    void setFilterString(String newFilterString){
         filterString.postValue(newFilterString);
+    }
+
+    LiveData<SortingType> getSortFlag(){ return sortFlag; }
+    void setSortFlag(SortingType newSortingType){
+        sortFlag.postValue(newSortingType);
     }
 }

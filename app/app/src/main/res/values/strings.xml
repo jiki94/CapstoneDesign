@@ -52,6 +52,8 @@
     <string name="text_day">일</string>
     <string name="text_day_after">몇일후</string>
     <string name="button_using">사용</string>
-    <string name="menu_order_by_name">이름순으로 정렬</string>
-    <string name="menu_order_by_expiry_date">유통기한순으로 정렬</string>
+    <string name="menu_order_by_name">이름순으로 정렬(가나다순)</string>
+    <string name="menu_order_by_name_reverse">이름순으로 정렬(가나다 역순)</string>
+    <string name="menu_order_by_expiry_date">유통기한 빠른순으로 정렬</string>
+    <string name="menu_order_by_expiry_date_reverse">유통기한 느린순으로 정렬</string>
 </resources>

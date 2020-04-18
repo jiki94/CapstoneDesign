@@ -85,6 +85,13 @@ public class ViewTabFragment extends Fragment implements ViewRecyclerViewAdapter
                 adapter.setFilterString(s);
             }
         });
+
+        viewModel.getSortFlag().observe(this, new Observer<SortingType>() {
+            @Override
+            public void onChanged(SortingType sortingType) {
+                adapter.setSortFlag(sortingType);
+            }
+        });
     }
 
     // ViewRecyclerViewAdapter.DBRelatedListener 인터페이스 구현

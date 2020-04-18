@@ -16,6 +16,7 @@ import com.example.expirationdateapp.db.LocalDateConverter;
 import com.example.expirationdateapp.db.Product;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 // 보기 Fragment 에서 사용
@@ -26,6 +27,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
     private DBRelatedListener listener;
 
     private String filterString;
+    private SortingType sortFlag;
 
     class CustomViewHolder extends RecyclerView.ViewHolder{
         private TextView name;
@@ -45,8 +47,10 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
         this.context = context;
         this.data = data;
         this.filterString = null;
-        filter();
+        this.sortFlag = SortingType.getDefaultSortFlag();
         this.listener = listener;
+
+        filter();
     }
 
     @NonNull
@@ -77,14 +81,28 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
         return filteredData.size();
     }
 
-    public void changeData(List<Product> newData){
+    void changeData(List<Product> newData){
         data = newData;
         filter();
     }
 
-    public void setFilterString(String filterString){
+    void setFilterString(String filterString){
         this.filterString = filterString;
         filter();
+    }
+
+    void setSortFlag(SortingType newSortFlag){
+        if (sortFlag != newSortFlag){
+            List<Product> newData = new ArrayList<>(filteredData);
+            if (sortFlag.isConjugate(newSortFlag)){
+                Collections.reverse(newData);
+            }else{
+                Collections.sort(newData, newSortFlag.getAssociatedComparator());
+            }
+
+            sortFlag = newSortFlag;
+            changeShowingData(filteredData, newData);
+        }
     }
 
     // filter, changeShowingData 사용 어려움
@@ -102,6 +120,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<ViewRecyclerVi
             }
         }
 
+        Collections.sort(newData, sortFlag.getAssociatedComparator());
         changeShowingData(filteredData, newData);
     }
 
