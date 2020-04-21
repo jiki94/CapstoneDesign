@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.expirationdateapp.db.Alarm;
+import com.example.expirationdateapp.db.AlarmRepository;
+import com.example.expirationdateapp.db.AppRoomDatabase;
 import com.example.expirationdateapp.db.Product;
 import com.example.expirationdateapp.db.ProductRepository;
 import com.example.expirationdateapp.db.StoredType;
@@ -18,6 +21,7 @@ public class ViewTabViewModel extends ViewModel {
 
     public ViewTabViewModel(ProductRepository productRepository) {
         this.productRepository = productRepository;
+
         filterString = new MutableLiveData<>();
         sortFlag = new MutableLiveData<>();
         sortFlag.setValue(SortingType.getDefaultSortFlag());

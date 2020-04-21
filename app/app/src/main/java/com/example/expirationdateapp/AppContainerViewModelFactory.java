@@ -20,7 +20,8 @@ public class AppContainerViewModelFactory implements ViewModelProvider.Factory{
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(AddViewModel.class))
-            return (T) new AddViewModel(appContainer.getFavoriteRepository(), appContainer.getProductRepository());
+            return (T) new AddViewModel(appContainer.getFavoriteRepository(),
+                    appContainer.getProductRepository());
         else if (modelClass.equals(BasketViewModel.class))
             return (T) new BasketViewModel(appContainer.getProductRepository());
         else if (modelClass.equals(ViewTabViewModel.class))

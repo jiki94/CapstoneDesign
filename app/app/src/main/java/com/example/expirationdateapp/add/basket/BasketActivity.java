@@ -3,6 +3,7 @@ package com.example.expirationdateapp.add.basket;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.MyApplication;
+import com.example.expirationdateapp.alarm.AlarmSetter;
+import com.example.expirationdateapp.db.Alarm;
 import com.example.expirationdateapp.db.Product;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.AppContainerViewModelFactory;
@@ -25,6 +28,7 @@ import java.util.List;
 public class BasketActivity extends AppCompatActivity implements BasketRecyclerViewAdapter.DBRelatedListener, View.OnClickListener {
     private BasketRecyclerViewAdapter adapter;
     private BasketViewModel basketViewModel;
+    private AlarmSetter alarmSetter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +62,9 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
 
         Button add = findViewById(R.id.basketAct_button_add);
         add.setOnClickListener(this);
+
+        // 알람 관련 세팅
+        alarmSetter = new AlarmSetter(this);
     }
 
     // RecyclerView 에 각각 아이템에서 클릭시 일어나는 이벤트
@@ -73,6 +80,10 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
         if (v.getId() == R.id.basketAct_button_delete_all)
             basketViewModel.deleteAllItems();
         else if (v.getId() == R.id.basketAct_button_add){
+            for (Product basketItem : adapter.getData()){
+                alarmSetter.setAlarmBeforeOneWeek(basketItem.id, basketItem.expiryDate);
+            }
+
             basketViewModel.moveBasketToProducts();
             finish();
         }

@@ -77,7 +77,7 @@ public class BasketRecyclerViewAdapter extends RecyclerView.Adapter<BasketRecycl
         void onDeletedClicked(Product clicked);
     }
 
-    public List<Product> getData(){
+    List<Product> getData(){
         return data;
     }
 
