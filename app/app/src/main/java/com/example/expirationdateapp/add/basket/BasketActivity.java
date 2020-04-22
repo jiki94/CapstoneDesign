@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.alarm.AlarmSetter;
-import com.example.expirationdateapp.db.Alarm;
 import com.example.expirationdateapp.db.Product;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.AppContainerViewModelFactory;
@@ -81,7 +80,7 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
             basketViewModel.deleteAllItems();
         else if (v.getId() == R.id.basketAct_button_add){
             for (Product basketItem : adapter.getData()){
-                alarmSetter.setAlarmBeforeOneWeek(basketItem.id, basketItem.expiryDate);
+                alarmSetter.setAlarm(basketItem.id, basketItem.expiryDate);
             }
 
             basketViewModel.moveBasketToProducts();
