@@ -21,7 +21,6 @@ public class NotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        // set notificatioon
         int productId = getInputData().getInt(AlarmSetter.ID_KEY, -1);
         if (productId == -1)
             throw new IllegalArgumentException();
@@ -38,7 +37,5 @@ public class NotificationWorker extends Worker {
         Log.v("WORK_TEST", "done work: " + productId);
 
         return Result.success();
-        // 잘 작동하나 테스트
-        // 잘된다 git
     }
 }
