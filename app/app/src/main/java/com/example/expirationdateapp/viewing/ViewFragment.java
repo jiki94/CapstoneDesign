@@ -23,6 +23,7 @@ import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.AppContainerViewModelFactory;
 import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.R;
+import com.example.expirationdateapp.alarm.NotificationSetter;
 import com.example.expirationdateapp.db.StoredTypeConverter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -96,6 +97,7 @@ public class ViewFragment extends Fragment {
                 return true;
             }
         });
+
         String query = viewModel.getFilterString().getValue();
         if (query != null){
             searchView.setQuery(query, false);

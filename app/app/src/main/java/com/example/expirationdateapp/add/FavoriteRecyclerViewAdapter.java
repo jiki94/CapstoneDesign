@@ -145,8 +145,13 @@ public class FavoriteRecyclerViewAdapter extends RecyclerView.Adapter<FavoriteRe
 
             @Override
             public void afterTextChanged(Editable s) {
-                datum.defaultED = Integer.decode(s.toString());
-                dbRelatedListener.onDefaultExpiryDateChanged(datum);
+                try {
+                    datum.defaultED = Integer.decode(s.toString());
+                    dbRelatedListener.onDefaultExpiryDateChanged(datum);
+                }catch (NumberFormatException e){
+                    // 무시
+                }
+
             }
         });
 

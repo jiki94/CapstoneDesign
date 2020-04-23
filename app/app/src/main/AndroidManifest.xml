@@ -26,6 +26,7 @@
         <activity android:name=".add.basket.BasketActivity" />
         <activity android:name=".add.ocr.OcrActivity"/>
         <activity android:name=".add.stt.SttActivity"/>
+        
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.expirationdateapp.fileprovider"

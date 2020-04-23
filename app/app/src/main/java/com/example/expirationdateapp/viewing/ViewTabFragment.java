@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.MyApplication;
+import com.example.expirationdateapp.alarm.AlarmSetter;
 import com.example.expirationdateapp.db.Product;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.AppContainerViewModelFactory;
@@ -31,6 +32,7 @@ public class ViewTabFragment extends Fragment implements ViewRecyclerViewAdapter
     private ViewCategory category;
     private ViewTabViewModel viewModel;
     private ViewRecyclerViewAdapter adapter;
+    private AlarmSetter alarmSetter;
 
     public ViewTabFragment(){
         // constructor must be empty
@@ -50,9 +52,13 @@ public class ViewTabFragment extends Fragment implements ViewRecyclerViewAdapter
 
         category = (ViewCategory) getArguments().getSerializable(SHOW_KEY);
 
+        // viewmodel 관련
         AppContainer appContainer = MyApplication.getInstance().appContainer;
         ViewModelProvider.Factory factory = new AppContainerViewModelFactory(appContainer);
         viewModel = new ViewModelProvider(getParentFragment(), factory).get(ViewTabViewModel.class);
+
+        // 알람 관련 세팅
+        alarmSetter = new AlarmSetter(requireContext());
     }
 
     @Nullable
@@ -98,6 +104,7 @@ public class ViewTabFragment extends Fragment implements ViewRecyclerViewAdapter
     // ViewRecyclerViewAdapter.DBRelatedListener 인터페이스 구현
     @Override
     public void onDeletedClicked(Product clicked) {
+        alarmSetter.cancelAlarm(clicked.id);
         viewModel.deleteProduct(clicked);
     }
 }

@@ -31,6 +31,10 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND expiryDate < :current")
     LiveData<List<Product>> getOverdueItems(boolean inBasket, LocalDate current);
 
+    // 백그라운드에서 호출할 때 사용
+    @Query("SELECT * FROM Product WHERE id = :id")
+    Product getItem(int id);
+
     @Delete
     void deleteItem(Product product);
 
