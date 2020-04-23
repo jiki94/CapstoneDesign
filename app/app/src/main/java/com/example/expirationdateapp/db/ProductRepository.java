@@ -93,4 +93,8 @@ public class ProductRepository {
             }
         });
     }
+
+    public Product getItem(int id){
+        return productDao.getItem(id);
+    }
 }

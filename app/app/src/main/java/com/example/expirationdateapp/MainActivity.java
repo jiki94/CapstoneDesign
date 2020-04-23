@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 
 import com.example.expirationdateapp.add.AddFragment;
+import com.example.expirationdateapp.alarm.NotificationSetter;
 import com.example.expirationdateapp.foodbank.FoodBankFragment;
 import com.example.expirationdateapp.forum.ForumFragment;
 import com.example.expirationdateapp.recipe.RecipeFragment;
@@ -25,6 +26,10 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.mainAct_layout_fragment_placeholder, startFragment).commit();
         }
+
+        //  안드로이드 O 버전 이상은 Notification channel 등록 필요
+        NotificationSetter notificationSetter = new NotificationSetter(this);
+        notificationSetter.createNotificationChannel();
     }
 
     // NavigationFragment.NavigationChangedListener 인터페이스 구현

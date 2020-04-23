@@ -57,4 +57,9 @@
     <string name="menu_order_by_expiry_date">유통기한 빠른순으로 정렬</string>
     <string name="menu_order_by_expiry_date_reverse">유통기한 느린순으로 정렬</string>
     <string name="text_x_days_after">일 지남</string>
+    <string name="text_notification_title">유통기한 알림</string>
+    <string name="text_notification_content">%1$s 유통기한 %2$d일 남음</string>
+    <string name="text_channel_name">유통기한 알림</string>
+    <string name="text_channel_desc">유통기한 알림</string>
+    <string name="text_notification_zero_content">%1$s 유통기한 오늘까지</string>
 </resources>
