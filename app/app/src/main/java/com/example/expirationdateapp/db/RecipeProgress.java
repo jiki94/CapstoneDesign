@@ -2,7 +2,7 @@ package com.example.expirationdateapp.db;
 
 import androidx.room.Entity;
 
-@Entity
+@Entity(primaryKeys = {"recipeCode", "recipeOrder"})
 public class RecipeProgress {
     public int recipeCode;
     public int recipeOrder;

@@ -27,6 +27,7 @@ public class AppContainer {
     AppContainer(Context context){
         // 현재 db에 즐겨찾기 더미 데이터 있
         database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database_testing")
+                .createFromAsset("use.db")
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
                     public void onCreate(@NonNull SupportSQLiteDatabase db) {
