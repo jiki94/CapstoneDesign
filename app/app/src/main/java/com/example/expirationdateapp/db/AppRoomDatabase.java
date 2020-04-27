@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 public abstract class AppRoomDatabase extends RoomDatabase{
     public abstract FavoriteDao favoriteDao();
     public abstract ProductDao productDao();
+    public abstract RecipeInfoDao recipeInfoDao();
 
     private static final int NUMBER_OF_THREADS = 4;
 

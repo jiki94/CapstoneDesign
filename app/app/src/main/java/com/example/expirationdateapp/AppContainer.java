@@ -11,6 +11,7 @@ import com.example.expirationdateapp.db.AppRoomDatabase;
 import com.example.expirationdateapp.db.Favorite;
 import com.example.expirationdateapp.db.FavoriteRepository;
 import com.example.expirationdateapp.db.ProductRepository;
+import com.example.expirationdateapp.db.RecipeInfoRepository;
 import com.example.expirationdateapp.db.StoredType;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class AppContainer {
     private AppRoomDatabase database;
     private FavoriteRepository favoriteRepository;
     private ProductRepository productRepository;
+    private RecipeInfoRepository recipeInfoRepository;
 
     AppContainer(Context context){
         // 현재 db에 즐겨찾기 더미 데이터 있
@@ -54,6 +56,7 @@ public class AppContainer {
         //database = Room.databaseBuilder(context.getApplicationContext(), AppRoomDatabase.class, "app_room_database").build();
         favoriteRepository = new FavoriteRepository(database);
         productRepository = new ProductRepository(database);
+        recipeInfoRepository = new RecipeInfoRepository(database);
     }
 
     public FavoriteRepository getFavoriteRepository() {
@@ -62,5 +65,9 @@ public class AppContainer {
 
     public ProductRepository getProductRepository() {
         return productRepository;
+    }
+
+    public RecipeInfoRepository getRecipeInfoRepository() {
+        return recipeInfoRepository;
     }
 }
