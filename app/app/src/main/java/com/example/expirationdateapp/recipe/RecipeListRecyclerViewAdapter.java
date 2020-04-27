@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.RecipeInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,6 +51,12 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
         RecipeInfo datum = data.get(position);
         holder.name.setText(datum.recipeName);
         holder.desc.setText(datum.recipeBasicDesc);
+
+        // placeholder 에 해당하는 사진 추가
+        Picasso.get()
+                .load(datum.mainImgUrl)
+                .placeholder(R.drawable.basket)
+                .into(holder.mainImg);
     }
 
     @Override

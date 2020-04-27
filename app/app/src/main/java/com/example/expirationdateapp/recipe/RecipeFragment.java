@@ -10,12 +10,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.AppContainerViewModelFactory;
@@ -66,6 +68,7 @@ public class RecipeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recipeFrag_recyclerview_recipes);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL));
 
         viewModel.getTopFive().observe(this, new Observer<List<RecipeInfo>>() {
             @Override
