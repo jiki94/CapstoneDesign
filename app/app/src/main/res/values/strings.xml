@@ -62,4 +62,5 @@
     <string name="text_channel_name">유통기한 알림</string>
     <string name="text_channel_desc">유통기한 알림</string>
     <string name="text_notification_zero_content">%1$s 유통기한 오늘까지</string>
+    <string name="stored_overdue">유통기한 지남</string>
 </resources>

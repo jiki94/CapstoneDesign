@@ -111,7 +111,25 @@ public class ViewFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(ViewCategory.getByIndex(position).name());
+                String tabName = null;
+                switch (ViewCategory.getByIndex(position)){
+                    case OVERDUE:
+                        tabName = getString(R.string.stored_overdue);
+                        break;
+                    case COLD:
+                        tabName = getString(R.string.stored_cold);
+                        break;
+                    case FROZEN:
+                        tabName = getString(R.string.stored_frozen);
+                        break;
+                    case ELSE:
+                        tabName = getString(R.string.stored_else);
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+
+                tab.setText(tabName);
             }
         }).attach();
     }
