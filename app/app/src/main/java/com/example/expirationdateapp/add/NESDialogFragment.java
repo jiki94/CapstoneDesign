@@ -167,8 +167,12 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
                 @Override
                 public void afterTextChanged(Editable s) {
                     String input = s.toString();
-                    int days = input.isEmpty() ? 0 : Integer.decode(input);
-                    setNewLocalDate(LocalDate.now().plusDays(days), true);
+                    try {
+                        int days = input.isEmpty() ? 0 : Integer.decode(input);
+                        setNewLocalDate(LocalDate.now().plusDays(days), true);
+                    }catch (NumberFormatException e){
+                        // do nothing
+                    }
                 }
             });
 
