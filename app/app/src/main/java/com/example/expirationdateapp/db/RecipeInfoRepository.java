@@ -18,4 +18,7 @@ public class RecipeInfoRepository {
     public LiveData<List<RecipeInfo>> getTopFive(){
         return topFive;
     }
+    public LiveData<RecipeInfo> getRecipeInfo(int recipeCode){
+        return recipeInfoDao.getRecipeInfo(recipeCode);
+    }
 }

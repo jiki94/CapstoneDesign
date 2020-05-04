@@ -1,6 +1,7 @@
 package com.example.expirationdateapp.recipe;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,7 +32,9 @@ import java.util.List;
 
 // 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 관련 중
 // 레시피 추천해주는 프래그먼트
-public class RecipeFragment extends Fragment {
+public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAdapter.ItemClickedListener {
+    static final String SENT_RECIPE_CODE = "sent_recipe_code";
+
     private RecipeListViewModel viewModel;
 
     public RecipeFragment() {
@@ -63,7 +66,7 @@ public class RecipeFragment extends Fragment {
 
         // RecyclerView 세팅
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        RecipeListRecyclerViewAdapter adapter = new RecipeListRecyclerViewAdapter(requireContext(), new ArrayList<>());
+        RecipeListRecyclerViewAdapter adapter = new RecipeListRecyclerViewAdapter(requireContext(), new ArrayList<>(), this);
 
         RecyclerView recyclerView = view.findViewById(R.id.recipeFrag_recyclerview_recipes);
         recyclerView.setLayoutManager(layoutManager);
@@ -76,8 +79,12 @@ public class RecipeFragment extends Fragment {
                 adapter.changeData(recipeInfo);
             }
         });
+    }
 
-        // live data 로 세팅하기
-        // adapter data 변경
+    @Override
+    public void onItemClicked(RecipeInfo clickedRecipe) {
+        Intent intent = new Intent(requireContext(), RecipeDetailActivity.class);
+        intent.putExtra(SENT_RECIPE_CODE, clickedRecipe.recipeCode);
+        startActivity(intent);
     }
 }

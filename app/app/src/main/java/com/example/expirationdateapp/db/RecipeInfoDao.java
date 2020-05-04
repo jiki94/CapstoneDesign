@@ -10,4 +10,7 @@ import java.util.List;
 public interface RecipeInfoDao {
     @Query("SELECT * FROM RecipeInfo LIMIT 5")
     LiveData<List<RecipeInfo>> getFiveRecipeInfo();
+
+    @Query("SELECT * FROM RecipeInfo WHERE recipeCode = :recipeCode")
+    LiveData<RecipeInfo> getRecipeInfo(int recipeCode);
 }

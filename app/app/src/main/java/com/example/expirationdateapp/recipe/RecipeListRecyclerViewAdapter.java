@@ -19,23 +19,27 @@ import java.util.List;
 public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeListRecyclerViewAdapter.ViewHolder> {
     @NonNull private Context context;
     @NonNull private List<RecipeInfo> data;
+    private ItemClickedListener listener;
 
     class ViewHolder extends RecyclerView.ViewHolder{
+        View view;
         ImageView mainImg;
         TextView name;
         TextView desc;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            view = itemView;
             mainImg = itemView.findViewById(R.id.recipeItem_image_main);
             name = itemView.findViewById(R.id.recipeItem_text_name);
             desc = itemView.findViewById(R.id.recipeItem_text_desc);
         }
     }
 
-    public RecipeListRecyclerViewAdapter(@NonNull Context context, @NonNull List<RecipeInfo> data){
+    public RecipeListRecyclerViewAdapter(@NonNull Context context, @NonNull List<RecipeInfo> data, ItemClickedListener listener){
         this.context = context;
         this.data = data;
+        this.listener = listener;
     }
 
     @NonNull
@@ -57,6 +61,14 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
                 .load(datum.mainImgUrl)
                 .placeholder(R.drawable.basket)
                 .into(holder.mainImg);
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null)
+                    listener.onItemClicked(datum);
+            }
+        });
     }
 
     @Override
@@ -67,5 +79,9 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
     void changeData(@NonNull List<RecipeInfo> newData){
         data = newData;
         notifyDataSetChanged();
+    }
+
+    public interface ItemClickedListener {
+        void onItemClicked(RecipeInfo clickedRecipe);
     }
 }

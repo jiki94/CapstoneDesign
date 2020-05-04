@@ -67,4 +67,5 @@
     <string name="text_sub_ingredients">부재료</string>
     <string name="text_seasoning_ingredients">양념</string>
     <string name="text_recipe_progress">만드는 방법</string>
+    <string name="text_tip">팁</string>
 </resources>

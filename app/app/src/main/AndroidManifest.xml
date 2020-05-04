@@ -26,6 +26,7 @@
         <activity android:name=".add.basket.BasketActivity" />
         <activity android:name=".add.ocr.OcrActivity"/>
         <activity android:name=".add.stt.SttActivity"/>
+        <activity android:name=".recipe.RecipeDetailActivity"/>
         
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -21,6 +21,8 @@ public abstract class AppRoomDatabase extends RoomDatabase{
     public abstract FavoriteDao favoriteDao();
     public abstract ProductDao productDao();
     public abstract RecipeInfoDao recipeInfoDao();
+    public abstract RecipeIngredientDao recipeIngredientDao();
+    public abstract RecipeProgressDao recipeProgressDao();
 
     private static final int NUMBER_OF_THREADS = 4;
 
