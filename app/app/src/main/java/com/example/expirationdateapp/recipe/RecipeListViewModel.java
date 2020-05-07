@@ -6,18 +6,20 @@ import androidx.lifecycle.ViewModel;
 import com.example.expirationdateapp.db.RecipeInfo;
 import com.example.expirationdateapp.db.RecipeInfoRepository;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 public class RecipeListViewModel extends ViewModel {
     private RecipeInfoRepository recipeInfoRepository;
-    private LiveData<List<RecipeInfo>> topFive;
+    private LiveData<List<RecipeInfo>> recommendRecipes;
 
     public RecipeListViewModel(RecipeInfoRepository recipeInfoRepository){
         this.recipeInfoRepository = recipeInfoRepository;
-        topFive = recipeInfoRepository.getTopFive();
+        recommendRecipes = recipeInfoRepository.getRecommendRecipes();
     }
 
-    LiveData<List<RecipeInfo>> getTopFive(){
-        return topFive;
+    LiveData<List<RecipeInfo>> getRecommendRecipes(){
+        return recommendRecipes;
     }
 }

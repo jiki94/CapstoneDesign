@@ -73,7 +73,7 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL));
 
-        viewModel.getTopFive().observe(this, new Observer<List<RecipeInfo>>() {
+        viewModel.getRecommendRecipes().observe(this, new Observer<List<RecipeInfo>>() {
             @Override
             public void onChanged(List<RecipeInfo> recipeInfo) {
                 adapter.changeData(recipeInfo);

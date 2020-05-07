@@ -2,21 +2,21 @@ package com.example.expirationdateapp.db;
 
 import androidx.lifecycle.LiveData;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 public class RecipeInfoRepository {
     private final AppRoomDatabase database;
     private final RecipeInfoDao recipeInfoDao;
-    private LiveData<List<RecipeInfo>> topFive;
 
     public RecipeInfoRepository(AppRoomDatabase database) {
         this.database = database;
         this.recipeInfoDao = database.recipeInfoDao();
-        this.topFive = recipeInfoDao.getFiveRecipeInfo();
     }
 
-    public LiveData<List<RecipeInfo>> getTopFive(){
-        return topFive;
+    public LiveData<List<RecipeInfo>> getRecommendRecipes(){
+        return recipeInfoDao.getRecommendRecipes(LocalDate.now());
     }
     public LiveData<RecipeInfo> getRecipeInfo(int recipeCode){
         return recipeInfoDao.getRecipeInfo(recipeCode);
