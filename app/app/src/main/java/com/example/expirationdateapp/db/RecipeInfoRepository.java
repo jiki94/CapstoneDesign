@@ -18,7 +18,12 @@ public class RecipeInfoRepository {
     public LiveData<List<RecipeInfo>> getRecommendRecipes(){
         return recipeInfoDao.getRecommendRecipes(LocalDate.now());
     }
+
     public LiveData<RecipeInfo> getRecipeInfo(int recipeCode){
         return recipeInfoDao.getRecipeInfo(recipeCode);
+    }
+
+    public LiveData<List<RecipeInfo>> getRecipeInfoSearchBy(String searchWord){
+        return recipeInfoDao.getRecommendRecipes(searchWord);
     }
 }

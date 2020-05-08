@@ -10,7 +10,7 @@
         android:id="@+id/recipeDetailAct_constraint_layout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="200dp">
+        android:paddingBottom="0dp">
 
         <ImageView
             android:id="@+id/recipeDetailAct_img_recipe"

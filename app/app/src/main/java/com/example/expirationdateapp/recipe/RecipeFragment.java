@@ -19,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.example.expirationdateapp.AppContainer;
 import com.example.expirationdateapp.AppContainerViewModelFactory;
@@ -66,17 +68,39 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
 
         // RecyclerView 세팅
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        RecipeListRecyclerViewAdapter adapter = new RecipeListRecyclerViewAdapter(requireContext(), new ArrayList<>(), this);
+        TextView emptyText = view.findViewById(R.id.recipeFrag_text_empty_text);
+        RecipeListRecyclerViewAdapter adapter = new RecipeListRecyclerViewAdapter(requireContext(), new ArrayList<>(), this, emptyText);
 
         RecyclerView recyclerView = view.findViewById(R.id.recipeFrag_recyclerview_recipes);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL));
 
-        viewModel.getRecommendRecipes().observe(this, new Observer<List<RecipeInfo>>() {
+        viewModel.getShowingRecipes().observe(this, new Observer<List<RecipeInfo>>() {
             @Override
             public void onChanged(List<RecipeInfo> recipeInfo) {
                 adapter.changeData(recipeInfo);
+            }
+        });
+
+
+        // 검색창 관련
+        SearchView searchView = view.findViewById(R.id.recipeFrag_searchview_top);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                viewModel.changeSearchWord(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText == null || newText.isEmpty()) {
+                    viewModel.changeSearchWord(newText);
+                    return true;
+                }
+
+                return false;
             }
         });
     }

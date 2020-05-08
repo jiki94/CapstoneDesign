@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expirationdateapp.R;
@@ -20,6 +21,7 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
     @NonNull private Context context;
     @NonNull private List<RecipeInfo> data;
     private ItemClickedListener listener;
+    private TextView emptyView;
 
     class ViewHolder extends RecyclerView.ViewHolder{
         View view;
@@ -36,10 +38,14 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
         }
     }
 
-    public RecipeListRecyclerViewAdapter(@NonNull Context context, @NonNull List<RecipeInfo> data, ItemClickedListener listener){
+    public RecipeListRecyclerViewAdapter(@NonNull Context context, @NonNull List<RecipeInfo> data, ItemClickedListener listener, TextView emptyView){
         this.context = context;
         this.data = data;
         this.listener = listener;
+        this.emptyView = emptyView;
+
+        if (!data.isEmpty())
+            emptyView.setVisibility(View.GONE);
     }
 
     @NonNull
@@ -77,8 +83,17 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
     }
 
     void changeData(@NonNull List<RecipeInfo> newData){
+        RecipeListDiffUtilCallBack callBack = new RecipeListDiffUtilCallBack(data, newData);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);
+
         data = newData;
-        notifyDataSetChanged();
+        result.dispatchUpdatesTo(this);
+
+        if (data.isEmpty()){
+            emptyView.setVisibility(View.VISIBLE);
+        }else{
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
     public interface ItemClickedListener {

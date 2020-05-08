@@ -27,4 +27,7 @@ public interface RecipeInfoDao {
             "ON r.recipeCode = pi.recipeCode " +
             "ORDER BY percentage DESC")
     LiveData<List<RecipeInfo>> getRecommendRecipes(LocalDate now);
+
+    @Query("SELECT * FROM RecipeInfo WHERE instr(recipeName, :givenString) > 0")
+    LiveData<List<RecipeInfo>> getRecommendRecipes(String givenString);
 }

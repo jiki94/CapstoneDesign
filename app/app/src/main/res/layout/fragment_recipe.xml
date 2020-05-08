@@ -34,6 +34,21 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeFrag_toolbar_top"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/recipeFrag_text_empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_no_recipe_to_show"
+        android:textColor="#000000"
+        android:textSize="36sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recipeFrag_recyclerview_recipes"
+        app:layout_constraintEnd_toEndOf="@+id/recipeFrag_recyclerview_recipes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recipeFrag_toolbar_top" />
 
