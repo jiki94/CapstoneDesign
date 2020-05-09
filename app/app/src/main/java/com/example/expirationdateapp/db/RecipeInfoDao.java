@@ -17,7 +17,8 @@ public interface RecipeInfoDao {
 
     @Query("SELECT r.* FROM RecipeInfo as r " +
             "INNER JOIN (SELECT mi.recipeCode , IFNULL(CAST(havecount as DOUBLE)/allCount, 0) as percentage from " +
-            "(SELECT recipeCode, count as allCount FROM MainIngredientCount) as mi " +
+            "(SELECT recipeCode, count as allCount FROM MainIngredientCount" +
+            " WHERE recipeCode NOT IN (SELECT * FROM DislikedRecipe)) as mi " +
             "LEFT JOIN (SELECT recipeCode, count(*) as havecount FROM RecipeIngredient " +
             "WHERE ingredientName IN " +
             "(SELECT name FROM PRODUCT WHERE inBasket = 0 AND " +
@@ -28,6 +29,7 @@ public interface RecipeInfoDao {
             "ORDER BY percentage DESC")
     LiveData<List<RecipeInfo>> getRecommendRecipes(LocalDate now);
 
-    @Query("SELECT * FROM RecipeInfo WHERE instr(recipeName, :givenString) > 0")
+    @Query("SELECT * FROM RecipeInfo WHERE instr(recipeName, :givenString) > 0 " +
+            "AND recipeCode NOT IN (SELECT * FROM DislikedRecipe)")
     LiveData<List<RecipeInfo>> getRecommendRecipes(String givenString);
 }

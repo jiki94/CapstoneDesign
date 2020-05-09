@@ -12,13 +12,24 @@
         android:layout_height="wrap_content"
         android:paddingBottom="0dp">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/recipeDetailAct_toolbar_top"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintEnd_toEndOf="@+id/recipeDetailAct_constraint_layout_main"
+            app:layout_constraintStart_toStartOf="@+id/recipeDetailAct_constraint_layout_main"
+            app:layout_constraintTop_toTopOf="@+id/recipeDetailAct_constraint_layout_main" />
+
         <ImageView
             android:id="@+id/recipeDetailAct_img_recipe"
             android:layout_width="150dp"
             android:layout_height="150dp"
             app:layout_constraintEnd_toEndOf="@+id/recipeDetailAct_constraint_layout_main"
             app:layout_constraintStart_toStartOf="@+id/recipeDetailAct_constraint_layout_main"
-            app:layout_constraintTop_toTopOf="@+id/recipeDetailAct_constraint_layout_main"
+            app:layout_constraintTop_toBottomOf="@+id/recipeDetailAct_toolbar_top"
             app:srcCompat="@drawable/basket" />
 
         <TextView

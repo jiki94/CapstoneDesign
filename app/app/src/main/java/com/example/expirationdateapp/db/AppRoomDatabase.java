@@ -13,7 +13,8 @@ import java.util.concurrent.Executors;
     RecipeInfo.class,
     RecipeIngredient.class,
     RecipeProgress.class,
-    MainIngredientCount.class
+    MainIngredientCount.class,
+    DislikedRecipe.class
     },
     version =  1,
     exportSchema = false
@@ -25,6 +26,7 @@ public abstract class AppRoomDatabase extends RoomDatabase{
     public abstract RecipeIngredientDao recipeIngredientDao();
     public abstract RecipeProgressDao recipeProgressDao();
     public abstract MainIngredientCountDao mainIngredientCountDao();
+    public abstract DislikedRecipeDao dislikedRecipeDao();
 
     private static final int NUMBER_OF_THREADS = 4;
 

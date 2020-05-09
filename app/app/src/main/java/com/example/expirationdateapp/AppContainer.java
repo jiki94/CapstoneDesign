@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.expirationdateapp.db.AppRoomDatabase;
+import com.example.expirationdateapp.db.DislikedRecipeRepository;
 import com.example.expirationdateapp.db.Favorite;
 import com.example.expirationdateapp.db.FavoriteRepository;
 import com.example.expirationdateapp.db.MainIngredientCount;
@@ -31,6 +32,7 @@ public class AppContainer {
     private RecipeInfoRepository recipeInfoRepository;
     private RecipeIngredientRepository recipeIngredientRepository;
     private RecipeProgressRepository recipeProgressRepository;
+    private DislikedRecipeRepository dislikedRecipeRepository;
 
     AppContainer(Context context){
         // 현재 db에 즐겨찾기 더미 데이터 있
@@ -70,6 +72,7 @@ public class AppContainer {
         recipeInfoRepository = new RecipeInfoRepository(database);
         recipeIngredientRepository = new RecipeIngredientRepository(database);
         recipeProgressRepository = new RecipeProgressRepository(database);
+        dislikedRecipeRepository = new DislikedRecipeRepository(database);
     }
 
     public FavoriteRepository getFavoriteRepository() {
@@ -90,5 +93,9 @@ public class AppContainer {
 
     public RecipeProgressRepository getRecipeProgressRepository(){
         return recipeProgressRepository;
+    }
+
+    public DislikedRecipeRepository getDislikedRecipeRepository(){
+        return dislikedRecipeRepository;
     }
 }

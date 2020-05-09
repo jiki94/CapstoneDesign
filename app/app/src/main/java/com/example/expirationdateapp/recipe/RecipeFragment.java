@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -27,7 +30,6 @@ import com.example.expirationdateapp.AppContainerViewModelFactory;
 import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.RecipeInfo;
-import com.example.expirationdateapp.viewing.ViewTabViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +107,7 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
         });
     }
 
+    // RecipeListRecyclerViewAdapter.ItemClickedListener 구현
     @Override
     public void onItemClicked(RecipeInfo clickedRecipe) {
         Intent intent = new Intent(requireContext(), RecipeDetailActivity.class);

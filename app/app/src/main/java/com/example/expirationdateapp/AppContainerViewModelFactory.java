@@ -32,7 +32,7 @@ public class AppContainerViewModelFactory implements ViewModelProvider.Factory{
             return (T) new RecipeListViewModel(appContainer.getRecipeInfoRepository());
         else if (modelClass.equals(RecipeDetailViewModel.class))
             return (T) new RecipeDetailViewModel(appContainer.getRecipeInfoRepository(), appContainer.getRecipeIngredientRepository(),
-                    appContainer.getRecipeProgressRepository());
+                    appContainer.getRecipeProgressRepository(), appContainer.getDislikedRecipeRepository());
 
         throw new IllegalArgumentException("There is factory does not support " + modelClass.getName());
     }

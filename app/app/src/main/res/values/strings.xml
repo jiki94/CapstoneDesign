@@ -69,4 +69,6 @@
     <string name="text_recipe_progress">만드는 방법</string>
     <string name="text_tip">팁</string>
     <string name="text_no_recipe_to_show">보여줄 레시피 없습니다.</string>
+    <string name="text_no_show">거부</string>
+    <string name="text_yes_show">허용</string>
 </resources>

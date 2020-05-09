@@ -2,6 +2,9 @@ package com.example.expirationdateapp.recipe;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,20 +33,26 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity {
+    private RecipeDetailViewModel viewModel;
+    private int recipeCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        int recipeCode = getIntent().getIntExtra(RecipeFragment.SENT_RECIPE_CODE, -1);
+        // Toolbar 세팅
+        Toolbar toolbar = findViewById(R.id.recipeDetailAct_toolbar_top);
+        setSupportActionBar(toolbar);
+
+        recipeCode = getIntent().getIntExtra(RecipeFragment.SENT_RECIPE_CODE, -1);
         if (recipeCode == -1)
             throw new IllegalArgumentException();
 
         // Viewmodel 가져오기
         AppContainer appContainer = MyApplication.getInstance().appContainer;
         ViewModelProvider.Factory factory = new AppContainerViewModelFactory(appContainer);
-        RecipeDetailViewModel viewModel = new ViewModelProvider(this, factory).get(RecipeDetailViewModel.class);
+        viewModel = new ViewModelProvider(this, factory).get(RecipeDetailViewModel.class);
 
         final AppCompatActivity activity = this;
 
@@ -113,6 +123,30 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 Log.v("RECIPE_TEST", "onChanged:progress  data size: " + recipeProgress.size());
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.recipe_detail_toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_dislike){
+            if (item.getTitle() == getString(R.string.text_no_show)){
+                item.setTitle(R.string.text_yes_show);
+                viewModel.setDisliked(true,recipeCode);
+            }else{
+                item.setTitle(R.string.text_no_show);
+                viewModel.setDisliked(false,recipeCode);
+            }
+        }else {
+            return super.onOptionsItemSelected(item);
+        }
+
+        return true;
     }
 
     private void setRecyclerViewToDefaultMode(@NonNull RecyclerView recyclerView, @NonNull Group group, RecyclerView.Adapter adapter){
