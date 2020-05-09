@@ -48,6 +48,7 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         // Viewmodel 가져오기
         AppContainer appContainer = MyApplication.getInstance().appContainer;
@@ -105,6 +106,12 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.recipe_list_toolbar, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     // RecipeListRecyclerViewAdapter.ItemClickedListener 구현

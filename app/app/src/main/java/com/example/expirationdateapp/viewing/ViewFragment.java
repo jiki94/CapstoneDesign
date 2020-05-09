@@ -82,7 +82,7 @@ public class ViewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Toolbar 세팅
         Toolbar toolbar = view.findViewById(R.id.viewFrag_toolbar_top);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
         SearchView searchView = view.findViewById(R.id.viewFrag_search_view_top);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){

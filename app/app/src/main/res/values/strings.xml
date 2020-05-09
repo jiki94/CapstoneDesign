@@ -71,4 +71,5 @@
     <string name="text_no_recipe_to_show">보여줄 레시피 없습니다.</string>
     <string name="text_no_show">거부</string>
     <string name="text_yes_show">허용</string>
+    <string name="action_show_disliked">거부된 레시피 보기</string>
 </resources>
