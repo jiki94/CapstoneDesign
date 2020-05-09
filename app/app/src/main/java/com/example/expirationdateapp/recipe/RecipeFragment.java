@@ -37,7 +37,7 @@ import java.util.List;
 // 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 관련 중
 // 레시피 추천해주는 프래그먼트
 public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAdapter.ItemClickedListener {
-    static final String SENT_RECIPE_CODE = "sent_recipe_code";
+
 
     private RecipeListViewModel viewModel;
 
@@ -111,7 +111,7 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
     @Override
     public void onItemClicked(RecipeInfo clickedRecipe) {
         Intent intent = new Intent(requireContext(), RecipeDetailActivity.class);
-        intent.putExtra(SENT_RECIPE_CODE, clickedRecipe.recipeCode);
+        intent.putExtra(RecipeDetailActivity.SENT_RECIPE_CODE, clickedRecipe.recipeCode);
         startActivity(intent);
     }
 }

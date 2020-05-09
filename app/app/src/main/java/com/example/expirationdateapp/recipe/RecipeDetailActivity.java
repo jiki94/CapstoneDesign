@@ -33,21 +33,27 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity {
+    static final String SENT_RECIPE_CODE = "sent_recipe_code";
+    static final String DEFAULT_DISLIKED_STATE = "default_disliked_state";
+
     private RecipeDetailViewModel viewModel;
     private int recipeCode;
+    private boolean isDisliked;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
+        recipeCode = getIntent().getIntExtra(SENT_RECIPE_CODE, -1);
+        if (recipeCode == -1)
+            throw new IllegalArgumentException();
+
+        isDisliked = getIntent().getBooleanExtra(DEFAULT_DISLIKED_STATE, false);
+
         // Toolbar 세팅
         Toolbar toolbar = findViewById(R.id.recipeDetailAct_toolbar_top);
         setSupportActionBar(toolbar);
-
-        recipeCode = getIntent().getIntExtra(RecipeFragment.SENT_RECIPE_CODE, -1);
-        if (recipeCode == -1)
-            throw new IllegalArgumentException();
 
         // Viewmodel 가져오기
         AppContainer appContainer = MyApplication.getInstance().appContainer;
@@ -129,6 +135,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.recipe_detail_toolbar, menu);
+
+        int textId;
+        if (isDisliked){
+            textId = R.string.text_yes_show;
+        }else{
+            textId = R.string.text_no_show;
+        }
+
+        menu.getItem(0).setTitle(textId);
         return true;
     }
 
