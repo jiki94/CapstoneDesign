@@ -62,4 +62,15 @@
     <string name="text_channel_name">유통기한 알림</string>
     <string name="text_channel_desc">유통기한 알림</string>
     <string name="text_notification_zero_content">%1$s 유통기한 오늘까지</string>
+    <string name="stored_overdue">유통기한 지남</string>
+    <string name="text_main_ingredients">주재료</string>
+    <string name="text_sub_ingredients">부재료</string>
+    <string name="text_seasoning_ingredients">양념</string>
+    <string name="text_recipe_progress">만드는 방법</string>
+    <string name="text_tip">팁</string>
+    <string name="text_no_recipe_to_show">보여줄 레시피 없습니다.</string>
+    <string name="text_no_show">거부</string>
+    <string name="text_yes_show">허용</string>
+    <string name="action_show_disliked">거부된 레시피 보기</string>
+    <string name="text_disliked_title">거부한 레시피들</string>
 </resources>
