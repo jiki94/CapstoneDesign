@@ -38,7 +38,7 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/recipeItem_image_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/recipeItem_image_main"
         app:layout_constraintTop_toBottomOf="@+id/recipeItem_text_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

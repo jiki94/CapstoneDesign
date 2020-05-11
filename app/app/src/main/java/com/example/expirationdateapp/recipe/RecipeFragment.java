@@ -114,6 +114,18 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_show_disliked){
+            Intent intent = new Intent(getContext(), DislikedRecipeActivity.class);
+            startActivity(intent);
+        }else {
+            return super.onOptionsItemSelected(item);
+        }
+
+        return true;
+    }
+
     // RecipeListRecyclerViewAdapter.ItemClickedListener 구현
     @Override
     public void onItemClicked(RecipeInfo clickedRecipe) {

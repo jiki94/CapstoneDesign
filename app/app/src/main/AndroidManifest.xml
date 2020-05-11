@@ -27,6 +27,7 @@
         <activity android:name=".add.ocr.OcrActivity"/>
         <activity android:name=".add.stt.SttActivity"/>
         <activity android:name=".recipe.RecipeDetailActivity"/>
+        <activity android:name=".recipe.DislikedRecipeActivity"/>
         
         <provider
             android:name="androidx.core.content.FileProvider"

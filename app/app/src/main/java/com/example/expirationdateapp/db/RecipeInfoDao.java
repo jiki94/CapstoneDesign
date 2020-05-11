@@ -32,4 +32,7 @@ public interface RecipeInfoDao {
     @Query("SELECT * FROM RecipeInfo WHERE instr(recipeName, :givenString) > 0 " +
             "AND recipeCode NOT IN (SELECT * FROM DislikedRecipe)")
     LiveData<List<RecipeInfo>> getRecommendRecipes(String givenString);
+
+    @Query("SELECT * FROM RecipeInfo WHERE recipeCode IN (SELECT * FROM DislikedRecipe)")
+    LiveData<List<RecipeInfo>> getDislikedRecipes();
 }

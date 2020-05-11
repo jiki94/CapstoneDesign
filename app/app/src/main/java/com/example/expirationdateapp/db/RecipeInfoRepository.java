@@ -26,4 +26,8 @@ public class RecipeInfoRepository {
     public LiveData<List<RecipeInfo>> getRecipeInfoSearchBy(String searchWord){
         return recipeInfoDao.getRecommendRecipes(searchWord);
     }
+
+    public LiveData<List<RecipeInfo>> getDislikedRecipe(){
+        return recipeInfoDao.getDislikedRecipes();
+    }
 }
