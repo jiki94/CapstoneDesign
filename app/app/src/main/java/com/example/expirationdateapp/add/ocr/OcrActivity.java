@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -122,6 +123,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         calendar.setOnClickListener(this);
 
         // 나머지 잡다한거
+        resultText.setMovementMethod(new ScrollingMovementMethod());
         ocrRetrofitHandler = new OcrRetrofitHandler(this, this);
 
         reset(inputGetType);

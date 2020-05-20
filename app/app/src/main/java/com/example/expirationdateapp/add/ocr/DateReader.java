@@ -13,10 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DateReader {
-    static String [] ymdPatStr =  {"(\\d{4})\\s*[/\\.\\p{L}]?\\s*(\\d{1,2})\\s*[/\\.\\p{L}]?\\s*(\\d{1,2})\\s*\\p{L}?",
-            "(\\d{2})\\s*[/\\.\\p{L}]?\\s*(\\d{1,2})\\s*[/\\.\\p{L}]?\\s*(\\d{1,2})\\s*\\p{L}?",
+    static String [] ymdPatStr =  {"(\\d{4})\\s*[/\\.\\ub144]\\s*(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?",
+            "(\\d{2})\\s*[/\\.\\ub144]\\s*(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?",
             "(\\d{4})(\\d{2})(\\d{2})"};
-    static String [] mdPatStr = {"(\\d{1,2})\\s*[/\\.\\p{L}]?\\s*(\\d{1,2})\\s*\\p{L}?"};
+    static String [] mdPatStr = {"(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?"};
     static Pattern [] ymdPat;
     static Pattern [] mdPat;
     static {
@@ -34,48 +34,44 @@ public class DateReader {
         SortedSet<LocalDate> dates = new TreeSet<>();
         for (Pattern pat : ymdPat){
             Matcher m = pat.matcher(input);
-            for (int i = 0; i < input.length(); i++){
-                if (m.find(i)) {
-                    try {
-                        int year = Integer.parseInt(m.group(1));
-                        int month = Integer.parseInt(m.group(2));
-                        int day = Integer.parseInt(m.group(3));
+            while (m.find()){
+                try {
+                    int year = Integer.parseInt(m.group(1));
+                    int month = Integer.parseInt(m.group(2));
+                    int day = Integer.parseInt(m.group(3));
 
-                        if (year < 100) {
-                            year += 2000;
-                        }
-
-                        LocalDate date = LocalDate.of(year, month, day);
-                        dates.add(date);
-                    } catch (NumberFormatException e) {
-                        throw new IllegalArgumentException("This should never execute unless some problem in regex lib.");
-                    } catch (DateTimeException e) {
-                        // 날짜 형식이지만 실제 날짜가 아님
+                    if (year < 100) {
+                        year += 2000;
                     }
+
+                    LocalDate date = LocalDate.of(year, month, day);
+                    dates.add(date);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("This should never execute unless some problem in regex lib.");
+                } catch (DateTimeException e) {
+                    // 날짜 형식이지만 실제 날짜가 아님
                 }
             }
         }
 
         for (Pattern pat : mdPat){
             Matcher m = pat.matcher(input);
-            for (int i = 0; i < input.length(); i++){
-                if (m.find(i)) {
-                    try {
-                        int month = Integer.parseInt(m.group(1));
-                        int day = Integer.parseInt(m.group(2));
+            while (m.find()){
+                try {
+                    int month = Integer.parseInt(m.group(1));
+                    int day = Integer.parseInt(m.group(2));
 
-                        LocalDate now = LocalDate.now();
-                        int year = now.getYear();
-                        LocalDate date = LocalDate.of(year, month, day);
-                        if (now.isAfter(date))
-                            date = date.plusYears(1);
+                    LocalDate now = LocalDate.now();
+                    int year = now.getYear();
+                    LocalDate date = LocalDate.of(year, month, day);
+                    if (now.isAfter(date))
+                        date = date.plusYears(1);
 
-                        dates.add(date);
-                    } catch (NumberFormatException e) {
-                        throw new IllegalArgumentException("This should never execute unless some problem in regex lib.");
-                    } catch (DateTimeException e) {
-                        // 날짜 형식이지만 실제 날짜가 아님
-                    }
+                    dates.add(date);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("This should never execute unless some problem in regex lib.");
+                } catch (DateTimeException e) {
+                    // 날짜 형식이지만 실제 날짜가 아님
                 }
             }
         }
