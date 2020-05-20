@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
@@ -19,18 +20,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.add.GetType;
+import com.example.expirationdateapp.db.LocalDateConverter;
 import com.example.expirationdateapp.db.StoredType;
+import com.google.android.material.snackbar.Snackbar;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.threeten.bp.LocalDate;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -49,9 +57,16 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     private EditText resultEditText;
     private Button cropButton;
     private Button addButton;
+    private Button add2Button;
     private TextView title;
     private TextView cropDesc;
     private CropImageView cropImageView;
+    private ImageButton calendar;
+    private TextView resultText;
+    private EditText predictedDate;
+
+    private Group nameGroup;
+    private Group expiryGroup;
 
     private OcrRetrofitHandler ocrRetrofitHandler;
 
@@ -88,13 +103,23 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         // View들 찾고 초기 설정
         resultEditText = findViewById(R.id.ocrAct_edittext_adding);
         addButton = findViewById(R.id.ocrAct_button_add);
+        add2Button = findViewById(R.id.ocrAct_button_add2);
         cropButton = findViewById(R.id.ocrAct_button_crop_select);
         title = findViewById(R.id.ocrAct_text_toolbar_title);
         cropDesc = findViewById(R.id.ocrAct_text_crop_desc);
         cropImageView = findViewById(R.id.cropImageView);
+        calendar = findViewById(R.id.ocrAct_imgButton_calandar);
+
+        nameGroup = findViewById(R.id.ocrAct_group_name);
+        expiryGroup = findViewById(R.id.ocrAct_group_expiry);
+
+        resultText = findViewById(R.id.ocrAct_text_recognized_result);
+        predictedDate = findViewById(R.id.ocrAct_edittext_predict);
 
         addButton.setOnClickListener(this);
+        add2Button.setOnClickListener(this);
         cropButton.setOnClickListener(this);
+        calendar.setOnClickListener(this);
 
         // 나머지 잡다한거
         ocrRetrofitHandler = new OcrRetrofitHandler(this, this);
@@ -158,17 +183,27 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         this.getType = getType;
         cropButton.setEnabled(false);
         addButton.setEnabled(false);
-        resultEditText.setText("");
+        add2Button.setEnabled(false);
+        calendar.setFocusable(false);
+        calendar.setClickable(false);
 
         // 액티비티 뷰 초기화
         switch (getType){
             case NAME:
                 title.setText(R.string.text_add_name_title);
                 cropDesc.setText(R.string.text_add_name_crop_desc);
+
+                nameGroup.setVisibility(View.VISIBLE);
+                expiryGroup.setVisibility(View.GONE);
+
+                resultEditText.setText("");
                 break;
             case EXPIRY_DATE:
                 title.setText(R.string.text_add_expiry_date_title);
                 cropDesc.setText(R.string.text_add_expiry_date_crop_desc);
+
+                nameGroup.setVisibility(View.GONE);
+                expiryGroup.setVisibility(View.VISIBLE);
                 break;
             default:
                 throw new IllegalArgumentException("Not Allowed Enum value");
@@ -245,29 +280,24 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.ocrAct_button_add) {
-            switch (getType) {
-                case NAME:
-                    name = resultEditText.getText().toString();
-                    reset(GetType.EXPIRY_DATE);
-                    return;
-                case EXPIRY_DATE:
-                    // 정보 intent에 넣어서 원래 창으로
-                    expiryDate = resultEditText.getText().toString();
-
-                    Intent intent = new Intent();
-                    intent.putExtra(getString(R.string.key_name_data), name);
-                    intent.putExtra(getString(R.string.key_expiry_data), expiryDate);
-                    intent.putExtra(getString(R.string.key_stored_type), storedType);
-
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                    break;
-                default:
-                    throw new IllegalArgumentException();
-            }
+            name = resultEditText.getText().toString();
+            reset(GetType.EXPIRY_DATE);
         }else if (v.getId() == R.id.ocrAct_button_crop_select){
             Bitmap cropped = cropImageView.getCroppedImage();
             ocrQuery(cropped);
+        }else if (v.getId() == R.id.ocrAct_button_add2){
+            // 정보 intent에 넣어서 원래 창으로
+            expiryDate = resultEditText.getText().toString();
+
+            Intent intent = new Intent();
+            intent.putExtra(getString(R.string.key_name_data), name);
+            intent.putExtra(getString(R.string.key_expiry_data), expiryDate);
+            intent.putExtra(getString(R.string.key_stored_type), storedType);
+
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }else if (v.getId() == R.id.ocrAct_imgButton_calandar){
+
         }
     }
 
@@ -290,8 +320,34 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onRecognizeTextSuccess(Call<TextRecognizeResponse> call, Response<TextRecognizeResponse> response){
         String ret = join(" ", response.body().result.recognition_words);
-        resultEditText.setText(ret);
-        addButton.setEnabled(true);
+        switch (getType){
+            case NAME:
+                resultEditText.setText(ret);
+                addButton.setEnabled(true);
+                break;
+            case EXPIRY_DATE:
+                resultText.setText(ret);
+                SortedSet<LocalDate> predicted = DateReader.readFromString(ret);
+                if (predicted.isEmpty()){
+                    predictedDate.setText(R.string.text_predict_date_fail);
+                }else{
+                    LocalDate newest = predicted.last();
+                    if (LocalDate.now().isAfter(newest)){
+                       // Snackbar로 유통기한 지남 또는 제조일자 인지 확인 알림
+                        View layout = findViewById(R.id.ocrAct_layout);
+                        Snackbar.make(layout, R.string.snackbar_old_expiry_date, Snackbar.LENGTH_SHORT).show();
+                    }
+                    predictedDate.setText(LocalDateConverter.localDateToString(predicted.last()));
+                }
+
+                add2Button.setEnabled(true);
+                calendar.setFocusable(true);
+                calendar.setClickable(true);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+
     }
 
     @Override

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ocrAct_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".add.ocr.OcrActivity">
@@ -9,8 +10,27 @@
     <!-- Id 바꾸면 안되는 것 같음 -->
     <!-- Image Cropper fill the remaining available height -->
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ocrAct_toolbar_top"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/ocrAct_text_toolbar_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/text_add_expiry_date_title" />
+    </androidx.appcompat.widget.Toolbar>
+
     <com.theartofdev.edmodo.cropper.CropImageView
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cropImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -20,7 +40,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ocrAct_toolbar_top"/>
+        app:layout_constraintTop_toBottomOf="@+id/ocrAct_toolbar_top">
+
+    </com.theartofdev.edmodo.cropper.CropImageView>
+
+    <View
+        android:id="@+id/ocrAct_divider_crop_top"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/ocrAct_barrier_crop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/ocrAct_barrier_crop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="ocrAct_button_crop_select,ocrAct_text_crop_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="731dp" />
 
     <TextView
         android:id="@+id/ocrAct_text_crop_desc"
@@ -46,48 +88,15 @@
         app:layout_constraintBottom_toTopOf="@+id/ocrAct_divider_result_top"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/ocrAct_barrier_crop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="ocrAct_button_crop_select,ocrAct_text_crop_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="731dp" />
-
-    <EditText
-        android:id="@+id/ocrAct_edittext_adding"
+    <View
+        android:id="@+id/ocrAct_divider_result_top"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ocrAct_button_add"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/ocrAct_button_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:enabled="false"
-        android:text="@string/button_add"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ocrAct_edittext_adding"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/ocrAct_barrier_adding"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="ocrAct_edittext_adding,ocrAct_button_add"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/ocrAct_text_add_result"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="731dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/ocrAct_text_add_result"
@@ -101,16 +110,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
-        android:id="@+id/ocrAct_divider_result_top"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginBottom="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/ocrAct_text_add_result"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <View
         android:id="@+id/ocrAct_divder_result_bottom"
         android:layout_width="0dp"
         android:layout_height="1dp"
@@ -120,34 +119,138 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/ocrAct_barrier_adding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="ocrAct_edittext_adding,ocrAct_button_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="731dp" />
+
+    <EditText
+        android:id="@+id/ocrAct_edittext_adding"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/ocrAct_divider_expiry_result"
+        app:layout_constraintEnd_toStartOf="@+id/ocrAct_button_add"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/ocrAct_button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:enabled="false"
+        android:text="@string/button_add"
+        app:layout_constraintBottom_toBottomOf="@+id/ocrAct_edittext_adding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ocrAct_edittext_adding"
+        tools:visibility="visible" />
+
     <View
-        android:id="@+id/ocrAct_divider_crop_top"
+        android:id="@+id/ocrAct_divider_expiry_result"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginBottom="8dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/ocrAct_barrier_crop"
+        app:layout_constraintBottom_toTopOf="@+id/ocrAct_text_recognized_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/ocrAct_toolbar_top"
+    <TextView
+        android:id="@+id/ocrAct_text_recognized_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/text_recognized_text"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/ocrAct_text_predict_expiry_date"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/ocrAct_text_predict_expiry_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/text_predict_expiry_date"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/ocrAct_button_add2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:enabled="false"
+        android:text="@string/button_add"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ocrAct_imgButton_calandar" />
+
+    <TextView
+        android:id="@+id/ocrAct_text_recognized_result"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ocrAct_text_recognized_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toEndOf="@+id/ocrAct_text_recognized_text"
+        tools:text="hello" />
 
-        <TextView
-            android:id="@+id/ocrAct_text_toolbar_title"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/text_add_expiry_date_title" />
-    </androidx.appcompat.widget.Toolbar>
+    <EditText
+        android:id="@+id/ocrAct_edittext_predict"
+        android:layout_width="122dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="1dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ocrAct_text_predict_expiry_date"
+        app:layout_constraintEnd_toStartOf="@+id/ocrAct_imgButton_calandar"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ocrAct_text_predict_expiry_date" />
+
+    <ImageButton
+        android:id="@+id/ocrAct_imgButton_calandar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintEnd_toStartOf="@+id/ocrAct_button_add2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintTop_toTopOf="@+id/ocrAct_edittext_predict"
+        app:srcCompat="@drawable/calendar" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/ocrAct_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="ocrAct_edittext_adding,ocrAct_button_add,ocrAct_text_add_result,ocrAct_divder_result_bottom,ocrAct_divider_result_top"
+        tools:visibility="gone" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/ocrAct_group_expiry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="ocrAct_text_predict_expiry_date,ocrAct_button_add2,ocrAct_imgButton_calandar,ocrAct_text_recognized_result,ocrAct_edittext_predict,ocrAct_text_recognized_text"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

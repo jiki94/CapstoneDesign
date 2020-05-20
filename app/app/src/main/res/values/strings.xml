@@ -73,4 +73,8 @@
     <string name="text_yes_show">허용</string>
     <string name="action_show_disliked">거부된 레시피 보기</string>
     <string name="text_disliked_title">거부한 레시피들</string>
+    <string name="text_recognized_text">인식된 텍스트</string>
+    <string name="text_predict_expiry_date">예상 유통기한</string>
+    <string name="text_predict_date_fail">유통기한 인식 실패</string>
+    <string name="snackbar_old_expiry_date">유통기한이 지났거나 제조일자일수도 있음</string>
 </resources>
