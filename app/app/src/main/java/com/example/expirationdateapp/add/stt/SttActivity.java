@@ -27,7 +27,7 @@ import com.kakao.sdk.newtoneapi.SpeechRecognizeListener;
 import com.kakao.sdk.newtoneapi.SpeechRecognizerClient;
 import com.kakao.sdk.newtoneapi.SpeechRecognizerManager;
 
-import org.w3c.dom.Text;
+import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 
@@ -145,10 +145,10 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
                 case EXPIRY_DATE:
                     // 정보 intent에 넣어서 원래 창으로
                     expiryDate = result.getText().toString();
-
+                    LocalDate tmp = LocalDate.now();
                     Intent intent = new Intent();
                     intent.putExtra(getString(R.string.key_name_data), name);
-                    intent.putExtra(getString(R.string.key_expiry_data), expiryDate);
+                    intent.putExtra(getString(R.string.key_expiry_data), tmp);
                     intent.putExtra(getString(R.string.key_stored_type), storedType);
 
                     setResult(Activity.RESULT_OK, intent);

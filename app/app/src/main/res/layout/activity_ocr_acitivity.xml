@@ -40,9 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ocrAct_toolbar_top">
-
-    </com.theartofdev.edmodo.cropper.CropImageView>
+        app:layout_constraintTop_toBottomOf="@+id/ocrAct_toolbar_top"/>
 
     <View
         android:id="@+id/ocrAct_divider_crop_top"

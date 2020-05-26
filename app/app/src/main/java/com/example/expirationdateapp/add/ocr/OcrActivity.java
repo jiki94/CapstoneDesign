@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,12 +21,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.expirationdateapp.R;
+import com.example.expirationdateapp.add.CalendarDialogFragment;
 import com.example.expirationdateapp.add.GetType;
 import com.example.expirationdateapp.db.LocalDateConverter;
 import com.example.expirationdateapp.db.StoredType;
@@ -49,7 +52,8 @@ import static java.lang.Math.min;
 
 // Ocr 입력 담당하는 액티비티
 // 여기서 카카오 vision api 호출함
-public class OcrActivity extends AppCompatActivity implements View.OnClickListener, OcrRetrofitHandler.OcrResponseHandler {
+public class OcrActivity extends AppCompatActivity implements View.OnClickListener,
+        OcrRetrofitHandler.OcrResponseHandler, DatePickerDialog.OnDateSetListener {
     public static final int CAMERA_REQUEST_CODE = 0;
     public static final int GALLERY_REQUEST_CODE = 1;
 
@@ -74,6 +78,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     private String name = null;
     private String expiryDate = null;
     private StoredType storedType = null;
+    private LocalDate expiryDate2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +175,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
                     img.delete();
 
                     cropImageView.setImageBitmap(bitmap);
+                    cropImageView.rotateImage(90);
                     break;
                 case GALLERY_REQUEST_CODE:
                     Uri uri = data.getData();
@@ -289,17 +295,16 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
             ocrQuery(cropped);
         }else if (v.getId() == R.id.ocrAct_button_add2){
             // 정보 intent에 넣어서 원래 창으로
-            expiryDate = resultEditText.getText().toString();
-
             Intent intent = new Intent();
             intent.putExtra(getString(R.string.key_name_data), name);
-            intent.putExtra(getString(R.string.key_expiry_data), expiryDate);
+            intent.putExtra(getString(R.string.key_expiry_data), expiryDate2);
             intent.putExtra(getString(R.string.key_stored_type), storedType);
 
             setResult(Activity.RESULT_OK, intent);
             finish();
         }else if (v.getId() == R.id.ocrAct_imgButton_calandar){
-
+            DialogFragment dialog = new CalendarDialogFragment(this,this, expiryDate2);
+            dialog.show(getSupportFragmentManager(), "Calandar Dialog");
         }
     }
 
@@ -332,8 +337,10 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
                 SortedSet<LocalDate> predicted = DateReader.readFromString(ret);
                 if (predicted.isEmpty()){
                     predictedDate.setText(R.string.text_predict_date_fail);
+                    expiryDate2 = null;
                 }else{
                     LocalDate newest = predicted.last();
+                    expiryDate2 = newest;
                     if (LocalDate.now().isAfter(newest)){
                        // Snackbar로 유통기한 지남 또는 제조일자 인지 확인 알림
                         View layout = findViewById(R.id.ocrAct_layout);
@@ -363,5 +370,11 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
             sb.append(delimiter).append(strings.get(i));
 
         return sb.toString();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        expiryDate2 = LocalDate.of(year, month + 1, dayOfMonth);
+        predictedDate.setText(LocalDateConverter.localDateToString(expiryDate2));
     }
 }

@@ -190,14 +190,14 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
             }
         }
 
-        final DialogFragment target = this;
+        final DatePickerDialog.OnDateSetListener target = this;
+        final DialogFragment top = this;
         ImageButton imgButton = body.findViewById(R.id.nesDialog_imgButton_calandar);
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment dialog = new CalendarDialogFragment();
-                dialog.setTargetFragment(target, 0);
-                dialog.show(target.getFragmentManager(), "datePicker");
+                DialogFragment dialog = new CalendarDialogFragment(top.requireContext(), target);
+                dialog.show(top.getFragmentManager(), "datePicker");
             }
         });
 
@@ -294,7 +294,7 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
     // DatePickerDialog.OnDateSetListener 인터페이스 구현
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        setNewLocalDate(LocalDate.of(year, month, dayOfMonth), false);
+        setNewLocalDate(LocalDate.of(year, month + 1, dayOfMonth), false);
     }
 
     private long calculateDaysAfter(LocalDate givenDate){
