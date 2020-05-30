@@ -292,6 +292,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         }else if (v.getId() == R.id.ocrAct_button_crop_select){
             Bitmap cropped = cropImageView.getCroppedImage();
             ocrQuery(cropped);
+            resultText.scrollTo(0, 0);
         }else if (v.getId() == R.id.ocrAct_button_add2){
             // 정보 intent에 넣어서 원래 창으로
             Intent intent = new Intent();
