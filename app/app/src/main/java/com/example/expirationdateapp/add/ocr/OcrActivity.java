@@ -68,7 +68,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     private CropImageView cropImageView;
     private ImageButton calendar;
     private TextView resultText;
-    private EditText predictedDate;
+    private TextView predictedDate;
 
     private Group nameGroup;
     private Group expiryGroup;
@@ -76,7 +76,6 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     private OcrRetrofitHandler ocrRetrofitHandler;
 
     private String name = null;
-    private String expiryDate = null;
     private StoredType storedType = null;
     private LocalDate expiryDate2 = null;
 
@@ -120,7 +119,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         expiryGroup = findViewById(R.id.ocrAct_group_expiry);
 
         resultText = findViewById(R.id.ocrAct_text_recognized_result);
-        predictedDate = findViewById(R.id.ocrAct_edittext_predict);
+        predictedDate = findViewById(R.id.ocrAct_text_predict_result);
 
         addButton.setOnClickListener(this);
         add2Button.setOnClickListener(this);

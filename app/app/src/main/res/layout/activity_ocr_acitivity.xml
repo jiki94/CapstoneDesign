@@ -184,7 +184,7 @@
         android:text="@string/text_predict_expiry_date"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintEnd_toStartOf="@+id/ocrAct_text_predict_result"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent" />
@@ -196,7 +196,7 @@
         android:layout_marginEnd="8dp"
         android:enabled="false"
         android:text="@string/button_add"
-        app:layout_constraintBaseline_toBaselineOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintBaseline_toBaselineOf="@+id/ocrAct_text_predict_result"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ocrAct_imgButton_calandar" />
@@ -215,8 +215,8 @@
         app:layout_constraintStart_toEndOf="@+id/ocrAct_text_recognized_text"
         tools:text="hello" />
 
-    <EditText
-        android:id="@+id/ocrAct_edittext_predict"
+    <TextView
+        android:id="@+id/ocrAct_text_predict_result"
         android:layout_width="122dp"
         android:layout_height="47dp"
         android:layout_marginStart="1dp"
@@ -232,11 +232,11 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:scaleType="fitCenter"
-        app:layout_constraintBottom_toBottomOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintBottom_toBottomOf="@+id/ocrAct_text_predict_result"
         app:layout_constraintEnd_toStartOf="@+id/ocrAct_button_add2"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/ocrAct_edittext_predict"
-        app:layout_constraintTop_toTopOf="@+id/ocrAct_edittext_predict"
+        app:layout_constraintStart_toEndOf="@+id/ocrAct_text_predict_result"
+        app:layout_constraintTop_toTopOf="@+id/ocrAct_text_predict_result"
         app:srcCompat="@drawable/calendar" />
 
     <androidx.constraintlayout.widget.Group
@@ -244,13 +244,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="ocrAct_edittext_adding,ocrAct_button_add,ocrAct_text_add_result,ocrAct_divder_result_bottom,ocrAct_divider_result_top"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/ocrAct_group_expiry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="ocrAct_text_predict_expiry_date,ocrAct_button_add2,ocrAct_imgButton_calandar,ocrAct_text_recognized_result,ocrAct_edittext_predict,ocrAct_text_recognized_text"
+        app:constraint_referenced_ids="ocrAct_text_predict_expiry_date,ocrAct_button_add2,ocrAct_imgButton_calandar,ocrAct_text_recognized_result,ocrAct_text_predict_result,ocrAct_text_recognized_text"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
