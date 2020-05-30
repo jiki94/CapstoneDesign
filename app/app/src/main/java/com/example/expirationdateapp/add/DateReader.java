@@ -1,4 +1,4 @@
-package com.example.expirationdateapp.add.ocr;
+package com.example.expirationdateapp.add;
 
 import org.threeten.bp.DateTimeException;
 import org.threeten.bp.LocalDate;
@@ -13,12 +13,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DateReader {
-    static String [] ymdPatStr =  {"(\\d{4})\\s*[/\\.\\ub144]\\s*(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?",
+    static private String [] ymdPatStr =  {"(\\d{4})\\s*[/\\.\\ub144]\\s*(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?",
             "(\\d{2})\\s*[/\\.\\ub144]\\s*(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?",
             "(\\d{4})(\\d{2})(\\d{2})"};
-    static String [] mdPatStr = {"(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?"};
-    static Pattern [] ymdPat;
-    static Pattern [] mdPat;
+    static private String [] mdPatStr = {"(\\d{1,2})\\s*[/\\.\\uc6d4]\\s*(\\d{1,2})\\s*\\uc77c?"};
+    static private Pattern [] ymdPat;
+    static private Pattern [] mdPat;
     static {
         ymdPat = new Pattern[ymdPatStr.length];
         for (int i = 0; i < ymdPatStr.length; i++)
@@ -29,7 +29,7 @@ public class DateReader {
             mdPat[i] = Pattern.compile(mdPatStr[i]);
     }
 
-    static SortedSet<LocalDate> readFromString(String input){
+    static public SortedSet<LocalDate> readFromString(String input){
         input = input.replaceAll("\\s", "");
         SortedSet<LocalDate> dates = new TreeSet<>();
         for (Pattern pat : ymdPat){

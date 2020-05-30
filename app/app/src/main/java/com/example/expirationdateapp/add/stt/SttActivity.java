@@ -5,24 +5,36 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.speech.SpeechRecognizer;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.expirationdateapp.AppContainerViewModelFactory;
+import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.R;
+import com.example.expirationdateapp.add.CalendarDialogFragment;
+import com.example.expirationdateapp.add.DateReader;
 import com.example.expirationdateapp.add.GetType;
+import com.example.expirationdateapp.db.LocalDateConverter;
 import com.example.expirationdateapp.db.StoredType;
+import com.example.expirationdateapp.db.SttFoodData;
+import com.google.android.material.snackbar.Snackbar;
 import com.kakao.sdk.newtoneapi.SpeechRecognizeListener;
 import com.kakao.sdk.newtoneapi.SpeechRecognizerClient;
 import com.kakao.sdk.newtoneapi.SpeechRecognizerManager;
@@ -30,13 +42,15 @@ import com.kakao.sdk.newtoneapi.SpeechRecognizerManager;
 import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
 
-public class SttActivity extends AppCompatActivity implements View.OnClickListener {
+public class SttActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     static final int PERMISSION_REQUEST_CODE = 1;
 
     private GetType getType;
     private String name = null;
-    private String expiryDate = null;
+    private LocalDate expiryDate2 = null;
     private StoredType storedType = null;
 
     private TextView title;
@@ -50,6 +64,12 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
 
     private Group groupResults;
     private TextView[] textResults;
+
+    private Group groupPredict;
+    private TextView predictedExpiry;
+    private ImageButton calendarButton;
+
+    private SttViewModel viewModel;
 
     private SpeechRecognizerClient client;
 
@@ -90,8 +110,13 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
         textResults[3] = findViewById(R.id.sttAct_text_res4);
         textResults[4] = findViewById(R.id.sttAct_text_res5);
 
+        groupPredict = findViewById(R.id.sttAct_group_predict_expiry_date);
+        predictedExpiry = findViewById(R.id.sttAct_text_predict_expiry_date_result);
+        calendarButton = findViewById(R.id.sttAct_button_calandar);
+
         add.setOnClickListener(this);
         retry.setOnClickListener(this);
+        calendarButton.setOnClickListener(this);
 
         // 기본으로 세팅된 정보 얻기
         name = bundle.getString(getString(R.string.key_name_data));
@@ -99,6 +124,10 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
 
         // stt 관련
         SpeechRecognizerManager.getInstance().initializeLibrary(this);
+
+        Log.d("VIEWMODEL_TEST", "onCreate");
+        ViewModelProvider.Factory factory = new AppContainerViewModelFactory(MyApplication.getInstance().appContainer);
+        viewModel = new ViewModelProvider(this, factory).get(SttViewModel.class);
 
         reset(inputGetType);
     }
@@ -141,14 +170,13 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
                 case NAME:
                     name = result.getText().toString();
                     reset(GetType.EXPIRY_DATE);
+                    setClient(null);
                     return;
                 case EXPIRY_DATE:
                     // 정보 intent에 넣어서 원래 창으로
-                    expiryDate = result.getText().toString();
-                    LocalDate tmp = LocalDate.now();
                     Intent intent = new Intent();
                     intent.putExtra(getString(R.string.key_name_data), name);
-                    intent.putExtra(getString(R.string.key_expiry_data), tmp);
+                    intent.putExtra(getString(R.string.key_expiry_data), expiryDate2);
                     intent.putExtra(getString(R.string.key_stored_type), storedType);
 
                     setResult(Activity.RESULT_OK, intent);
@@ -169,6 +197,7 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
                     break;
                 case EXPIRY_DATE:
                     sttDesc.setText(R.string.text_stt_expiry_date_input_desc);
+                    predictedExpiry.setText(new String());
                     break;
                 default:
                     throw new IllegalArgumentException("Not Allowed Enum value");
@@ -176,6 +205,9 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
 
             client.cancelRecording();
             client.startRecording(true);
+        }else if (v.getId() == R.id.sttAct_button_calandar){
+            DialogFragment dialogFragment = new CalendarDialogFragment(this, this, expiryDate2);
+            dialogFragment.show(getSupportFragmentManager(), "Calandar Frag");
         }
     }
 
@@ -199,8 +231,49 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
 
         groupResults.setVisibility(View.GONE);
 
+        if (getType == GetType.NAME) {
+            viewModel.getData().observe(this, new Observer<List<SttFoodData>>() {
+                @Override
+                public void onChanged(List<SttFoodData> sttFoodData) {
+                    Log.d("VIEWMODEL_TEST", "" + sttFoodData.size());
+                    List<String> data = new ArrayList<>();
+                    for (SttFoodData sfd : sttFoodData) {
+                        data.add(sfd.name);
+                    }
+
+                    setClient(data);
+                    viewModel.getData().removeObserver(this);
+                }
+            });
+
+            groupPredict.setVisibility(View.GONE);
+            result.setInputType(InputType.TYPE_CLASS_TEXT);
+            result.setFocusable(true);
+        }else{
+            setClient(null);
+            groupPredict.setVisibility(View.VISIBLE);
+            result.setInputType(InputType.TYPE_NULL);
+            result.setFocusable(false);
+        }
+    }
+
+    // extraData는 유저 사전에 추가할 단어들
+    // null이면 유저 사전 사용 안함
+    private void setClient(List<String> extraData){
         // 타입에 맞게 초기화
         SpeechRecognizerClient.Builder builder = new SpeechRecognizerClient.Builder();
+
+        // 유저 사전 추가
+        if (extraData != null && !extraData.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < extraData.size(); i++) {
+                sb.append(extraData.get(i));
+                if (i + 1 != extraData.size())
+                    sb.append('\n');
+            }
+            builder.setUserDictionary(sb.toString());
+        }
+
         switch (getType){
             case NAME:
                 // ui 관련
@@ -209,6 +282,7 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
 
                 // stt 관련
                 builder.setServer(SpeechRecognizerClient.SERVICE_TYPE_WORD);
+
                 break;
             case EXPIRY_DATE:
                 // ui 관련
@@ -217,6 +291,7 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
 
                 // stt 관련
                 builder.setServer(SpeechRecognizerClient.SERVICE_TYPE_WORD);
+
                 break;
             default:
                 throw new IllegalArgumentException("Not Allowed Enum value");
@@ -281,23 +356,59 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
                         ArrayList<String> texts = results.getStringArrayList(SpeechRecognizerClient.KEY_RECOGNITION_RESULTS);
                         ArrayList<Integer> confs = results.getIntegerArrayList(SpeechRecognizerClient.KEY_CONFIDENCE_VALUES);
 
-                        result.setText(texts.get(0));
+                        if (getType == GetType.NAME) {
+                            groupResults.setVisibility(View.VISIBLE);
+                            int smaller = Math.min(texts.size(), 5);
+                            for (int i = 0; i < smaller; i++) {
+                                final String res = texts.get(i);
+                                textResults[i].setText(res);
+                                textResults[i].setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        result.setText(res);
+                                    }
+                                });
+                            }
+                            for (int i = smaller; i < 5; i++) {
+                                textResults[i].setText("");
+                                textResults[i].setOnClickListener(null);
+                            }
 
-                        groupResults.setVisibility(View.VISIBLE);
-                        int smaller = Math.min(texts.size(), 5);
-                        for (int i = 0; i < smaller; i++) {
-                            final String res = texts.get(i);
-                            textResults[i].setText(res);
-                            textResults[i].setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    result.setText(res);
-                                }
-                            });
-                        }
-                        for (int i = smaller; i < 5; i++) {
-                            textResults[i].setText("");
-                            textResults[i].setOnClickListener(null);
+                            if (smaller >= 1)
+                                textResults[0].callOnClick();
+                        }else{
+                            groupResults.setVisibility(View.VISIBLE);
+                            int smaller = Math.min(texts.size(), 5);
+                            for (int i = 0; i < smaller; i++) {
+                                final String res = texts.get(i);
+                                textResults[i].setText(res);
+                                textResults[i].setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        result.setText(res);
+                                        SortedSet<LocalDate> predicted = DateReader.readFromString(res);
+                                        if (predicted.isEmpty()){
+                                            predictedExpiry.setText(R.string.text_predict_date_fail);
+                                            expiryDate2 = null;
+                                        }else{
+                                            LocalDate latest = predicted.last();
+                                            expiryDate2 = latest;
+                                            predictedExpiry.setText(LocalDateConverter.localDateToString(latest));
+                                            if (LocalDate.now().isAfter(latest)){
+                                                View layout = findViewById(android.R.id.content);
+                                                Snackbar.make(layout, R.string.snackbar_old_expiry_date, Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            for (int i = smaller; i < 5; i++) {
+                                textResults[i].setText("");
+                                textResults[i].setOnClickListener(null);
+                            }
+
+                            if (smaller >= 1)
+                                textResults[0].callOnClick();
                         }
                     }
                 });
@@ -317,5 +428,11 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
         if (checkPermissions()){
             client.startRecording(true);
         }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        expiryDate2 = LocalDate.of(year, month + 1, dayOfMonth);
+        predictedExpiry.setText(LocalDateConverter.localDateToString(expiryDate2));
     }
 }

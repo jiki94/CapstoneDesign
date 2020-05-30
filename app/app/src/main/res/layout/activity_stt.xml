@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/kakao"
-        app:layout_constraintBottom_toTopOf="@+id/sttAct_button_add"
+        app:layout_constraintBottom_toTopOf="@+id/sttAct_text_predict_expiry_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sttAct_text_res5" />
@@ -163,5 +163,47 @@
         app:layout_constraintStart_toStartOf="@+id/sttAct_text_desc"
         app:layout_constraintTop_toBottomOf="@+id/sttAct_text_res4"
         tools:text="마지막 후보(이 경우에는 없음)" />
+
+    <TextView
+        android:id="@+id/sttAct_text_predict_expiry_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/text_predict_expiry_date"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/sttAct_button_add"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/sttAct_text_predict_expiry_date_result"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/sttAct_text_predict_expiry_date"
+        app:layout_constraintEnd_toStartOf="@+id/sttAct_button_calandar"
+        app:layout_constraintStart_toEndOf="@+id/sttAct_text_predict_expiry_date" />
+
+    <ImageButton
+        android:id="@+id/sttAct_button_calandar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/sttAct_text_predict_expiry_date_result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sttAct_text_predict_expiry_date_result"
+        app:srcCompat="@drawable/calendar" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/sttAct_group_predict_expiry_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="sttAct_button_calandar,sttAct_text_predict_expiry_date,sttAct_text_predict_expiry_date_result"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.add.CalendarDialogFragment;
+import com.example.expirationdateapp.add.DateReader;
 import com.example.expirationdateapp.add.GetType;
 import com.example.expirationdateapp.db.LocalDateConverter;
 import com.example.expirationdateapp.db.StoredType;
@@ -41,7 +42,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.SortedSet;
 
 import retrofit2.Call;

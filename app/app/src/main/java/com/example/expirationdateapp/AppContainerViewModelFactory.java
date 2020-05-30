@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.expirationdateapp.add.AddViewModel;
 import com.example.expirationdateapp.add.basket.BasketViewModel;
+import com.example.expirationdateapp.add.stt.SttViewModel;
 import com.example.expirationdateapp.recipe.DislikedListViewModel;
 import com.example.expirationdateapp.recipe.RecipeDetailViewModel;
 import com.example.expirationdateapp.recipe.RecipeListViewModel;
@@ -36,6 +37,8 @@ public class AppContainerViewModelFactory implements ViewModelProvider.Factory{
                     appContainer.getRecipeProgressRepository(), appContainer.getDislikedRecipeRepository());
         else if (modelClass.equals(DislikedListViewModel.class))
             return (T) new DislikedListViewModel(appContainer.getRecipeInfoRepository());
+        else if (modelClass.equals(SttViewModel.class))
+            return (T) new SttViewModel(appContainer.getSttFoodDataRepository());
 
         throw new IllegalArgumentException("There is factory does not support " + modelClass.getName());
     }
