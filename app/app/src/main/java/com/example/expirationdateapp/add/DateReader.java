@@ -54,24 +54,26 @@ public class DateReader {
             }
         }
 
-        for (Pattern pat : mdPat){
-            Matcher m = pat.matcher(input);
-            while (m.find()){
-                try {
-                    int month = Integer.parseInt(m.group(1));
-                    int day = Integer.parseInt(m.group(2));
+        if (dates.isEmpty()) {
+            for (Pattern pat : mdPat) {
+                Matcher m = pat.matcher(input);
+                while (m.find()) {
+                    try {
+                        int month = Integer.parseInt(m.group(1));
+                        int day = Integer.parseInt(m.group(2));
 
-                    LocalDate now = LocalDate.now();
-                    int year = now.getYear();
-                    LocalDate date = LocalDate.of(year, month, day);
-                    if (now.isAfter(date))
-                        date = date.plusYears(1);
+                        LocalDate now = LocalDate.now();
+                        int year = now.getYear();
+                        LocalDate date = LocalDate.of(year, month, day);
+                        if (now.isAfter(date))
+                            date = date.plusYears(1);
 
-                    dates.add(date);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("This should never execute unless some problem in regex lib.");
-                } catch (DateTimeException e) {
-                    // 날짜 형식이지만 실제 날짜가 아님
+                        dates.add(date);
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("This should never execute unless some problem in regex lib.");
+                    } catch (DateTimeException e) {
+                        // 날짜 형식이지만 실제 날짜가 아님
+                    }
                 }
             }
         }
