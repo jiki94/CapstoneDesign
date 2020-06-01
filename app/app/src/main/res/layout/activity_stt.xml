@@ -33,12 +33,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sttAct_toolbar_top"
-        tools:text="@string/text_listened" />
+        tools:text="@string/text_error_audio_fail" />
 
     <EditText
         android:id="@+id/sttAct_edittext_input"

@@ -15,6 +15,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Debug;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,19 @@ import org.threeten.bp.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedSet;
+
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_AUDIO_FAIL;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_AUTH_FAIL;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_CLIENT;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_NETWORK_FAIL;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_NETWORK_TIMEOUT;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_NO_RESULT;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_RECOGNITION_TIMEOUT;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_SERVER_ALLOWED_REQUESTS_EXCESS;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_SERVER_FAIL;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_SERVER_TIMEOUT;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_SERVER_UNSUPPORT_SERVICE;
+import static com.kakao.sdk.newtoneapi.SpeechRecognizerClient.ERROR_SERVER_USERDICT_EMPTY;
 
 public class SttActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     static final int PERMISSION_REQUEST_CODE = 1;
@@ -140,15 +154,14 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
                     client.startRecording(true);
                 }else{
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)){
-                        Toast.makeText(this, "Needs to Record Audio to use", Toast.LENGTH_SHORT).show();
-                    }else{
-                        finish();
+                        Toast.makeText(this, R.string.text_need_audio, Toast.LENGTH_SHORT).show();
                     }
+
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                        Toast.makeText(this, "Needs to write to external storage to use", Toast.LENGTH_SHORT).show();
-                    }else{
-                        finish();
+                        Toast.makeText(this, R.string.text_need_storage, Toast.LENGTH_SHORT).show();
                     }
+
+                    finish();
                 }
             }else{
                 finish();
@@ -197,7 +210,8 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
                     break;
                 case EXPIRY_DATE:
                     sttDesc.setText(R.string.text_stt_expiry_date_input_desc);
-                    predictedExpiry.setText(new String());
+                    predictedExpiry.setText("");
+                    calendarButton.setEnabled(false);
                     break;
                 default:
                     throw new IllegalArgumentException("Not Allowed Enum value");
@@ -254,6 +268,7 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
             groupPredict.setVisibility(View.VISIBLE);
             result.setInputType(InputType.TYPE_NULL);
             result.setFocusable(false);
+            calendarButton.setEnabled(false);
         }
     }
 
@@ -330,6 +345,59 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
             public void onError(int errorCode, String errorMsg) {
                 Log.v("STT_TEST", "onError: " + errorMsg);
                 //TODO: 에러에 맞게 화면 보여주기
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        retry.setEnabled(true);
+                        switch (errorCode){
+                            case ERROR_AUDIO_FAIL:
+                                Log.d("STT_ERROR_CODE", "ERROR_AUDIO_FAIL");
+                                listeningState.setText(R.string.text_error_audio_fail);
+                                finish(); // TODO: 이게 여기서 호출 가능한가?
+                                break;
+                            case ERROR_AUTH_FAIL:
+                                Log.d("STT_ERROR_CODE", "ERROR_AUTH_FAIL");
+                                listeningState.setText(R.string.text_error_auth_fail);
+                                break;
+                            case ERROR_NETWORK_FAIL:
+                            case ERROR_NETWORK_TIMEOUT:
+                                Log.d("STT_ERROR_CODE", "ERROR_NETWORK");
+                                listeningState.setText(R.string.text_error_network);
+                                break;
+                            case ERROR_SERVER_FAIL:
+                            case ERROR_SERVER_TIMEOUT:
+                                Log.d("STT_ERROR_CODE", "ERROR_SERVER");
+                                listeningState.setText(R.string.text_error_server);
+                                break;
+                            case ERROR_NO_RESULT:
+                                Log.d("STT_ERROR_CODE", "ERROR_NO_RESULT");
+                                listeningState.setText(R.string.text_error_no_result);
+                                break;
+                            case ERROR_CLIENT:
+                                Log.d("STT_ERROR_CODE", "ERROR_CLIENT");
+                                listeningState.setText(R.string.text_error_client);
+                                break;
+                            case ERROR_RECOGNITION_TIMEOUT:
+                                Log.d("STT_ERROR_CODE", "ERROR_RECOGNITION_TIMEOUT");
+                                listeningState.setText("타임 아웃");
+                                break;
+                            case ERROR_SERVER_UNSUPPORT_SERVICE:
+                                Log.d("STT_ERROR_CODE", "ERROR_SERVER_UNSUPPORT_SERVICE");
+                                listeningState.setText(R.string.text_error_server_unsupport_service);
+                                break;
+                            case ERROR_SERVER_USERDICT_EMPTY:
+                                Log.d("STT_ERROR_CODE", "ERROR_SERVER_USERDICT_EMPTY");
+                                listeningState.setText(R.string.text_error_userdict_empty);
+                                break;
+                            case ERROR_SERVER_ALLOWED_REQUESTS_EXCESS:
+                                Log.d("STT_ERROR_CODE", "ERROR_SERVER_ALLOWED_REQUESTS_EXCESS");
+                                listeningState.setText(R.string.text_error_too_many_requests);
+                                break;
+                            default:
+                                Log.e("STT_ERROR_CODE", String.format("Unknown ErrorCode: %d, ErrorMsg: %s", errorCode, errorMsg));
+                        }
+                    }
+                });
             }
 
             @Override
@@ -378,6 +446,7 @@ public class SttActivity extends AppCompatActivity implements View.OnClickListen
                                 textResults[0].callOnClick();
                         }else{
                             groupResults.setVisibility(View.VISIBLE);
+                            calendarButton.setEnabled(true);
                             int smaller = Math.min(texts.size(), 5);
                             for (int i = 0; i < smaller; i++) {
                                 final String res = texts.get(i);
