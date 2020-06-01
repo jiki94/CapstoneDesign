@@ -10,4 +10,7 @@ import java.util.List;
 public interface RecipeIngredientDao {
     @Query("SELECT * FROM RecipeIngredient WHERE recipeCode = :recipeCode AND ingredientType = :type")
     LiveData<List<RecipeIngredient>> getRecipeIngredientsByType(int recipeCode, int type);
+
+    @Query("SELECT DISTINCT ingredientName FROM RecipeIngredient")
+    List<String> getDistinctNames();
 }

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -27,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.Period;
+import org.threeten.bp.temporal.ChronoUnit;
 
 // 이름, 유통기한, 저장공간 정보를 입력할 수 있는 다이얼로그
 public class NESDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
@@ -166,6 +168,7 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    Log.d("LOCAL_DATE_TEST", "after textChange" + s.toString());
                     String input = s.toString();
                     try {
                         int days = input.isEmpty() ? 0 : Integer.decode(input);
@@ -190,14 +193,14 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
             }
         }
 
-        final DialogFragment target = this;
+        final DatePickerDialog.OnDateSetListener target = this;
+        final DialogFragment top = this;
         ImageButton imgButton = body.findViewById(R.id.nesDialog_imgButton_calandar);
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment dialog = new CalendarDialogFragment();
-                dialog.setTargetFragment(target, 0);
-                dialog.show(target.getFragmentManager(), "datePicker");
+                DialogFragment dialog = new CalendarDialogFragment(top.requireContext(), target);
+                dialog.show(top.getFragmentManager(), "datePicker");
             }
         });
 
@@ -294,19 +297,20 @@ public class NESDialogFragment extends DialogFragment implements DatePickerDialo
     // DatePickerDialog.OnDateSetListener 인터페이스 구현
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        setNewLocalDate(LocalDate.of(year, month, dayOfMonth), false);
+        setNewLocalDate(LocalDate.of(year, month + 1, dayOfMonth), false);
     }
 
     private long calculateDaysAfter(LocalDate givenDate){
-        Period period = Period.between(LocalDate.now(), givenDate);
-        return period.getDays();
+        return ChronoUnit.DAYS.between(LocalDate.now(), givenDate);
     }
 
     private void setNewLocalDate(LocalDate newDate, boolean fromEditText){
         localDate = newDate;
-        expiryText.setText(LocalDateConverter.localDateToString(localDate));
-
+        Log.d("LOCAL_DATE_TEST", "new LocalDate is "  + LocalDateConverter.localDateToString(localDate));
         if (!fromEditText)
             afterDaysEditText.setText(Long.toString(calculateDaysAfter(localDate)));
+
+        expiryText.setText(LocalDateConverter.localDateToString(localDate));
+        Log.d("LOCAL_DATE_TEST", LocalDateConverter.localDateToString(localDate));
     }
 }

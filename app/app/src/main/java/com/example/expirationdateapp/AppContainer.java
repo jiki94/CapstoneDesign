@@ -17,6 +17,8 @@ import com.example.expirationdateapp.db.RecipeInfoRepository;
 import com.example.expirationdateapp.db.RecipeIngredientRepository;
 import com.example.expirationdateapp.db.RecipeProgressRepository;
 import com.example.expirationdateapp.db.StoredType;
+import com.example.expirationdateapp.db.SttFoodData;
+import com.example.expirationdateapp.db.SttFoodDataRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +35,7 @@ public class AppContainer {
     private RecipeIngredientRepository recipeIngredientRepository;
     private RecipeProgressRepository recipeProgressRepository;
     private DislikedRecipeRepository dislikedRecipeRepository;
+    private SttFoodDataRepository sttFoodDataRepository;
 
     AppContainer(Context context){
         // 현재 db에 즐겨찾기 더미 데이터 있
@@ -62,6 +65,14 @@ public class AppContainer {
                                 List<MainIngredientCount> counts = database.mainIngredientCountDao().calculate();
                                 database.mainIngredientCountDao().deleteAll();
                                 database.mainIngredientCountDao().insert(counts);
+
+                                List<String> names = database.recipeIngredientDao().getDistinctNames();
+                                List<SttFoodData> foodData = new ArrayList<>();
+                                for (String name : names){
+                                    foodData.add(new SttFoodData(name));
+                                }
+
+                                database.sttFoodDataDao().addingNames(foodData);
                             }
                         });
                     }
@@ -73,6 +84,7 @@ public class AppContainer {
         recipeIngredientRepository = new RecipeIngredientRepository(database);
         recipeProgressRepository = new RecipeProgressRepository(database);
         dislikedRecipeRepository = new DislikedRecipeRepository(database);
+        sttFoodDataRepository = new SttFoodDataRepository(database);
     }
 
     public FavoriteRepository getFavoriteRepository() {
@@ -97,5 +109,9 @@ public class AppContainer {
 
     public DislikedRecipeRepository getDislikedRecipeRepository(){
         return dislikedRecipeRepository;
+    }
+
+    public SttFoodDataRepository getSttFoodDataRepository(){
+        return sttFoodDataRepository;
     }
 }

@@ -210,16 +210,9 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
         if (requestCode == REQUEST_CODE_OCR_ACT && resultCode == Activity.RESULT_OK ||
             requestCode == REQUEST_CODE_STT_ACT && resultCode == Activity.RESULT_OK){
             String name = data.getStringExtra(getString(R.string.key_name_data));
-            String stringExpiryDate = data.getStringExtra(getString(R.string.key_expiry_data));
+            LocalDate expiryDate = (LocalDate) data.getSerializableExtra(getString(R.string.key_expiry_data));
             StoredType storedType = (StoredType) data.getSerializableExtra(getString(R.string.key_stored_type));
 
-            Toast.makeText(getContext(),
-                    String.format("name: %s  expirydate: %s  storedType: %s", name, stringExpiryDate, storedType),
-                    Toast.LENGTH_SHORT).show();
-
-            // 임시로 얻은 string 을 localdate 로 변환하는거 하기
-            // 아니면 여기로 오기 전에 localdate로 바꾸는게 나을
-            LocalDate expiryDate = LocalDate.now();
             DialogFragment dialog = dialogManager.getAddManualDialogFragment(name, expiryDate, storedType);
             dialog.show(dialogManager.getFragmentManager(), "AutoInputDialog");
         }

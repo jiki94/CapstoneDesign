@@ -3,6 +3,7 @@ package com.example.expirationdateapp.add;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
@@ -13,21 +14,37 @@ import androidx.fragment.app.DialogFragment;
 import org.threeten.bp.LocalDate;
 
 public class CalendarDialogFragment extends DialogFragment{
+    @NonNull private Context context;
+    @NonNull private DatePickerDialog.OnDateSetListener listener;
+    private LocalDate date;
+
+    public CalendarDialogFragment(@NonNull Context context, @NonNull DatePickerDialog.OnDateSetListener listener) {
+        this.context = context;
+        this.listener = listener;
+        this.date = null;
+    }
+
+    public CalendarDialogFragment(@NonNull Context context, @NonNull DatePickerDialog.OnDateSetListener listener,
+                                  LocalDate date) {
+        this.context = context;
+        this.listener = listener;
+        this.date = date;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        LocalDate ld = LocalDate.now();
-        int year = ld.getYear();
-        int month = ld.getMonthValue();
-        int day = ld.getDayOfMonth();
-
-        DatePickerDialog.OnDateSetListener listener;
-        if (getTargetFragment() instanceof DatePickerDialog.OnDateSetListener){
-            listener = (DatePickerDialog.OnDateSetListener) getTargetFragment();
+        LocalDate ld;
+        if (date == null) {
+            ld = LocalDate.now();
         }else{
-            throw new ClassCastException("Must implements " + DatePickerDialog.OnDateSetListener.class.getName());
+            ld = date;
         }
 
-        return new DatePickerDialog(getTargetFragment().getContext(), listener, year, month, day);
+        int year = ld.getYear();
+        int month = ld.getMonthValue() - 1;
+        int day = ld.getDayOfMonth();
+
+        return new DatePickerDialog(context, listener, year, month, day);
     }
 }
