@@ -8,6 +8,7 @@ import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.temporal.ChronoUnit;
 
 // 상품 클래스
 // 장바구니나 입력된 상품은 inBasket 변수로 구분
@@ -54,6 +55,10 @@ public class Product {
         // id가 같은데 다른 content 가질 가능성 없을듯;
         Product other = (Product) obj;
         return id == other.id;
+    }
+
+    public long getExpiryDateInDays(){
+        return ChronoUnit.DAYS.between(LocalDate.now(), expiryDate.plusDays(1));
     }
 }
 

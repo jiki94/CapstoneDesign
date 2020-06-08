@@ -1,21 +1,23 @@
 package com.example.expirationdateapp.add.basket;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.expirationdateapp.alarm.AlarmSetter;
-import com.example.expirationdateapp.db.AppRoomDatabase;
 import com.example.expirationdateapp.db.Product;
 import com.example.expirationdateapp.db.ProductRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // BasketActivity 랑 연결된 ViewModel
-public class BasketViewModel extends ViewModel {
+public class BasketViewModel extends AndroidViewModel {
     private final ProductRepository productRepository;
 
-    public BasketViewModel(ProductRepository productRepository){
+    public BasketViewModel(@NonNull Application application, ProductRepository productRepository){
+        super(application);
         this.productRepository = productRepository;
     }
 
@@ -31,7 +33,12 @@ public class BasketViewModel extends ViewModel {
         productRepository.deleteAllBasketItems();
     }
 
-    void moveBasketToProducts(){
+    void moveBasketToProducts(List<Product> basket){
+        AlarmSetter alarmSetter = new AlarmSetter(getApplication());
+        for (Product basketItem : basket){
+            alarmSetter.setAlarm(basketItem);
+        }
+
         productRepository.moveBasketToProducts();
     }
 }

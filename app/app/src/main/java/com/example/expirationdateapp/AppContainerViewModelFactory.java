@@ -27,7 +27,7 @@ public class AppContainerViewModelFactory implements ViewModelProvider.Factory{
             return (T) new AddViewModel(appContainer.getFavoriteRepository(),
                     appContainer.getProductRepository());
         else if (modelClass.equals(BasketViewModel.class))
-            return (T) new BasketViewModel(appContainer.getProductRepository());
+            return (T) new BasketViewModel(MyApplication.getInstance(), appContainer.getProductRepository());
         else if (modelClass.equals(ViewTabViewModel.class))
             return (T) new ViewTabViewModel(appContainer.getProductRepository());
         else if (modelClass.equals(RecipeListViewModel.class))

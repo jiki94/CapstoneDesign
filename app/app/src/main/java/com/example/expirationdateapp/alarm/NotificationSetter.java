@@ -30,14 +30,15 @@ public class NotificationSetter {
 
     // 모듈내에서 호출
     void setNotification(Product product){
-        Period period = Period.between(LocalDate.now(), product.expiryDate);
         String title = context.getString(R.string.text_notification_title);
         String content;
-        if (period.getDays() == 0){
+
+        long daysLeft = product.getExpiryDateInDays();
+        if (daysLeft== 1)
             content = context.getString(R.string.text_notification_zero_content, product.name);
-        }else{
-           content = context.getString(R.string.text_notification_content, product.name, period.getDays());
-        }
+        else
+           content = context.getString(R.string.text_notification_content, product.name, daysLeft);
+
 
         // TODO: 아이콘 바꾸기
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, ALARM_CHANNEL_ID)
