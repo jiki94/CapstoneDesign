@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        mLayout = findViewById(R.id.layout_main);
+        mLayout = findViewById(R.id.content);
 
         locationRequest = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)

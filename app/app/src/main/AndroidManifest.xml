@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!--내 위치 표시-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".MyApplication"
@@ -42,6 +44,11 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="a97fb24c68d4d9fab457832e6aa2ceeb" />
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAd-O-YSWc9j5-jmeNeR-EYp35Fzz8Ru58" />
     </application>
 
 </manifest>
