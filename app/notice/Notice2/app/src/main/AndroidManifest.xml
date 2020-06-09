@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+        <activityㅋㅋ
             android:name=".activity.editor.EditorActivity"
             android:theme="@style/EditorTheme"
             android:launchMode="singleTask"/>
