@@ -59,6 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPassword);
                                 LoginActivity.this.startActivity(intent);
+                                finish(); // 뒤로 가기 방지
                             }
                             else{
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);

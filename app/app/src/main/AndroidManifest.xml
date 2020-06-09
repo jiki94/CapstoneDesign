@@ -22,11 +22,11 @@
         <!--        android:theme="@style/AppTheme.NoActionBar"-->
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name=".add.basket.BasketActivity" />
         <activity android:name=".add.ocr.OcrActivity"/>
@@ -40,14 +40,14 @@
             android:launchMode="singleTask"/>
 
         <activity android:name=".login.LoginActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".login.RegisterActivity" />
-        <activity android:name=".login.MainActivity" />
+        <activity android:name=".login.LoginMainActivity" />
         
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.expirationdateapp.MainActivity;
 import com.example.expirationdateapp.R;
 
 import org.w3c.dom.Text;
@@ -44,7 +46,16 @@ public class LoginMainActivity extends AppCompatActivity {
         if(!userID.equals("admin")) //userID가 admin일 경우만 해당 버튼 누를 수 있음
         {
             managementButton.setVisibility(View.GONE);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(LoginMainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();  // 뒤로 가기 방지
+                }
+            }, 3000);
         }
+
         managementButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
