@@ -30,6 +30,12 @@
         <activity android:name=".add.stt.SttActivity"/>
         <activity android:name=".recipe.RecipeDetailActivity"/>
         <activity android:name=".recipe.DislikedRecipeActivity"/>
+
+        <activity android:name=".forum.activity.main.ForumMainActivity"/>
+        <activity
+            android:name=".forum.activity.editor.EditorActivity"
+            android:theme="@style/EditorTheme"
+            android:launchMode="singleTask"/>
         
         <provider
             android:name="androidx.core.content.FileProvider"
