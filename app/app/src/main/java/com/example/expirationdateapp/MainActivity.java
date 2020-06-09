@@ -9,6 +9,7 @@ import com.example.expirationdateapp.add.AddFragment;
 import com.example.expirationdateapp.alarm.NotificationSetter;
 import com.example.expirationdateapp.foodbank.FoodBankFragment;
 import com.example.expirationdateapp.forum.ForumFragment;
+import com.example.expirationdateapp.forum.activity.main.ForumMainActivity;
 import com.example.expirationdateapp.recipe.RecipeFragment;
 import com.example.expirationdateapp.viewing.ViewFragment;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationFragmen
             case RECIPE:
                 return new RecipeFragment();
             case FORUM:
-                return new ForumFragment();
+                return new ForumMainActivity();
             case FOOD_BANK:
                 return new FoodBankFragment();
             default:

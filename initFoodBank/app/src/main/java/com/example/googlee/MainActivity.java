@@ -1,5 +1,10 @@
-package com.example.expirationdateapp.foodbank;
+package com.example.googlee;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -10,26 +15,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Looper;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.example.expirationdateapp.MainActivity;
-import com.example.expirationdateapp.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -51,12 +42,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import static android.content.Context.LOCATION_SERVICE;
 
-// 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 관련 중
-// 푸드뱅크 정보 보여주는 프래그먼트
-public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
+public class MainActivity extends AppCompatActivity
+        implements OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback{
+
 
     private GoogleMap mMap;
     private Marker currentMarker = null;
@@ -84,27 +74,16 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
     private View mLayout;
 
-    public FoodBankFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_food_bank, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        // Toolbar 세팅
-        Toolbar toolbar = view.findViewById(R.id.foodBankFrag_toolbar_top);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-
-        requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        mLayout = view.findViewById(R.id.content);
+        setContentView(R.layout.activity_main);
+
+        mLayout = findViewById(R.id.content);
 
         locationRequest = new LocationRequest()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
@@ -118,10 +97,10 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
         builder.addLocationRequest(locationRequest);
 
 
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
@@ -137,9 +116,9 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
 
 
-        int hasFineLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
-        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
@@ -153,7 +132,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
         }else {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), REQUIRED_PERMISSIONS[0])) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])) {
 
                 Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
                         Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
@@ -162,7 +141,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
                     public void onClick(View view) {
 
 
-                        ActivityCompat.requestPermissions( requireActivity(), REQUIRED_PERMISSIONS,
+                        ActivityCompat.requestPermissions( MainActivity.this, REQUIRED_PERMISSIONS,
                                 PERMISSIONS_REQUEST_CODE);
                     }
                 }).show();
@@ -170,7 +149,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
             } else {
 
-                ActivityCompat.requestPermissions( requireActivity(), REQUIRED_PERMISSIONS,
+                ActivityCompat.requestPermissions( this, REQUIRED_PERMISSIONS,
                         PERMISSIONS_REQUEST_CODE);
             }
 
@@ -190,13 +169,13 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
         });
 
 
-        MarkerOptions makerOptions = new MarkerOptions();
-        makerOptions
-                .position(new LatLng(37.330062, 126.836433))
-                .title("푸드뱅크1377")
-                .snippet("+82314014819");
+            MarkerOptions makerOptions = new MarkerOptions();
+            makerOptions
+                    .position(new LatLng(37.330062, 126.836433))
+                    .title("푸드뱅크1377")
+                    .snippet("+82314014819");
 
-        mMap.addMarker(makerOptions);
+            mMap.addMarker(makerOptions);
 
         MarkerOptions makerOptions001 = new MarkerOptions();
         makerOptions001
@@ -675,7 +654,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
                 .snippet("+82542441377"); //경상북도 포항시 북구 장성동 1216
         mMap.addMarker(makerOptions);
 
-        //   }
+     //   }
 
 
 
@@ -724,9 +703,9 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
             showDialogForLocationServiceSetting();
         }else {
 
-            int hasFineLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+            int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION);
-            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+            int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
@@ -752,7 +731,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         super.onStart();
 
         Log.d(TAG, "onStart");
@@ -772,7 +751,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
 
     @Override
-    public void onStop() {
+    protected void onStop() {
 
         super.onStop();
 
@@ -789,7 +768,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
     public String getCurrentAddress(LatLng latlng) {
 
         //지오코더... GPS를 주소로 변환
-        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         List<Address> addresses;
 
@@ -801,17 +780,17 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
                     1);
         } catch (IOException ioException) {
             //네트워크 문제
-            Toast.makeText(requireContext(), "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
             return "지오코더 서비스 사용불가";
         } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(requireContext(), "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
             return "잘못된 GPS 좌표";
 
         }
 
 
         if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(requireContext(), "주소 미발견", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
             return "주소 미발견";
 
         } else {
@@ -823,7 +802,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
 
     public boolean checkLocationServicesStatus() {
-        LocationManager locationManager = (LocationManager) requireContext().getSystemService(LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         assert locationManager != null;
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
@@ -880,9 +859,9 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
     private boolean checkPermission() {
 
-        int hasFineLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+        int hasFineLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
-        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(requireContext(),
+        int hasCoarseLocationPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
 
@@ -921,8 +900,8 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
             else {
 
 
-                if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), REQUIRED_PERMISSIONS[0])
-                        || ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), REQUIRED_PERMISSIONS[1])) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[0])
+                        || ActivityCompat.shouldShowRequestPermissionRationale(this, REQUIRED_PERMISSIONS[1])) {
 
 
                     Snackbar.make(mLayout, "퍼미션이 거부되었습니다. 앱을 다시 실행하여 퍼미션을 허용해주세요. ",
@@ -931,7 +910,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
                         @Override
                         public void onClick(View view) {
 
-                            //finish();
+                            finish();
                         }
                     }).show();
 
@@ -944,7 +923,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
                         @Override
                         public void onClick(View view) {
 
-                            //finish();
+                            finish();
                         }
                     }).show();
                 }
@@ -956,7 +935,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
     private void showDialogForLocationServiceSetting() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("위치 서비스 비활성화");
         builder.setMessage("앱을 사용하기 위해서는 위치 서비스가 필요합니다.\n"
                 + "위치 설정을 수정하실래요?");
@@ -980,7 +959,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GPS_ENABLE_REQUEST_CODE) {//사용자가 GPS 활성 시켰는지 검사
@@ -997,4 +976,7 @@ public class FoodBankFragment extends Fragment implements OnMapReadyCallback,
             }
         }
     }
+
+
+
 }
