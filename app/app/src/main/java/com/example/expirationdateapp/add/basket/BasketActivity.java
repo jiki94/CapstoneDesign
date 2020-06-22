@@ -79,11 +79,7 @@ public class BasketActivity extends AppCompatActivity implements BasketRecyclerV
         if (v.getId() == R.id.basketAct_button_delete_all)
             basketViewModel.deleteAllItems();
         else if (v.getId() == R.id.basketAct_button_add){
-            for (Product basketItem : adapter.getData()){
-                alarmSetter.setAlarm(basketItem.id, basketItem.expiryDate);
-            }
-
-            basketViewModel.moveBasketToProducts();
+            basketViewModel.moveBasketToProducts(adapter.getData());
             finish();
         }
     }
