@@ -29,9 +29,15 @@ public class NotificationWorker extends Worker {
         Product product = MyApplication.getInstance().appContainer.getProductRepository().getItem(productId);
         Log.v("WORK_TEST", "got product: " + productId);
 
-        if (!product.expiryDate.isBefore(LocalDate.now())){
+        long daysLeft = product.getExpiryDateInDays();
+        if (daysLeft > 0){
             NotificationSetter notificationSetter = new NotificationSetter(getApplicationContext());
             notificationSetter.setNotification(product);
+
+            if (daysLeft > 1){
+                AlarmSetter alarmSetter = new AlarmSetter(getApplicationContext());
+                alarmSetter.setAlarm(product);
+            }
         }
 
         Log.v("WORK_TEST", "done work: " + productId);
