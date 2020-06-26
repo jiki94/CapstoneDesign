@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Debug;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,16 +30,21 @@ public class SplashScreen extends AppCompatActivity implements LoginModule.Respo
         String username = sharedPreferences.getString(getString(R.string.key_id), null);
         long token = sharedPreferences.getLong(getString(R.string.key_token), 0);
 
+//        username = "aaa";
+//        token = 1;
         if (username == null || token == 0){
+            Log.d("SPLASH_SCREEN", "user is null");
             onLoginFailure(null, null);
         }else{
+            Log.d("SPLASH_SCREEN", "found token");
             LoginModule loginModule = new LoginModule(this);
-            loginModule.login(username, "aaa", this);
+            loginModule.login(username, "1aa", this);
         }
     }
 
     @Override
     public void onLoginSuccess(String userID, String userPassword) {
+        Log.d("SPLASH_SCREEN", "login success");
         Intent intent = new Intent(this, LoginMainActivity.class);
         intent.putExtra("userID", userID);
         intent.putExtra("userPassword", userPassword);
@@ -47,6 +54,7 @@ public class SplashScreen extends AppCompatActivity implements LoginModule.Respo
 
     @Override
     public void onLoginFailure(String userId, String userPassword) {
+        Log.d("SPLASH_SCREEN", "login fail");
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
