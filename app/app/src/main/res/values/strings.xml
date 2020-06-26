@@ -89,4 +89,6 @@
     <string name="text_need_audio">오디오 녹음이 필요합니다.</string>
     <string name="text_need_storage">카카오 음성에 외부 저장 장치 접근 필요합니다.</string>
     <string name="text_loading">로딩 중...</string>
+    <string name="key_id">PREF_KEY_ID</string>
+    <string name="key_token">PREF_KEY_TOKEN</string>
 </resources>
