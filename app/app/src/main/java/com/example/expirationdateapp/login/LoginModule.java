@@ -40,7 +40,7 @@ public class LoginModule {
                     if (jsonResponse.has("success"))
                         success = jsonResponse.getBoolean("success");
 
-                    gotUserToken = 1; // TODO: 테스트용 나중에 지우기
+//                    gotUserToken = 1; // TODO: 테스트용 나중에 지우기
                     if(success && gotUserID != null && gotUserToken != 0){
                         responseHandler.onLoginSuccess(gotUserID, gotUserToken);
                     }
