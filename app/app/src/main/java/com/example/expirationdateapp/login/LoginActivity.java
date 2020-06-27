@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +20,7 @@ import com.example.expirationdateapp.R;
 
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements LoginModule.ResponseHandler {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,40 +47,32 @@ public class LoginActivity extends AppCompatActivity {
                 final String userID = idText.getText().toString();
                 final String userPassword = passwordText.getText().toString();
 
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    //인터넷에 접속한 뒤 Response가 건너오면 Response를 저장할 수 있게해줌
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-                            if(success){
-                                String userID = jsonResponse.getString("userID");
-                                String userPassword = jsonResponse.getString("userPassword");
-                                Intent intent = new Intent(LoginActivity.this, LoginMainActivity.class);
-                                intent.putExtra("userID", userID);
-                                intent.putExtra("userPassword", userPassword);
-                                LoginActivity.this.startActivity(intent);
-                                finish(); // 뒤로 가기 방지
-                            }
-                            else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("로그인에 실패하였습니다.")
-                                        .setNegativeButton("다시 시도", null)
-                                        .create()
-                                        .show();
-                            }
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-
-                };
-                LoginRequest loginRequest = new LoginRequest(userID, userPassword, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
+                LoginModule loginModule = new LoginModule(LoginActivity.this);
+                loginModule.login(userID, userPassword, 0,LoginActivity.this);
             }
-
         });
+    }
+
+    @Override
+    public void onLoginSuccess(String userID, long userToken) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.key_id), userID)
+                .putLong(getString(R.string.key_token), userToken)
+                .apply();
+
+        Intent intent = new Intent(this, LoginMainActivity.class);
+        intent.putExtra("userID", userID);
+        this.startActivity(intent);
+        finish(); // 뒤로 가기 방지
+    }
+
+    @Override
+    public void onLoginFailure(String userId, long userToken) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("로그인에 실패하였습니다.")
+                .setNegativeButton("다시 시도", null)
+                .create()
+                .show();
     }
 }

@@ -30,17 +30,14 @@ public class LoginMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_main);
 
         TextView idText = (TextView) findViewById(R.id.idText);
-        TextView passwordText = (TextView) findViewById(R.id.passwordText);
         TextView welcomeMessage = (TextView) findViewById(R.id.welcomeMessage);
         Button managementButton = (Button) findViewById(R.id.managementButton);
 
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userID");
-        String userPassword = intent.getStringExtra("userPassword");
         String message = "환영합니다," + userID + "님!";
 
         idText.setText(userID);
-        passwordText.setText(userPassword);
         welcomeMessage.setText(message);
 
         if(!userID.equals("admin")) //userID가 admin일 경우만 해당 버튼 누를 수 있음
