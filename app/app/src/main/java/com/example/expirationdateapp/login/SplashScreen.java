@@ -34,27 +34,33 @@ public class SplashScreen extends AppCompatActivity implements LoginModule.Respo
 //        token = 1;
         if (username == null || token == 0){
             Log.d("SPLASH_SCREEN", "user is null");
-            onLoginFailure(null, null);
+            onLoginFailure(null, 0);
         }else{
             Log.d("SPLASH_SCREEN", "found token");
             LoginModule loginModule = new LoginModule(this);
-            loginModule.login(username, "1aa", this);
+            loginModule.login(username, null, token, this);
         }
     }
 
     @Override
-    public void onLoginSuccess(String userID, String userPassword) {
+    public void onLoginSuccess(String userID, long userToken) {
         Log.d("SPLASH_SCREEN", "login success");
         Intent intent = new Intent(this, LoginMainActivity.class);
         intent.putExtra("userID", userID);
-        intent.putExtra("userPassword", userPassword);
         this.startActivity(intent);
         finish(); // 뒤로 가기 방지
     }
 
     @Override
-    public void onLoginFailure(String userId, String userPassword) {
+    public void onLoginFailure(String userId, long userToken) {
         Log.d("SPLASH_SCREEN", "login fail");
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(getString(R.string.key_id))
+            .remove(getString(R.string.key_token))
+            .apply();
+
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
