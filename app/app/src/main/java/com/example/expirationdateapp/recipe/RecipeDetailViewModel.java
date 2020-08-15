@@ -19,6 +19,8 @@ public class RecipeDetailViewModel extends ViewModel {
     private RecipeProgressRepository recipeProgressRepository;
     private DislikedRecipeRepository dislikedRecipeRepository;
 
+    public List<String> almostIngredientNames;
+
     public RecipeDetailViewModel(RecipeInfoRepository recipeInfoRepository, RecipeIngredientRepository recipeIngredientRepository,
                                  RecipeProgressRepository recipeProgressRepository, DislikedRecipeRepository dislikedRecipeRepository){
         this.recipeInfoRepository = recipeInfoRepository;

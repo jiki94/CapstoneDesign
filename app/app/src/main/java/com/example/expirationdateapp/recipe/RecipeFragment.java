@@ -125,6 +125,7 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
     public void onItemClicked(RecipeInfoAndAlmost clickedRecipe) {
         Intent intent = new Intent(requireContext(), RecipeDetailActivity.class);
         intent.putExtra(RecipeDetailActivity.SENT_RECIPE_CODE, clickedRecipe.recipeCode);
+        intent.putExtra(getString(R.string.key_string_list), viewModel.getAlmostIngredientNames().toArray(new String[0]));
         startActivity(intent);
     }
 }

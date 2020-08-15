@@ -17,6 +17,9 @@ public class RecipeListViewModel extends ViewModel {
     private MediatorLiveData<List<RecipeInfoAndAlmost>> showingRecipes;
     private LiveData<List<RecipeInfoAndAlmost>> recommendRecipes;
     private LiveData<List<RecipeInfoAndAlmost>> searchedRecipes;
+
+    private LiveData<List<String>> almostIngredientNames;
+
     private String searchWord;
 
     public RecipeListViewModel(RecipeInfoRepository recipeInfoRepository){
@@ -38,6 +41,8 @@ public class RecipeListViewModel extends ViewModel {
             if (retData != null)
                 showingRecipes.setValue(retData);
         });
+
+        almostIngredientNames = recipeInfoRepository.getAlmostIngredientsName();
     }
 
     private List<RecipeInfoAndAlmost> onDataChange(){
@@ -63,4 +68,6 @@ public class RecipeListViewModel extends ViewModel {
     LiveData<List<RecipeInfoAndAlmost>> getShowingRecipes(){
         return showingRecipes;
     }
+
+    List<String> getAlmostIngredientNames() { return almostIngredientNames.getValue(); }
 }

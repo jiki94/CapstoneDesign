@@ -177,6 +177,10 @@ public class RecipeInfoRepository {
         return curStored;
     }
 
+    public LiveData<List<String>> getAlmostIngredientsName() {
+        return almostOverdueProductLiveData;
+    }
+
     public LiveData<List<RecipeInfo>> getRecommendRecipes_before(){
         return recipeInfoDao.getRecommendRecipes(LocalDate.now());
     }

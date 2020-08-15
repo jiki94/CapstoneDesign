@@ -88,4 +88,5 @@
     <string name="text_error_client">client 오류. 앱 개발자한테 연락주세요.</string>
     <string name="text_need_audio">오디오 녹음이 필요합니다.</string>
     <string name="text_need_storage">카카오 음성에 외부 저장 장치 접근 필요합니다.</string>
+    <string name="key_string_list">KEY_STRING_LIST</string>
 </resources>

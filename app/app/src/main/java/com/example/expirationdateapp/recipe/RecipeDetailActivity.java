@@ -30,6 +30,8 @@ import com.example.expirationdateapp.db.RecipeIngredient;
 import com.example.expirationdateapp.db.RecipeProgress;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity {
@@ -39,6 +41,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private RecipeDetailViewModel viewModel;
     private int recipeCode;
     private boolean isDisliked;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +54,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         isDisliked = getIntent().getBooleanExtra(DEFAULT_DISLIKED_STATE, false);
 
+        String[] almostIngredientNames = getIntent().getStringArrayExtra(getString(R.string.key_string_list));
+
+
         // Toolbar 세팅
         Toolbar toolbar = findViewById(R.id.recipeDetailAct_toolbar_top);
         setSupportActionBar(toolbar);
@@ -59,6 +65,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
         AppContainer appContainer = MyApplication.getInstance().appContainer;
         ViewModelProvider.Factory factory = new AppContainerViewModelFactory(appContainer);
         viewModel = new ViewModelProvider(this, factory).get(RecipeDetailViewModel.class);
+
+        if (almostIngredientNames != null) {
+            viewModel.almostIngredientNames = Arrays.asList(almostIngredientNames);
+        }
 
         final AppCompatActivity activity = this;
 
@@ -86,9 +96,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         final Group subGroup = findViewById(R.id.recipeDetailAct_group_sub_ingredients);
         final Group seasoningGroup = findViewById(R.id.recipeDetailAct_group_seasoning_ingredients);
 
-        final IngredientRecyclerViewAdapter mainAdapter = new IngredientRecyclerViewAdapter(this);
-        final IngredientRecyclerViewAdapter subAdapter = new IngredientRecyclerViewAdapter(this);
-        final IngredientRecyclerViewAdapter seasoningAdapter = new IngredientRecyclerViewAdapter(this);
+        final IngredientRecyclerViewAdapter mainAdapter = new IngredientRecyclerViewAdapter(this, viewModel.almostIngredientNames);
+        final IngredientRecyclerViewAdapter subAdapter = new IngredientRecyclerViewAdapter(this, viewModel.almostIngredientNames);
+        final IngredientRecyclerViewAdapter seasoningAdapter = new IngredientRecyclerViewAdapter(this, viewModel.almostIngredientNames);
 
         setRecyclerViewToDefaultMode(mainRecyclerView, mainGroup, mainAdapter);
         setRecyclerViewToDefaultMode(subRecyclerView, subGroup, subAdapter);
