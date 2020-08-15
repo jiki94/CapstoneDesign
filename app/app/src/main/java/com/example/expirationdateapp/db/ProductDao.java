@@ -28,10 +28,10 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType AND expiryDate >= :current")
     LiveData<List<Product>> getItemsNotOverdue(boolean inBasket, StoredType storedType, LocalDate current);
 
-    @Query("SELECT name FROM Product WHERE inBasket = 0 AND expiryDate >= :current")
+    @Query("SELECT DISTINCT name FROM Product WHERE inBasket = 0 AND expiryDate >= :current")
     LiveData<List<String>> getItemsNotOverdue(LocalDate current);
 
-    @Query("SELECT name FROM Product WHERE inBasket = 0 AND expiryDate >= :start AND expiryDate <= :end")
+    @Query("SELECT DISTINCT name FROM Product WHERE inBasket = 0 AND expiryDate >= :start AND expiryDate <= :end")
     LiveData<List<String>> getItemsBetween(LocalDate start, LocalDate end);
 
     @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND expiryDate < :current")
