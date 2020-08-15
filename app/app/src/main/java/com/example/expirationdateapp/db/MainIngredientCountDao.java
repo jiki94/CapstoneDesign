@@ -19,4 +19,7 @@ public interface MainIngredientCountDao {
 
     @Insert
     void insert(List<MainIngredientCount> data);
+
+    @Query("SELECT * FROM MainIngredientCount WHERE recipeCode NOT IN (:disliked)")
+    LiveData<List<MainIngredientCount>> getCountsExclude(List<Integer> disliked);
 }

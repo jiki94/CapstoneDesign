@@ -20,6 +20,7 @@ import com.example.expirationdateapp.AppContainerViewModelFactory;
 import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.RecipeInfo;
+import com.example.expirationdateapp.db.RecipeInfoAndAlmost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,17 +49,18 @@ public class DislikedRecipeActivity extends AppCompatActivity implements RecipeL
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
 
-        viewModel.getDislikedRecipes().observe(this, new Observer<List<RecipeInfo>>() {
-            @Override
-            public void onChanged(List<RecipeInfo> recipeInfo) {
-                adapter.changeData(recipeInfo);
-            }
+        viewModel.getDislikedRecipes().observe(this, recipeInfo -> {
+            ArrayList<RecipeInfoAndAlmost> create = new ArrayList<>();
+            for (RecipeInfo ri : recipeInfo)
+                create.add(new RecipeInfoAndAlmost(ri, false));
+
+            adapter.changeData(create);
         });
     }
 
     // RecipeListRecyclerViewAdapter.ItemClickedListener 구현
     @Override
-    public void onItemClicked(RecipeInfo clickedRecipe) {
+    public void onItemClicked(RecipeInfoAndAlmost clickedRecipe) {
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra(RecipeDetailActivity.SENT_RECIPE_CODE, clickedRecipe.recipeCode);
         intent.putExtra(RecipeDetailActivity.DEFAULT_DISLIKED_STATE, true);

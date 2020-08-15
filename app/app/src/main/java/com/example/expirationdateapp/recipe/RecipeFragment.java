@@ -30,6 +30,7 @@ import com.example.expirationdateapp.AppContainerViewModelFactory;
 import com.example.expirationdateapp.MyApplication;
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.RecipeInfo;
+import com.example.expirationdateapp.db.RecipeInfoAndAlmost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,6 @@ import java.util.List;
 // 입력, 보기, 레시피, 커뮤니티, 푸드뱅크 관련 중
 // 레시피 추천해주는 프래그먼트
 public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAdapter.ItemClickedListener {
-
-
     private RecipeListViewModel viewModel;
 
     public RecipeFragment() {
@@ -79,12 +78,7 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL));
 
-        viewModel.getShowingRecipes().observe(this, new Observer<List<RecipeInfo>>() {
-            @Override
-            public void onChanged(List<RecipeInfo> recipeInfo) {
-                adapter.changeData(recipeInfo);
-            }
-        });
+        viewModel.getShowingRecipes().observe(this, recipeInfo -> adapter.changeData(recipeInfo));
 
 
         // 검색창 관련
@@ -128,7 +122,7 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
 
     // RecipeListRecyclerViewAdapter.ItemClickedListener 구현
     @Override
-    public void onItemClicked(RecipeInfo clickedRecipe) {
+    public void onItemClicked(RecipeInfoAndAlmost clickedRecipe) {
         Intent intent = new Intent(requireContext(), RecipeDetailActivity.class);
         intent.putExtra(RecipeDetailActivity.SENT_RECIPE_CODE, clickedRecipe.recipeCode);
         startActivity(intent);

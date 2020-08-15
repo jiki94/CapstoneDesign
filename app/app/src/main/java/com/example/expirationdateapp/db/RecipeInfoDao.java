@@ -35,4 +35,7 @@ public interface RecipeInfoDao {
 
     @Query("SELECT * FROM RecipeInfo WHERE recipeCode IN (SELECT * FROM DislikedRecipe)")
     LiveData<List<RecipeInfo>> getDislikedRecipes();
+
+    @Query("SELECT * FROM RecipeInfo WHERE recipeCode NOT IN (:disliked)")
+    LiveData<List<RecipeInfo>> getRecipesExclude(List<Integer> disliked);
 }
