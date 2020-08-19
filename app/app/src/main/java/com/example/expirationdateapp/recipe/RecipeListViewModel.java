@@ -18,8 +18,6 @@ public class RecipeListViewModel extends ViewModel {
     private LiveData<List<RecipeInfoAndAlmost>> recommendRecipes;
     private LiveData<List<RecipeInfoAndAlmost>> searchedRecipes;
 
-    private LiveData<List<String>> almostIngredientNames;
-
     private String searchWord;
 
     public RecipeListViewModel(RecipeInfoRepository recipeInfoRepository){
@@ -27,7 +25,7 @@ public class RecipeListViewModel extends ViewModel {
 
         searchWord = "";
         recommendRecipes = recipeInfoRepository.getRecommendRecipes();
-        searchedRecipes = recipeInfoRepository.getRecipeInfoSearchBy(searchWord);
+        searchedRecipes = null;
 
         showingRecipes = new MediatorLiveData<>();
         showingRecipes.addSource(recommendRecipes, newValue -> {
@@ -35,14 +33,6 @@ public class RecipeListViewModel extends ViewModel {
             if (retData != null)
                 showingRecipes.setValue(retData);
         });
-
-        showingRecipes.addSource(searchedRecipes, newValue -> {
-            List<RecipeInfoAndAlmost> retData = onDataChange();
-            if (retData != null)
-                showingRecipes.setValue(retData);
-        });
-
-        almostIngredientNames = recipeInfoRepository.getAlmostIngredientsName();
     }
 
     private List<RecipeInfoAndAlmost> onDataChange(){
@@ -53,9 +43,17 @@ public class RecipeListViewModel extends ViewModel {
     }
 
     void changeSearchWord(String word){
-        showingRecipes.removeSource(searchedRecipes);
-
         searchWord = word;
+
+        if (searchedRecipes != null) {
+            showingRecipes.removeSource(searchedRecipes);
+            searchedRecipes = null;
+        }
+
+        if (searchWord.isEmpty()) {
+            return;
+        }
+
         searchedRecipes = recipeInfoRepository.getRecipeInfoSearchBy(word);
 
         showingRecipes.addSource(searchedRecipes, newValue -> {
@@ -68,6 +66,4 @@ public class RecipeListViewModel extends ViewModel {
     LiveData<List<RecipeInfoAndAlmost>> getShowingRecipes(){
         return showingRecipes;
     }
-
-    List<String> getAlmostIngredientNames() { return almostIngredientNames.getValue(); }
 }

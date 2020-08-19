@@ -15,7 +15,4 @@ public interface DislikedRecipeDao {
 
     @Delete
     void deleteDisliked(DislikedRecipe dislikedRecipe);
-
-    @Query("SELECT recipeCode FROM DislikedRecipe")
-    LiveData<List<Integer>> getDisliked();
 }

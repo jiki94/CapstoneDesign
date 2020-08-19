@@ -54,8 +54,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         isDisliked = getIntent().getBooleanExtra(DEFAULT_DISLIKED_STATE, false);
 
-        String[] almostIngredientNames = getIntent().getStringArrayExtra(getString(R.string.key_string_list));
-
 
         // Toolbar 세팅
         Toolbar toolbar = findViewById(R.id.recipeDetailAct_toolbar_top);
@@ -66,25 +64,18 @@ public class RecipeDetailActivity extends AppCompatActivity {
         ViewModelProvider.Factory factory = new AppContainerViewModelFactory(appContainer);
         viewModel = new ViewModelProvider(this, factory).get(RecipeDetailViewModel.class);
 
-        if (almostIngredientNames != null) {
-            viewModel.almostIngredientNames = Arrays.asList(almostIngredientNames);
-        }
-
         final AppCompatActivity activity = this;
 
         // RecipeInfo 얻어서 하는 초기화
-        viewModel.getRecipeInfo(recipeCode).observe(this, new Observer<RecipeInfo>() {
-            @Override
-            public void onChanged(RecipeInfo recipeInfo) {
-                ImageView recipeImg = activity.findViewById(R.id.recipeDetailAct_img_recipe);
-                Picasso.get()
-                        .load(recipeInfo.mainImgUrl)
-                        .placeholder(R.drawable.basket)
-                        .into(recipeImg);
+        viewModel.getRecipeInfo(recipeCode).observe(this, recipeInfo -> {
+            ImageView recipeImg = activity.findViewById(R.id.recipeDetailAct_img_recipe);
+            Picasso.get()
+                    .load(recipeInfo.mainImgUrl)
+                    .placeholder(R.drawable.basket)
+                    .into(recipeImg);
 
-                TextView recipeName = activity.findViewById(R.id.recipeDetailAct_text_recipe_name);
-                recipeName.setText(recipeInfo.recipeName);
-            }
+            TextView recipeName = activity.findViewById(R.id.recipeDetailAct_text_recipe_name);
+            recipeName.setText(recipeInfo.recipeName);
         });
 
         // 재료 부분 초기화
@@ -96,9 +87,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         final Group subGroup = findViewById(R.id.recipeDetailAct_group_sub_ingredients);
         final Group seasoningGroup = findViewById(R.id.recipeDetailAct_group_seasoning_ingredients);
 
-        final IngredientRecyclerViewAdapter mainAdapter = new IngredientRecyclerViewAdapter(this, viewModel.almostIngredientNames);
-        final IngredientRecyclerViewAdapter subAdapter = new IngredientRecyclerViewAdapter(this, viewModel.almostIngredientNames);
-        final IngredientRecyclerViewAdapter seasoningAdapter = new IngredientRecyclerViewAdapter(this, viewModel.almostIngredientNames);
+        final IngredientRecyclerViewAdapter mainAdapter = new IngredientRecyclerViewAdapter(this);
+        final IngredientRecyclerViewAdapter subAdapter = new IngredientRecyclerViewAdapter(this);
+        final IngredientRecyclerViewAdapter seasoningAdapter = new IngredientRecyclerViewAdapter(this);
 
         setRecyclerViewToDefaultMode(mainRecyclerView, mainGroup, mainAdapter);
         setRecyclerViewToDefaultMode(subRecyclerView, subGroup, subAdapter);
@@ -123,6 +114,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
             public void onChanged(List<RecipeIngredient> recipeIngredients) {
                 setNewData(seasoningGroup, seasoningAdapter, recipeIngredients);
             }
+        });
+
+        viewModel.getAlmostIngredientNames().observe(this, strings -> {
+            mainAdapter.setAlmostIngredientName(strings);
+            subAdapter.setAlmostIngredientName(strings);
+            seasoningAdapter.setAlmostIngredientName(strings);
         });
 
         // RecipeProgress 관련

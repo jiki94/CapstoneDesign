@@ -13,7 +13,4 @@ public interface RecipeIngredientDao {
 
     @Query("SELECT DISTINCT ingredientName FROM RecipeIngredient")
     List<String> getDistinctNames();
-
-    @Query("SELECT * FROM RecipeIngredient WHERE recipeCode NOT IN (:disliked) ORDER BY recipeCode")
-    LiveData<List<RecipeIngredient>> getIngredientsExclude(List<Integer> disliked);
 }

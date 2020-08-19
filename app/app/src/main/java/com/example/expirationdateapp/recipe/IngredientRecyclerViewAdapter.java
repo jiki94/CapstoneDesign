@@ -38,10 +38,10 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
         }
     }
 
-    IngredientRecyclerViewAdapter(@NonNull Context context, @NonNull List<String> almostIngredientName) {
+    IngredientRecyclerViewAdapter(@NonNull Context context) {
         this.context = context;
         this.data = new ArrayList<>();
-        this.almostIngredientName = almostIngredientName;
+        this.almostIngredientName = new ArrayList<>();
     }
 
     @NonNull
@@ -75,5 +75,11 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     void setData(@NonNull List<RecipeIngredient> data){
         this.data = data;
         notifyDataSetChanged();
+    }
+
+    void setAlmostIngredientName(List<String> almostIngredientName) {
+        this.almostIngredientName = almostIngredientName;
+        notifyItemRangeChanged(0, data.size());
+
     }
 }

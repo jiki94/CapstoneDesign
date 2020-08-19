@@ -14,6 +14,7 @@ public class ProductRepository {
     private LiveData<List<Product>> frozenItems;
     private LiveData<List<Product>> otherItems;
     private LiveData<List<Product>> overdueItems;
+    private LiveData<List<String>> almostIngredientNames;
 
     public ProductRepository(AppRoomDatabase database){
         LocalDate now = LocalDate.now();
@@ -21,10 +22,11 @@ public class ProductRepository {
         this.database = database;
         productDao = this.database.productDao();
         basketItems = productDao.getItems(true);
-        coldItems = productDao.getItemsNotOverdue(false, StoredType.COLD, now);
-        frozenItems = productDao.getItemsNotOverdue(false, StoredType.FROZEN, now);
-        otherItems = productDao.getItemsNotOverdue(false, StoredType.ELSE, now);
-        overdueItems = productDao.getOverdueItems(false, now);
+        coldItems = productDao.getItemsNotOverdue(false, StoredType.COLD, LocalDate.now());
+        frozenItems = productDao.getItemsNotOverdue(false, StoredType.FROZEN, LocalDate.now());
+        otherItems = productDao.getItemsNotOverdue(false, StoredType.ELSE, LocalDate.now());
+        overdueItems = productDao.getOverdueItems(false, LocalDate.now());
+        almostIngredientNames = productDao.getImminentExpiry(LocalDate.now(), LocalDate.now().plusDays(3));
     }
 
     public LiveData<List<Product>> getBasketItems(){
@@ -96,5 +98,9 @@ public class ProductRepository {
 
     public Product getItem(int id){
         return productDao.getItem(id);
+    }
+
+    public LiveData<List<String>> getAlmostIngredientNames() {
+        return almostIngredientNames;
     }
 }
