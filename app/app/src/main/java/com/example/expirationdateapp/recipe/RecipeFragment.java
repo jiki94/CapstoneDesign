@@ -78,7 +78,10 @@ public class RecipeFragment extends Fragment implements RecipeListRecyclerViewAd
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), LinearLayout.VERTICAL));
 
-        viewModel.getShowingRecipes().observe(this, recipeInfo -> adapter.changeData(recipeInfo));
+        viewModel.getShowingRecipes().observe(this, recipeInfo -> {
+            adapter.changeData(recipeInfo);
+            layoutManager.scrollToPosition(0);
+        });
 
 
         // 검색창 관련
