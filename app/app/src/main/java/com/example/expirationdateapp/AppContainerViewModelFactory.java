@@ -34,7 +34,7 @@ public class AppContainerViewModelFactory implements ViewModelProvider.Factory{
             return (T) new RecipeListViewModel(appContainer.getRecipeInfoRepository());
         else if (modelClass.equals(RecipeDetailViewModel.class))
             return (T) new RecipeDetailViewModel(appContainer.getRecipeInfoRepository(), appContainer.getRecipeIngredientRepository(),
-                    appContainer.getRecipeProgressRepository(), appContainer.getDislikedRecipeRepository());
+                    appContainer.getRecipeProgressRepository(), appContainer.getDislikedRecipeRepository(), appContainer.getProductRepository());
         else if (modelClass.equals(DislikedListViewModel.class))
             return (T) new DislikedListViewModel(appContainer.getRecipeInfoRepository());
         else if (modelClass.equals(SttViewModel.class))

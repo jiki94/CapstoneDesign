@@ -30,6 +30,8 @@ import com.example.expirationdateapp.db.RecipeIngredient;
 import com.example.expirationdateapp.db.RecipeProgress;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity {
@@ -39,6 +41,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
     private RecipeDetailViewModel viewModel;
     private int recipeCode;
     private boolean isDisliked;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             throw new IllegalArgumentException();
 
         isDisliked = getIntent().getBooleanExtra(DEFAULT_DISLIKED_STATE, false);
+
 
         // Toolbar 세팅
         Toolbar toolbar = findViewById(R.id.recipeDetailAct_toolbar_top);
@@ -63,18 +67,15 @@ public class RecipeDetailActivity extends AppCompatActivity {
         final AppCompatActivity activity = this;
 
         // RecipeInfo 얻어서 하는 초기화
-        viewModel.getRecipeInfo(recipeCode).observe(this, new Observer<RecipeInfo>() {
-            @Override
-            public void onChanged(RecipeInfo recipeInfo) {
-                ImageView recipeImg = activity.findViewById(R.id.recipeDetailAct_img_recipe);
-                Picasso.get()
-                        .load(recipeInfo.mainImgUrl)
-                        .placeholder(R.drawable.basket)
-                        .into(recipeImg);
+        viewModel.getRecipeInfo(recipeCode).observe(this, recipeInfo -> {
+            ImageView recipeImg = activity.findViewById(R.id.recipeDetailAct_img_recipe);
+            Picasso.get()
+                    .load(recipeInfo.mainImgUrl)
+                    .placeholder(R.drawable.basket)
+                    .into(recipeImg);
 
-                TextView recipeName = activity.findViewById(R.id.recipeDetailAct_text_recipe_name);
-                recipeName.setText(recipeInfo.recipeName);
-            }
+            TextView recipeName = activity.findViewById(R.id.recipeDetailAct_text_recipe_name);
+            recipeName.setText(recipeInfo.recipeName);
         });
 
         // 재료 부분 초기화
@@ -113,6 +114,12 @@ public class RecipeDetailActivity extends AppCompatActivity {
             public void onChanged(List<RecipeIngredient> recipeIngredients) {
                 setNewData(seasoningGroup, seasoningAdapter, recipeIngredients);
             }
+        });
+
+        viewModel.getAlmostIngredientNames().observe(this, strings -> {
+            mainAdapter.setAlmostIngredientName(strings);
+            subAdapter.setAlmostIngredientName(strings);
+            seasoningAdapter.setAlmostIngredientName(strings);
         });
 
         // RecipeProgress 관련

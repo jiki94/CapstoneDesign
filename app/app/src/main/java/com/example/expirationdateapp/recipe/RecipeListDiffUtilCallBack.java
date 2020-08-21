@@ -4,14 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.example.expirationdateapp.db.RecipeInfo;
+import com.example.expirationdateapp.db.RecipeInfoAndAlmost;
 
 import java.util.List;
 
 class RecipeListDiffUtilCallBack extends DiffUtil.Callback {
-    @NonNull private List<RecipeInfo> oldList;
-    @NonNull private List<RecipeInfo> newList;
+    @NonNull private List<RecipeInfoAndAlmost> oldList;
+    @NonNull private List<RecipeInfoAndAlmost> newList;
 
-    public RecipeListDiffUtilCallBack(@NonNull List<RecipeInfo> oldList, @NonNull List<RecipeInfo> newList) {
+    public RecipeListDiffUtilCallBack(@NonNull List<RecipeInfoAndAlmost> oldList, @NonNull List<RecipeInfoAndAlmost> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,22 +22,26 @@ import java.util.List;
 public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<IngredientRecyclerViewAdapter.ViewHolder> {
     @NonNull private Context context;
     @NonNull private List<RecipeIngredient> data;
+    @NonNull private List<String> almostIngredientName;
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
         TextView name;
         TextView amount;
+        ImageView almost;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.ingredientItem_name);
             amount = itemView.findViewById(R.id.ingredientItem_amount);
+            almost = itemView.findViewById(R.id.ingredientItem_almost);
         }
     }
 
     IngredientRecyclerViewAdapter(@NonNull Context context) {
         this.context = context;
         this.data = new ArrayList<>();
+        this.almostIngredientName = new ArrayList<>();
     }
 
     @NonNull
@@ -54,6 +59,12 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
 
         holder.name.setText(datum.ingredientName);
         holder.amount.setText(datum.ingredientAmount);
+
+        if (almostIngredientName.contains(datum.ingredientName)) {
+            holder.almost.setVisibility(View.VISIBLE);
+        } else {
+            holder.almost.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -64,5 +75,11 @@ public class IngredientRecyclerViewAdapter extends RecyclerView.Adapter<Ingredie
     void setData(@NonNull List<RecipeIngredient> data){
         this.data = data;
         notifyDataSetChanged();
+    }
+
+    void setAlmostIngredientName(List<String> almostIngredientName) {
+        this.almostIngredientName = almostIngredientName;
+        notifyItemRangeChanged(0, data.size());
+
     }
 }

@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.RecipeInfo;
+import com.example.expirationdateapp.db.RecipeInfoAndAlmost;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeListRecyclerViewAdapter.ViewHolder> {
     @NonNull private Context context;
-    @NonNull private List<RecipeInfo> data;
+    @NonNull private List<RecipeInfoAndAlmost> data;
     private ItemClickedListener listener;
     private TextView emptyView;
 
@@ -28,6 +29,7 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
         ImageView mainImg;
         TextView name;
         TextView desc;
+        ImageView almost;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -35,10 +37,11 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
             mainImg = itemView.findViewById(R.id.recipeItem_image_main);
             name = itemView.findViewById(R.id.recipeItem_text_name);
             desc = itemView.findViewById(R.id.recipeItem_text_desc);
+            almost = itemView.findViewById(R.id.recipeItem_image_almost);
         }
     }
 
-    public RecipeListRecyclerViewAdapter(@NonNull Context context, @NonNull List<RecipeInfo> data, ItemClickedListener listener, TextView emptyView){
+    public RecipeListRecyclerViewAdapter(@NonNull Context context, @NonNull List<RecipeInfoAndAlmost> data, ItemClickedListener listener, TextView emptyView){
         this.context = context;
         this.data = data;
         this.listener = listener;
@@ -58,9 +61,10 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RecipeInfo datum = data.get(position);
+        RecipeInfoAndAlmost datum = data.get(position);
         holder.name.setText(datum.recipeName);
         holder.desc.setText(datum.recipeBasicDesc);
+        holder.almost.setVisibility(datum.isAlmost ? View.VISIBLE : View.GONE);
 
         // placeholder 에 해당하는 사진 추가
         Picasso.get()
@@ -82,7 +86,7 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
         return data.size();
     }
 
-    void changeData(@NonNull List<RecipeInfo> newData){
+    void changeData(@NonNull List<RecipeInfoAndAlmost> newData){
         RecipeListDiffUtilCallBack callBack = new RecipeListDiffUtilCallBack(data, newData);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(callBack, true);
 
@@ -97,6 +101,6 @@ public class RecipeListRecyclerViewAdapter extends RecyclerView.Adapter<RecipeLi
     }
 
     public interface ItemClickedListener {
-        void onItemClicked(RecipeInfo clickedRecipe);
+        void onItemClicked(RecipeInfoAndAlmost clickedRecipe);
     }
 }

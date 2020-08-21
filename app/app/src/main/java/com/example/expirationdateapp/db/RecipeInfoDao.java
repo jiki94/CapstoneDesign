@@ -15,9 +15,10 @@ public interface RecipeInfoDao {
     @Query("SELECT * FROM RecipeInfo WHERE recipeCode = :recipeCode")
     LiveData<RecipeInfo> getRecipeInfo(int recipeCode);
 
-    @Query("SELECT r.* FROM RecipeInfo as r " +
+    // 유통기한 임박 기준 변경은 SELECT strftime('%s','now', '+3 days') 에서 +3 대신 교체
+    @Query("SELECT r.*, IFNULL(aop.almostExpired, 0) as isAlmost FROM RecipeInfo as r " +
             "INNER JOIN (SELECT mi.recipeCode , IFNULL(CAST(havecount as DOUBLE)/allCount, 0) as percentage from " +
-            "(SELECT recipeCode, count as allCount FROM MainIngredientCount" +
+            "(SELECT recipeCode, count as allCount FROM MainIngredientCount " +
             " WHERE recipeCode NOT IN (SELECT * FROM DislikedRecipe)) as mi " +
             "LEFT JOIN (SELECT recipeCode, count(*) as havecount FROM RecipeIngredient " +
             "WHERE ingredientName IN " +
@@ -26,13 +27,34 @@ public interface RecipeInfoDao {
             "ingredientType = 3060001 GROUP BY recipeCode) as ri " +
             "ON ri.recipeCode = mi.recipeCode) as pi " +
             "ON r.recipeCode = pi.recipeCode " +
-            "ORDER BY percentage DESC")
-    LiveData<List<RecipeInfo>> getRecommendRecipes(LocalDate now);
+            "LEFT JOIN (SELECT DISTINCT recipeCode, 1 as almostExpired FROM RecipeIngredient WHERE ingredientType = 3060001 AND " +
+            "ingredientName IN (SELECT name FROM PRODUCT WHERE inBasket = 0 AND expiryDate >= :now AND " +
+            "expiryDATE <= :imminentExpiry)) as aop " +
+            "ON r.recipeCode = aop.recipeCode " +
+            "ORDER BY almostExpired DESC, percentage DESC")
+    LiveData<List<RecipeInfoAndAlmost>> getRecommendRecipes(LocalDate now, LocalDate imminentExpiry);
 
-    @Query("SELECT * FROM RecipeInfo WHERE instr(recipeName, :givenString) > 0 " +
-            "AND recipeCode NOT IN (SELECT * FROM DislikedRecipe)")
-    LiveData<List<RecipeInfo>> getRecommendRecipes(String givenString);
+    @Query("SELECT r.*, IFNULL(aop.almostExpired, 0) as isAlmost FROM RecipeInfo as r " +
+            "INNER JOIN (SELECT mi.recipeCode , IFNULL(CAST(havecount as DOUBLE)/allCount, 0) as percentage from " +
+            "(SELECT recipeCode, count as allCount FROM MainIngredientCount " +
+            " WHERE recipeCode NOT IN (SELECT * FROM DislikedRecipe)) as mi " +
+            "LEFT JOIN (SELECT recipeCode, count(*) as havecount FROM RecipeIngredient " +
+            "WHERE ingredientName IN " +
+            "(SELECT name FROM PRODUCT WHERE inBasket = 0 AND " +
+            "expiryDate >= :now) AND " +
+            "ingredientType = 3060001 GROUP BY recipeCode) as ri " +
+            "ON ri.recipeCode = mi.recipeCode) as pi " +
+            "ON r.recipeCode = pi.recipeCode " +
+            "LEFT JOIN (SELECT DISTINCT recipeCode, 1 as almostExpired FROM RecipeIngredient WHERE ingredientType = 3060001 AND " +
+            "ingredientName IN (SELECT name FROM PRODUCT WHERE inBasket = 0 AND expiryDate >= :now AND " +
+            "expiryDATE <= :imminentExpiry)) as aop " +
+            "ON r.recipeCode = aop.recipeCode " +
+            "WHERE instr(recipeName, :givenString) > 0 " +
+            "AND r.recipeCode NOT IN (SELECT * FROM DislikedRecipe) " +
+            "ORDER BY almostExpired DESC, percentage DESC ")
+    LiveData<List<RecipeInfoAndAlmost>> getRecommendRecipes(String givenString, LocalDate now, LocalDate imminentExpiry);
 
     @Query("SELECT * FROM RecipeInfo WHERE recipeCode IN (SELECT * FROM DislikedRecipe)")
     LiveData<List<RecipeInfo>> getDislikedRecipes();
+
 }

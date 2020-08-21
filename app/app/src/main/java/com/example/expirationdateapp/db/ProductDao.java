@@ -25,11 +25,18 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType")
     LiveData<List<Product>> getItems(boolean inBasket, StoredType storedType);
 
-    @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType AND expiryDate >= :current")
-    LiveData<List<Product>> getItemsNotOverdue(boolean inBasket, StoredType storedType, LocalDate current);
+    @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND stored = :storedType AND expiryDate >= :now")
+    LiveData<List<Product>> getItemsNotOverdue(boolean inBasket, StoredType storedType, LocalDate now);
 
-    @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND expiryDate < :current")
-    LiveData<List<Product>> getOverdueItems(boolean inBasket, LocalDate current);
+    @Query("SELECT DISTINCT name FROM Product WHERE inBasket = 0 AND expiryDate >= :now")
+    LiveData<List<String>> getItemsNotOverdue(LocalDate now);
+
+    @Query("SELECT DISTINCT name FROM Product WHERE inBasket = 0 AND expiryDate >= :now AND " +
+            " expiryDate <= :imminentExpiry")
+    LiveData<List<String>> getImminentExpiry(LocalDate now, LocalDate imminentExpiry);
+
+    @Query("SELECT * FROM Product WHERE inBasket = :inBasket AND expiryDate < :now")
+    LiveData<List<Product>> getOverdueItems(boolean inBasket, LocalDate now);
 
     // 백그라운드에서 호출할 때 사용
     @Query("SELECT * FROM Product WHERE id = :id")

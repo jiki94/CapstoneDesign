@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.expirationdateapp.db.DislikedRecipeRepository;
+import com.example.expirationdateapp.db.ProductRepository;
 import com.example.expirationdateapp.db.RecipeInfo;
 import com.example.expirationdateapp.db.RecipeInfoRepository;
 import com.example.expirationdateapp.db.RecipeIngredient;
@@ -18,13 +19,16 @@ public class RecipeDetailViewModel extends ViewModel {
     private RecipeIngredientRepository recipeIngredientRepository;
     private RecipeProgressRepository recipeProgressRepository;
     private DislikedRecipeRepository dislikedRecipeRepository;
+    private ProductRepository productRepository;
 
     public RecipeDetailViewModel(RecipeInfoRepository recipeInfoRepository, RecipeIngredientRepository recipeIngredientRepository,
-                                 RecipeProgressRepository recipeProgressRepository, DislikedRecipeRepository dislikedRecipeRepository){
+                                 RecipeProgressRepository recipeProgressRepository, DislikedRecipeRepository dislikedRecipeRepository,
+                                 ProductRepository productRepository){
         this.recipeInfoRepository = recipeInfoRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
         this.recipeProgressRepository = recipeProgressRepository;
         this.dislikedRecipeRepository = dislikedRecipeRepository;
+        this.productRepository = productRepository;
     }
 
     LiveData<RecipeInfo> getRecipeInfo(int recipeCode){
@@ -45,6 +49,10 @@ public class RecipeDetailViewModel extends ViewModel {
 
     LiveData<List<RecipeProgress>> getRecipeProgress(int recipeCode){
         return recipeProgressRepository.getRecipeProgress(recipeCode);
+    }
+
+    LiveData<List<String>> getAlmostIngredientNames() {
+        return productRepository.getAlmostIngredientNames();
     }
 
     void setDisliked(boolean disliked, int recipeCode){
