@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         private TextView name;
         private TextView expiryDate;
         private Button delete;
+        private ImageView imminentExpiry;
 
         NormalViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -46,6 +48,7 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             name = itemView.findViewById(R.id.viewItemNormal_text_name);
             expiryDate = itemView.findViewById(R.id.viewItemNormal_text_expiry_date);
             delete = itemView.findViewById(R.id.viewItemNormal_button_del);
+            imminentExpiry = itemView.findViewById(R.id.viewItemNormal_imminentExpiry);
         }
     }
 
@@ -120,6 +123,12 @@ public class ViewRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                         listener.onDeletedClicked(datum);
                     }
                 });
+
+                if (datum.getExpiryDateInDays() <= 3) {
+                    nHolder.imminentExpiry.setVisibility(View.VISIBLE);
+                }else {
+                    nHolder.imminentExpiry.setVisibility(View.GONE);
+                }
                 break;
             case OVERDUE_TYPE:
                 OverdueViewHolder oHolder = (OverdueViewHolder) viewHolder;
