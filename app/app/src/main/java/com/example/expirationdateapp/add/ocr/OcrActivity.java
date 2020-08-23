@@ -314,12 +314,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     // OcrRetrofitHandler.OcrResponseHandler 인터페이스 관련
     @Override
     public void onExtractTextAreaSuccess(Call<TextExtractionResponse> call, Response<TextExtractionResponse> response) {
-        // 현재 여기서 박스 못찾으면 밑에서 터짐(왜냐면 인풋에 박스가 없어 이거 어떻게 할까?
-        // 아마도 여기서 막기 새로 찍기 아니면 다이얼로그 보여주기
-        if (response.body().result.boxes.isEmpty()) {
-            Toast.makeText(this, "텍스트 없음, 새로운 사진 사용하세요", Toast.LENGTH_SHORT).show();
-            // TODO: 스낵바로, 액션은 다이얼로그 다시 띄우기
-        }
+
     }
 
     @Override
@@ -365,6 +360,11 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onRecognizeTextFailure(Call<TextRecognizeResponse> call, Throwable t) {
         Toast.makeText(this, "Failed to recognize text", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEmptyText() {
+        Snackbar.make(findViewById(android.R.id.content), "인식된 텍스트가 없습니다.", Snackbar.LENGTH_LONG).show();
     }
 
     String join(String delimiter, List<String> strings){
