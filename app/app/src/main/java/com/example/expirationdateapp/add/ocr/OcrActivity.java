@@ -53,7 +53,7 @@ import static java.lang.Math.min;
 // Ocr 입력 담당하는 액티비티
 // 여기서 카카오 vision api 호출함
 public class OcrActivity extends AppCompatActivity implements View.OnClickListener,
-        OcrRetrofitHandler.OcrResponseHandler, DatePickerDialog.OnDateSetListener {
+        OcrRetrofitHandler.OcrResponseHandler, DatePickerDialog.OnDateSetListener, CameraGalleryPickDialogFragment.CancelHandler {
     public static final int CAMERA_REQUEST_CODE = 0;
     public static final int GALLERY_REQUEST_CODE = 1;
 
@@ -183,6 +183,8 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
                 default:
                     throw new IllegalArgumentException();
             }
+        } else if (resultCode == RESULT_CANCELED) {
+            finish();
         }
     }
 
@@ -227,6 +229,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
 
         DialogFragment dialogFragment = new CameraGalleryPickDialogFragment();
         dialogFragment.setArguments(bundle);
+//        dialogFragment.setCancelable(true);
         dialogFragment.show(getSupportFragmentManager(), "camera gallery pick");
     }
 
@@ -376,5 +379,10 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         expiryDate2 = LocalDate.of(year, month + 1, dayOfMonth);
         predictedDate.setText(LocalDateConverter.localDateToString(expiryDate2));
+    }
+
+    @Override
+    public void onCancelDialog() {
+        finish();
     }
 }
