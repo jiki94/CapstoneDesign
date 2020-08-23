@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -91,7 +92,13 @@ public class CameraGalleryPickDialogFragment extends DialogFragment {
             }
         });
 
-        return builder.create();
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        return dialog;
+    }
+
+    interface CancelHandler {
+        void onCancelDialog();
     }
 
     @NonNull
@@ -106,5 +113,10 @@ public class CameraGalleryPickDialogFragment extends DialogFragment {
     @NonNull
     private File getCameraTmpFile() throws IOException{
         return getAppCacheFile("camera.jpg");
+    }
+
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
+        ((CancelHandler)requireActivity()).onCancelDialog();
     }
 }

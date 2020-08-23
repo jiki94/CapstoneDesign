@@ -44,6 +44,11 @@ class OcrRetrofitHandler {
         {
             @Override
             public void onResponse(Call < TextExtractionResponse > call, Response< TextExtractionResponse > response){
+                if (response.body().result.boxes.isEmpty()) {
+                    ocrResponseHandler.onEmptyText();
+                    return;
+                }
+
                 ocrResponseHandler.onExtractTextAreaSuccess(call, response);
 
                 // 감지된 텍스트 상자로 텍스트 인식 시도
@@ -84,5 +89,7 @@ class OcrRetrofitHandler {
 
         // 텍스트 인식 실패시 호출하는 함수
         void onRecognizeTextFailure(Call<TextRecognizeResponse> call, Throwable t);
+
+        void onEmptyText();
     }
 }

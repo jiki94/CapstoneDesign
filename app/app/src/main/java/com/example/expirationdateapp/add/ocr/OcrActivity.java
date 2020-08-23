@@ -53,7 +53,7 @@ import static java.lang.Math.min;
 // Ocr 입력 담당하는 액티비티
 // 여기서 카카오 vision api 호출함
 public class OcrActivity extends AppCompatActivity implements View.OnClickListener,
-        OcrRetrofitHandler.OcrResponseHandler, DatePickerDialog.OnDateSetListener {
+        OcrRetrofitHandler.OcrResponseHandler, DatePickerDialog.OnDateSetListener, CameraGalleryPickDialogFragment.CancelHandler {
     public static final int CAMERA_REQUEST_CODE = 0;
     public static final int GALLERY_REQUEST_CODE = 1;
 
@@ -183,6 +183,8 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
                 default:
                     throw new IllegalArgumentException();
             }
+        } else if (resultCode == RESULT_CANCELED) {
+            onCancelDialog();
         }
     }
 
@@ -227,6 +229,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
 
         DialogFragment dialogFragment = new CameraGalleryPickDialogFragment();
         dialogFragment.setArguments(bundle);
+//        dialogFragment.setCancelable(true);
         dialogFragment.show(getSupportFragmentManager(), "camera gallery pick");
     }
 
@@ -311,12 +314,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     // OcrRetrofitHandler.OcrResponseHandler 인터페이스 관련
     @Override
     public void onExtractTextAreaSuccess(Call<TextExtractionResponse> call, Response<TextExtractionResponse> response) {
-        // 현재 여기서 박스 못찾으면 밑에서 터짐(왜냐면 인풋에 박스가 없어 이거 어떻게 할까?
-        // 아마도 여기서 막기 새로 찍기 아니면 다이얼로그 보여주기
-        if (response.body().result.boxes.isEmpty()) {
-            Toast.makeText(this, "텍스트 없음, 새로운 사진 사용하세요", Toast.LENGTH_SHORT).show();
-            // TODO: 스낵바로, 액션은 다이얼로그 다시 띄우기
-        }
+
     }
 
     @Override
@@ -364,6 +362,11 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
         Toast.makeText(this, "Failed to recognize text", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onEmptyText() {
+        Snackbar.make(findViewById(android.R.id.content), "인식된 텍스트가 없습니다.", Snackbar.LENGTH_LONG).show();
+    }
+
     String join(String delimiter, List<String> strings){
         StringBuilder sb = new StringBuilder(strings.get(0));
         for (int i = 1; i < strings.size(); i++)
@@ -376,5 +379,13 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         expiryDate2 = LocalDate.of(year, month + 1, dayOfMonth);
         predictedDate.setText(LocalDateConverter.localDateToString(expiryDate2));
+    }
+
+    @Override
+    public void onCancelDialog() {
+        Intent intent = new Intent();
+        intent.putExtra("NO_IMAGE", true);
+        setResult(Activity.RESULT_CANCELED, intent);
+        finish();
     }
 }

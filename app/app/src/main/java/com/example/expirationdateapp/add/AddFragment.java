@@ -37,6 +37,7 @@ import com.example.expirationdateapp.R;
 import com.example.expirationdateapp.db.StoredType;
 import com.example.expirationdateapp.AppContainerViewModelFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.threeten.bp.LocalDate;
 
@@ -182,21 +183,21 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.addFrag_button_ocr){
-            Toast.makeText(getContext(), "Add new OCR", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Add new OCR", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getContext(), OcrActivity.class);
             intent.putExtra(getString(R.string.key_get_type), GetType.NAME);
             startActivityForResult(intent, REQUEST_CODE_OCR_ACT);
         }else if (v.getId() == R.id.addFrag_button_stt){
-            Toast.makeText(getContext(), "Add new STT", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Add new STT", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getContext(), SttActivity.class);
             intent.putExtra(getString(R.string.key_get_type), GetType.NAME);
             startActivityForResult(intent, REQUEST_CODE_STT_ACT);
         }else if (v.getId() == R.id.addFrag_button_manual) {
             DialogFragment dialog = dialogManager.getAddManualDialogFragment();
             dialog.show(dialogManager.getFragmentManager(), "ManualInputDialog");
-            Toast.makeText(getContext(), "Add new Manual", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Add new Manual", Toast.LENGTH_SHORT).show();
         }else if (v.getId() == R.id.addFrag_floatActionBar_basket){
-            Toast.makeText(getContext(), "Float Action Bar Basket", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Float Action Bar Basket", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(getContext(), BasketActivity.class);
             startActivity(intent);
@@ -207,14 +208,21 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_OCR_ACT && resultCode == Activity.RESULT_OK ||
-            requestCode == REQUEST_CODE_STT_ACT && resultCode == Activity.RESULT_OK){
-            String name = data.getStringExtra(getString(R.string.key_name_data));
-            LocalDate expiryDate = (LocalDate) data.getSerializableExtra(getString(R.string.key_expiry_data));
-            StoredType storedType = (StoredType) data.getSerializableExtra(getString(R.string.key_stored_type));
+        if (resultCode == Activity.RESULT_CANCELED) {
+            if (requestCode == REQUEST_CODE_OCR_ACT) {
+                if (data != null && data.getBooleanExtra("NO_IMAGE", false)) {
+                    Snackbar.make(getView(), R.string.no_image_cancel, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        } else if (requestCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_OCR_ACT || requestCode == REQUEST_CODE_STT_ACT) {
+                String name = data.getStringExtra(getString(R.string.key_name_data));
+                LocalDate expiryDate = (LocalDate) data.getSerializableExtra(getString(R.string.key_expiry_data));
+                StoredType storedType = (StoredType) data.getSerializableExtra(getString(R.string.key_stored_type));
 
-            DialogFragment dialog = dialogManager.getAddManualDialogFragment(name, expiryDate, storedType);
-            dialog.show(dialogManager.getFragmentManager(), "AutoInputDialog");
+                DialogFragment dialog = dialogManager.getAddManualDialogFragment(name, expiryDate, storedType);
+                dialog.show(dialogManager.getFragmentManager(), "AutoInputDialog");
+            }
         }
     }
 }

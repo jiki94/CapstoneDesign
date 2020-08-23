@@ -36,4 +36,14 @@
         app:layout_constraintStart_toStartOf="@+id/viewItemNormal_text_name"
         app:layout_constraintTop_toBottomOf="@+id/viewItemNormal_text_name"
         tools:text="3/3/21" />
+
+    <ImageView
+        android:id="@+id/viewItemNormal_imminentExpiry"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
 </androidx.constraintlayout.widget.ConstraintLayout>
