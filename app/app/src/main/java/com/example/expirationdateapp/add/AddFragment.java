@@ -210,7 +210,9 @@ public class AddFragment extends Fragment implements NESDialogFragment.NoticeDia
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == Activity.RESULT_CANCELED) {
             if (requestCode == REQUEST_CODE_OCR_ACT) {
-                Snackbar.make(getView(), R.string.no_image_cancel, Snackbar.LENGTH_SHORT).show();
+                if (data != null && data.getBooleanExtra("NO_IMAGE", false)) {
+                    Snackbar.make(getView(), R.string.no_image_cancel, Snackbar.LENGTH_SHORT).show();
+                }
             }
         } else if (requestCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_OCR_ACT || requestCode == REQUEST_CODE_STT_ACT) {

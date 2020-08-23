@@ -184,7 +184,7 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
                     throw new IllegalArgumentException();
             }
         } else if (resultCode == RESULT_CANCELED) {
-            finish();
+            onCancelDialog();
         }
     }
 
@@ -383,6 +383,9 @@ public class OcrActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onCancelDialog() {
+        Intent intent = new Intent();
+        intent.putExtra("NO_IMAGE", true);
+        setResult(Activity.RESULT_CANCELED, intent);
         finish();
     }
 }
